@@ -1,7 +1,0 @@
-rootProject.name = 'jvm-langs-til'
-include ':groovy-projects'
-include ':java-projects'
-include ':java-projects:object-mapping-projects'
-include ':java-projects:object-mapping-projects:jaxb-sample'
-include ':kotlin-projects'
-include ':scala-projects'

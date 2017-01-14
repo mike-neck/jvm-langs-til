@@ -6,7 +6,6 @@ out/
 .idea/
 *.ipr
 *.iws
-*.iml
 
 bin/
 tmp/
@@ -27,3 +26,6 @@ nbdist/
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
 
+java-projects/object-mapping-projects/
+
+settings.gradle
