@@ -1,0 +1,24 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath junit5PluginJar
+    }
+}
+
+apply plugin: 'java'
+apply plugin: junit5Plugin
+
+version = '0.1'
+group = 'org.mikeneck'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile jetbrainsAnnotations
+    compile lombok
+    testCompile junit5
+}
