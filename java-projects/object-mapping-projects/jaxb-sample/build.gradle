@@ -7,7 +7,18 @@ buildscript {
     }
 }
 
+ext {
+    appMain = {
+        if (project.hasProperty('app')) {
+            return "com.example.sample${project.property('app')}.Main"
+        } else {
+            return 'com.example.sample1.Main'
+        }
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'application'
 apply plugin: junit5Plugin
 
 version = '0.1'
@@ -22,3 +33,5 @@ dependencies {
     compile lombok
     testCompile junit5
 }
+
+mainClassName = appMain()

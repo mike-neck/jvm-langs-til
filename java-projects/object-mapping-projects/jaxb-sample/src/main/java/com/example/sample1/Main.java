@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.sample2;
-
-import com.example.Resource;
+package com.example.sample1;
 
 import javax.xml.bind.JAXB;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 import java.io.StringWriter;
 
-public class BoolReaderApp {
+public class Main {
 
-    private static final String XML_FILE = "com/example/sample2/bool.xml";
+    private static final String XML_FILE = "com/example/sample1/task.xml";
+
+    private static final ClassLoader loader = Main.class.getClassLoader();
 
     public static void main(String[] args) throws IOException {
-        final Bool obj = new Bool(10, true);
+        final Task obj = new Task(1L, "jaxbサンプルアプリ作成", "jaxbのサンプルアプリを作る\nそしてmarshalする");
         final StringWriter w = new StringWriter();
         JAXB.marshal(obj, w);
         System.out.println(w.toString());
 
-        try (Reader r = Resource.getInstance().getReader(XML_FILE)) {
-            final Bool bool = JAXB.unmarshal(r, Bool.class);
-            System.out.println(bool);
+        try (InputStream is = loader.getResourceAsStream(XML_FILE)) {
+            final Task task = JAXB.unmarshal(is, Task.class);
+            System.out.println(task);
         }
     }
 }
