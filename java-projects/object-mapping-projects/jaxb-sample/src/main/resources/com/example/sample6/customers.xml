@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<recentCustomer sales-date="2017-01-14">
+    <customers>
+        <company>
+            <name>山本商事</name>
+            <representative>山本さん</representative>
+            <address>
+                <prefecture>CHIBA</prefecture>
+                <city>千葉市</city>
+                <address>花見川区</address>
+                <street>1</street>
+            </address>
+        </company>
+        <person>
+            <name>佐藤さん</name>
+            <address>
+                <prefecture>SAITAMA</prefecture>
+                <city>さいたま市</city>
+                <address>大宮</address>
+                <street>2-1</street>
+            </address>
+            <birth>1977-02-10</birth>
+        </person>
+        <person>
+            <name>スズキさん</name>
+            <address>
+                <prefecture>TOKYO</prefecture>
+                <city>港区</city>
+                <address>青山</address>
+                <street>1-1</street>
+            </address>
+            <birth>1982-03-14</birth>
+        </person>
+    </customers>
+</recentCustomer>
