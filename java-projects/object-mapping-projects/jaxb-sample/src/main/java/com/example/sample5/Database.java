@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.sample4;
+package com.example.sample5;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,41 +25,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-@SuppressWarnings("WeakerAccess")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@XmlType(name = "db",
-        propOrder = {
-                "driver",
-                "username",
-                "password",
-                "url"
-        })
+@XmlType(propOrder = {
+        
+})
 @XmlRootElement(name = "jdbc")
 public class Database {
 
-    private String url;
+    private DbDialect dialect;
     private String driver;
+    private String url;
     private String username;
     private String password;
+    @XmlTransient
     private String comment;
 
-    @SuppressWarnings("unused")
-    @XmlAttribute(name = "database-url")
+    @XmlAttribute(name = "jdbc-url")
     public String getUrl() {
         return url;
-    }
-
-    @SuppressWarnings("unused")
-    @XmlAttribute(name = "jdbc-driver")
-    public String getDriver() {
-        return driver;
-    }
-
-    @SuppressWarnings("unused")
-    @XmlTransient
-    private String getComment() {
-        return comment;
     }
 }
