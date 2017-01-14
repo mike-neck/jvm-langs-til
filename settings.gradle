@@ -1,0 +1,5 @@
+rootProject.name = 'jvm-langs-til'
+include "groovy-projects"
+include "java-projects"
+include "kotlin-projects"
+include "scala-projects"
