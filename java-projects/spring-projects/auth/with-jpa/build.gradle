@@ -55,7 +55,7 @@ generateSchema {
     def today = LocalDate.now(zone)
     def fmt = DateTimeFormatter.ofPattern('uuuuMMdd')
     def outputDir = "${buildDir}/ddl"
-    def fileName = "V${today.format(fmt)}__create.sql"
+    def fileName = "V0_${today.format(fmt)}__create.sql"
     def generatedFile = file("$outputDir/$fileName")
     project.tasks.generateSchema.outputs.file generatedFile
 
