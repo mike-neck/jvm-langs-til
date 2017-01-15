@@ -13,6 +13,9 @@ ext {
             test: "$springBoot:$starterTest:$springBootVersion"
     ]
 
+    bootstrap = "$webjars:$webjarsBootstrap:$webjarsBootstrapVersion"
+    jquery = "$webjars:$webjarsJquery:$webjarsJqueryVersion"
+
     junit5 = "$junit5Group:$junit5Af:$junit5Version"
     junit5PluginJar = "$junit5PfGroup:$junit5PfAf:$junit5PfVersion:"
 }

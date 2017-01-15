@@ -38,6 +38,9 @@ dependencies {
     compile     flyway
     runtime     h2
 
+    compile     bootstrap
+    compile     jquery
+
     testCompile junit5
 }
 
