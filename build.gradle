@@ -1,6 +1,18 @@
 ext {
     lombok = "$lombokGroup:$lombokAf:$lombokVersion"
     jetbrainsAnnotations = "$jbAnnoGroup:$jbAnnoAf:$jbAnnoVersion"
+
+    flyway = "$flywayGroup:$flywayCore:$flywayVersion"
+    h2 = "$h2DbGroup:$h2Db:$h2DbVersion"
+
+    springBootGradlePlugin = "$springBoot:$springBootPlugin:$springBootVersion"
+    springBootStarter = [
+            dataJpa: "$springBoot:$starterDataJpa:$springBootVersion",
+            security: "$springBoot:$starterSecurity:$springBootVersion",
+            thymeleaf: "$springBoot:$starterThymeleaf:$springBootVersion",
+            test: "$springBoot:$starterTest:$springBootVersion"
+    ]
+
     junit5 = "$junit5Group:$junit5Af:$junit5Version"
     junit5PluginJar = "$junit5PfGroup:$junit5PfAf:$junit5PfVersion:"
 }
