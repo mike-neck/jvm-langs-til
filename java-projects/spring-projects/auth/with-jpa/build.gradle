@@ -54,14 +54,24 @@ generateSchema {
     def zone = ZoneId.of('Asia/Tokyo')
     def today = LocalDate.now(zone)
     def fmt = DateTimeFormatter.ofPattern('uuuuMMdd')
+    def outputDir = "${buildDir}/ddl"
     def fileName = "V${today.format(fmt)}__create.sql"
+    def generatedFile = file("$outputDir/$fileName")
+    project.tasks.generateSchema.outputs.file generatedFile
 
     createOutputFileName = fileName
-    outputDirectory = file("${buildDir}/ddl")
+    outputDirectory = file(outputDir)
     databaseProductName = 'H2'
     databaseMajorVersion = 1
     databaseMinorVersion = 4
     properties = [
             'hibernate.dialect': 'org.hibernate.dialect.H2Dialect'
     ]
+}
+
+task ('ddlCopy', group: 'build', type: Copy) {
+    from (tasks.generateSchema.outputs.files) {
+        into 'db/migration'
+    }
+    into (tasks.processResources.destinationDir)
 }
