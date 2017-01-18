@@ -15,17 +15,20 @@
  */
 package com.example.entity;
 
+import com.example.entity.conv.ZoneIdConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import java.time.ZoneId;
 import java.util.Set;
 
 @Data
@@ -46,4 +49,7 @@ public class Account {
             , inverseJoinColumns = {@JoinColumn(name = "authority_id", nullable = false)}
     )
     private Set<Authority> authorities;
+    @Column(length = 40, nullable = false)
+    @Convert(converter = ZoneIdConverter.class)
+    private ZoneId timeZone;
 }

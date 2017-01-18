@@ -15,37 +15,24 @@
  */
 package com.example.conf;
 
-import com.example.entity.Account;
-import com.example.repository.AccountRepository;
+import com.example.service.AccountToUserDetailsService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter {
 
-    @SuppressWarnings({"SpringJavaAutowiringInspection", "SpringAutowiredFieldsWarningInspection"})
-    @Autowired
-    private AccountRepository accountRepo;
+    private final AccountToUserDetailsService userDetailsService;
 
-    @Bean
-    UserDetailsService userDetailsService() {
-        return username -> {
-            final Account account = accountRepo.findByUsername(username);
-            if (account == null) {
-                throw new UsernameNotFoundException("Wrong username or password.");
-            } else {
-                return new User(account.getUsername(), account.getPassword(), account.getAuthorities());
-            }
-        };
+    @Autowired
+    public AuthenticationConfig(AccountToUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -55,7 +42,7 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
 
     @Override
     public void init(final @NonNull AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService())
+        auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 }
