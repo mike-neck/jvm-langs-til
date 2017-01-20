@@ -31,6 +31,7 @@ repositories {
 dependencies {
     compile supercsvDozer
     compileOnly lombok
+    compileOnly jetbrainsAnnotations
 }
 
 mainClassName = appMain()
