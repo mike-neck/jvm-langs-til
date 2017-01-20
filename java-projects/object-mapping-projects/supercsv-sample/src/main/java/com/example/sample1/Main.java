@@ -15,12 +15,12 @@
  */
 package com.example.sample1;
 
-import com.example.SystemOutWriter;
 import org.jetbrains.annotations.NotNull;
 import org.supercsv.io.dozer.CsvDozerBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,11 +29,12 @@ import static com.example.Functions.consumer;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        final SystemOutWriter w = new SystemOutWriter();
+        final StringWriter w = new StringWriter();
         try (final CsvDozerBeanWriter cw = new CsvDozerBeanWriter(w, CsvPreference.STANDARD_PREFERENCE)) {
             cw.configureBeanMapping(Artist.class, Artist.MAPPER);
             artists().forEach(consumer(a -> cw.write(a, Artist.PROCESSORS)));
         }
+        System.out.println(w.toString());
     }
 
     @NotNull

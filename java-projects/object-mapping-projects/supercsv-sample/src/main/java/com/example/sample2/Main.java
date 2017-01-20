@@ -15,7 +15,6 @@
  */
 package com.example.sample2;
 
-import com.example.SystemOutWriter;
 import com.example.type.Country;
 import org.supercsv.io.dozer.CsvDozerBeanWriter;
 import org.supercsv.prefs.CsvPreference;
