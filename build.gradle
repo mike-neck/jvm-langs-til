@@ -2,6 +2,8 @@ ext {
     lombok = "$lombokGroup:$lombokAf:$lombokVersion"
     jetbrainsAnnotations = "$jbAnnoGroup:$jbAnnoAf:$jbAnnoVersion"
 
+    supercsvDozer = "$supercsvGroup:$supercsvDozerAf:$supercsvVersion"
+
     flyway = "$flywayGroup:$flywayCore:$flywayVersion"
     h2 = "$h2DbGroup:$h2Db:$h2DbVersion"
 

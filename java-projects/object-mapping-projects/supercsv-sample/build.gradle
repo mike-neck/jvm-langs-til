@@ -1,0 +1,36 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath junit5PluginJar
+    }
+}
+
+ext {
+    appMain = {
+        if (project.hasProperty('app')) {
+            return "com.example.sample${project.property('app')}.Main"
+        } else {
+            return 'com.example.sample1.Main'
+        }
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: junit5Plugin
+
+version = '0.1'
+group = 'org.mikeneck'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile supercsvDozer
+    compileOnly lombok
+}
+
+mainClassName = appMain()
