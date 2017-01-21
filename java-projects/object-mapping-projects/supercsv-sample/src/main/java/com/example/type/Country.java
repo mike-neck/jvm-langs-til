@@ -16,6 +16,8 @@
 package com.example.type;
 
 import com.example.processor.TypedCellProcessor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.supercsv.util.CsvContext;
 
 public enum Country {
@@ -31,6 +33,7 @@ public enum Country {
             super(Country.class);
         }
 
+        @NotNull
         @Override
         protected String convert(Country obj, CsvContext context) {
             final String name = obj.name();
@@ -39,9 +42,14 @@ public enum Country {
             return h + t;
         }
 
+        @Nullable
         @Override
         protected Country convert(String str, CsvContext context) {
-            return Country.valueOf(str.toUpperCase());
+            if (str.isEmpty()) {
+                return null;
+            } else {
+                return Country.valueOf(str.toUpperCase());
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ package com.example.type;
 
 import com.example.processor.TypedCellProcessor;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
 
@@ -40,6 +41,7 @@ public class Label implements Wrapper<String> {
             super(Label.class, next);
         }
 
+        @NotNull
         @Override
         protected String convert(Label obj, CsvContext context) {
             return null;

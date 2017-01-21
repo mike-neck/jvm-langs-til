@@ -17,6 +17,7 @@ package com.example.type;
 
 import com.example.processor.TypedCellProcessor;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
 
@@ -40,6 +41,7 @@ public class Id implements Wrapper<Integer> {
             super(Id.class, next);
         }
 
+        @NotNull
         @Override
         protected String convert(Id obj, CsvContext context) {
             return null;

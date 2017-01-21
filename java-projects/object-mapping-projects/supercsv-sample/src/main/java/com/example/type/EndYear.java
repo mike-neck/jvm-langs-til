@@ -17,6 +17,7 @@ package com.example.type;
 
 import com.example.processor.TypedCellProcessor;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
 
@@ -47,6 +48,7 @@ public class EndYear implements Wrapper<LocalDate> {
             super(EndYear.class, next);
         }
 
+        @NotNull
         @Override
         protected String convert(EndYear obj, CsvContext context) {
             return null;

@@ -17,6 +17,7 @@ package com.example.type;
 
 import com.example.processor.TypedCellProcessor;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
 
@@ -39,6 +40,7 @@ public class Members implements Wrapper<Integer> {
             super(com.example.type.Members.class, next);
         }
 
+        @NotNull
         @Override
         protected String convert(Members obj, CsvContext context) {
             return null;

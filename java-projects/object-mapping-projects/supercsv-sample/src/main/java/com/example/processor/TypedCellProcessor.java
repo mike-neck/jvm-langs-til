@@ -15,6 +15,8 @@
  */
 package com.example.processor;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
@@ -33,8 +35,14 @@ public abstract class TypedCellProcessor<T> extends CellProcessorAdaptor {
         this.klass = klass;
     }
 
+    boolean typeCheck(Object value) {
+        return klass.isInstance(value);
+    }
+
+    @NotNull
     abstract protected String convert(T obj, CsvContext context);
 
+    @Nullable
     abstract protected T convert(String str, CsvContext context);
 
     @SuppressWarnings("unchecked")
@@ -43,7 +51,7 @@ public abstract class TypedCellProcessor<T> extends CellProcessorAdaptor {
         validateInputNotNull(value, context);
         if (value instanceof String) {
             return next.execute(convert(((String) value), context), context);
-        } else if (klass.isInstance(value)) {
+        } else if (typeCheck(value)) {
             return next.execute(convert((T) value, context), context);
         } else {
             throw new IllegalStateException("expected String or " + klass.getSimpleName() + " but object is " + value);
