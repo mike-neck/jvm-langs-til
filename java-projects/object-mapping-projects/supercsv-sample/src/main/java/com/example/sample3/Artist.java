@@ -31,14 +31,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class Artist {
 
+    @Cell(order = 1, header = "id", processor = Id.Processor.Factory.class)
     private final Id id;
+    @Cell(order = 2, header = "アーティスト名", processor = Name.Processor.Factory.class)
     private final Name name;
+    @Cell(order = 3, header = "活動国", processor = Country.CsvProcessor.Factory.class)
     private final Country country;
+    @Cell(order = 4, header = "活動開始", processor = SinceYear.Processor.Factory.class)
     private final SinceYear since;
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    @Cell(order = 5, header = "活動終了", processor = EndYear.Processor.Factory.class)
     private final Optional<EndYear> end;
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    @Cell(order = 6, header = "レーベル", processor = Label.Processor.Factory.class)
     private final Optional<Label> label;
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    @Cell(order = 7, header = "メンバー数", processor = Members.Processor.Factory.class)
     private final Optional<Members> members;
 }
