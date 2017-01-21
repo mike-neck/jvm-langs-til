@@ -16,10 +16,14 @@
 package com.example.type;
 
 import com.example.processor.TypedCellProcessor;
+import com.example.sample3.CellProcessorFactory;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
+
+import java.util.Optional;
+import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public class Id implements Wrapper<Integer> {
@@ -53,6 +57,18 @@ public class Id implements Wrapper<Integer> {
                 return new Id(0);
             } else {
                 return new Id(Integer.parseInt(str));
+            }
+        }
+
+        public static class Factory implements CellProcessorFactory<Id> {
+            @Override
+            public TypedCellProcessor<Id> processor() {
+                return new Processor();
+            }
+
+            @Override
+            public Optional<Supplier<Id>> defaultValue() {
+                return Optional.of(() -> new Id(0));
             }
         }
     }

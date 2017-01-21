@@ -16,6 +16,7 @@
 package com.example.type;
 
 import com.example.processor.TypedCellProcessor;
+import com.example.sample3.CellProcessorFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.supercsv.util.CsvContext;
@@ -49,6 +50,13 @@ public enum Country {
                 return null;
             } else {
                 return Country.valueOf(str.toUpperCase());
+            }
+        }
+
+        public static class Factory implements CellProcessorFactory<Country> {
+            @Override
+            public TypedCellProcessor<Country> processor() {
+                return new CsvProcessor();
             }
         }
     }

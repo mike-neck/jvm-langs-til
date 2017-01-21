@@ -16,6 +16,7 @@
 package com.example.type;
 
 import com.example.processor.TypedCellProcessor;
+import com.example.sample3.CellProcessorFactory;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -50,6 +51,13 @@ public class Label implements Wrapper<String> {
         @Override
         protected Label convert(String str, CsvContext context) {
             return new Label(str);
+        }
+
+        public static class Factory implements CellProcessorFactory<Label> {
+            @Override
+            public TypedCellProcessor<Label> processor() {
+                return new Processor();
+            }
         }
     }
 }

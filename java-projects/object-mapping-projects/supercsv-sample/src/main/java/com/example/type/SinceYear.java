@@ -16,6 +16,7 @@
 package com.example.type;
 
 import com.example.processor.TypedCellProcessor;
+import com.example.sample3.CellProcessorFactory;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -60,6 +61,13 @@ public class SinceYear implements Wrapper<LocalDate> {
                 return null;
             } else {
                 return new SinceYear(Integer.parseInt(str));
+            }
+        }
+
+        public static class Factory implements CellProcessorFactory<SinceYear> {
+            @Override
+            public TypedCellProcessor<SinceYear> processor() {
+                return new Processor();
             }
         }
     }
