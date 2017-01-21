@@ -1,3 +1,5 @@
+apply plugin: 'init-new-project'
+
 ext {
     lombok = "$lombokGroup:$lombokAf:$lombokVersion"
     jetbrainsAnnotations = "$jbAnnoGroup:$jbAnnoAf:$jbAnnoVersion"
@@ -25,24 +27,5 @@ ext {
 subprojects {
     if (project.file('secret.gradle').exists()) {
         apply from: 'secret.gradle'
-    }
-
-    task ('createDirectories') {
-        def base = projectDir.absolutePath
-        def projects = [
-                java: 'java-projects'
-                , scala: 'scala-projects'
-                , groovy: 'groovy-projects'
-                , kotlin: 'kotlin-projects'
-        ]
-        def projectType = projects.find { base.contains(it.value) }?.key
-        if (projectType != null) {
-            def mainSrcDir = project.file("src/main/$projectType")
-            def testSrcDir = project.file("src/test/$projectType")
-            doLast {
-                if (!mainSrcDir.exists()) mainSrcDir.mkdirs()
-                if (!testSrcDir.exists()) testSrcDir.mkdirs()
-            }
-        }
     }
 }
