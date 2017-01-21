@@ -15,7 +15,11 @@
  */
 package com.example.processor;
 
+import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
+import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
 
 import java.util.Objects;
@@ -23,6 +27,16 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public class OptionalProcessor<T> extends CellProcessorAdaptor {
+
+    @NotNull
+    @Contract("_, _ -> !null")
+    public static <T> CellProcessor create(boolean optional, @NotNull @NonNull TypedCellProcessor<T> valueProcessor) {
+        if (optional) {
+            return new OptionalProcessor<>(valueProcessor);
+        } else {
+            return valueProcessor;
+        }
+    }
 
     private final TypedCellProcessor<T> child;
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
