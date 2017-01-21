@@ -34,6 +34,10 @@ public class CsvWriter<T> {
     private final Class<T> klass;
     private final List<CellInfo> cellInfoList;
 
+    public CsvWriter(Class<T> klass) {
+        this(klass, collectCellInfo(klass));
+    }
+
     public CsvWriter(Class<T> klass, List<CellInfo> cellInfoList) {
         this.klass = klass;
         this.cellInfoList = cellInfoList;

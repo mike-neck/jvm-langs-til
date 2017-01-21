@@ -40,10 +40,11 @@ public class OptionalProcessor<T> extends CellProcessorAdaptor {
 
     private final TypedCellProcessor<T> child;
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private Optional<Supplier<T>> opt;
+    private final Optional<Supplier<T>> opt;
 
     public OptionalProcessor(TypedCellProcessor<T> child) {
         this.child = child;
+        this.opt = Optional.empty();
     }
 
     public OptionalProcessor(TypedCellProcessor<T> child, Supplier<T> defaultValue) {
