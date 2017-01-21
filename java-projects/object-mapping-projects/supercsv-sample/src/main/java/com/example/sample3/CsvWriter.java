@@ -72,6 +72,7 @@ public class CsvWriter<T> {
             w.writeHeader(getHeaders());
             final CellProcessor[] cp = getProcessors();
             beans.forEach(consumer(b -> w.write(b, cp)));
+            w.flush();
         };
     }
 

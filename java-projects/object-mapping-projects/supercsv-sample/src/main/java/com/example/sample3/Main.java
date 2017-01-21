@@ -26,34 +26,24 @@ import org.jetbrains.annotations.NotNull;
 import org.supercsv.io.dozer.CsvDozerBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.function.IntFunction;
-import java.util.stream.Stream;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        final File file = new File("tmp.csv");
-
-        System.out.println(file.getAbsolutePath());
-
-        try (final FileWriter writer = new FileWriter(file)) {
-            final CsvDozerBeanWriter cw = new CsvDozerBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
+        final Writer writer = new StringWriter();
+        try (final CsvDozerBeanWriter cw = new CsvDozerBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE)) {
             final CsvWriter<Artist> w = new CsvWriter<>(Artist.class);
             w.write(artists()).to(cw);
         }
-
-        try (Stream<String> s = new BufferedReader(new FileReader(file)).lines()) {
-            s.forEach(System.out::println);
-        }
+        System.out.println(writer);
     }
 
     private static List<Artist> artists() {
