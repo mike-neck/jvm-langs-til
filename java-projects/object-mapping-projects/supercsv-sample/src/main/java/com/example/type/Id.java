@@ -44,12 +44,16 @@ public class Id implements Wrapper<Integer> {
         @NotNull
         @Override
         protected String convert(Id obj, CsvContext context) {
-            return null;
+            return String.format("%d", obj.value);
         }
 
         @Override
         protected Id convert(String str, CsvContext context) {
-            return null;
+            if (str.isEmpty()) {
+                return new Id(0);
+            } else {
+                return new Id(Integer.parseInt(str));
+            }
         }
     }
 }

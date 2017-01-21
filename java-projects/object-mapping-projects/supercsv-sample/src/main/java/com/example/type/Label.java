@@ -44,12 +44,12 @@ public class Label implements Wrapper<String> {
         @NotNull
         @Override
         protected String convert(Label obj, CsvContext context) {
-            return null;
+            return obj.value;
         }
 
         @Override
         protected Label convert(String str, CsvContext context) {
-            return null;
+            return new Label(str);
         }
     }
 }

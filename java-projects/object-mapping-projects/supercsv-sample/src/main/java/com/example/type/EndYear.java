@@ -51,12 +51,16 @@ public class EndYear implements Wrapper<LocalDate> {
         @NotNull
         @Override
         protected String convert(EndYear obj, CsvContext context) {
-            return null;
+            return String.format("%d", obj.value.getYear());
         }
 
         @Override
         protected EndYear convert(String str, CsvContext context) {
-            return null;
+            if (str.isEmpty()) {
+                return null;
+            } else {
+                return new EndYear(Integer.parseInt(str));
+            }
         }
     }
 }

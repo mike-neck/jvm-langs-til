@@ -43,12 +43,15 @@ public class Members implements Wrapper<Integer> {
         @NotNull
         @Override
         protected String convert(Members obj, CsvContext context) {
-            return null;
+            return String.format("%d", obj.value);
         }
 
         @Override
         protected Members convert(String str, CsvContext context) {
-            return null;
+            if (str.isEmpty()) {
+                return new Members(0);
+            }
+            return new Members(Integer.parseInt(str));
         }
     }
 }

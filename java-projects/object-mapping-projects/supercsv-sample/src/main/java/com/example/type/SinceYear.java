@@ -51,12 +51,16 @@ public class SinceYear implements Wrapper<LocalDate> {
         @NotNull
         @Override
         protected String convert(SinceYear obj, CsvContext context) {
-            return null;
+            return String.format("%d", obj.value.getYear());
         }
 
         @Override
         protected SinceYear convert(String str, CsvContext context) {
-            return null;
+            if (str.isEmpty()) {
+                return null;
+            } else {
+                return new SinceYear(Integer.parseInt(str));
+            }
         }
     }
 }

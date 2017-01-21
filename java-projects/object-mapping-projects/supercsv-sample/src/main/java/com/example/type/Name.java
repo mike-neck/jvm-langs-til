@@ -44,12 +44,12 @@ public class Name implements Wrapper<String> {
         @NotNull
         @Override
         protected String convert(Name obj, CsvContext context) {
-            return null;
+            return obj.value;
         }
 
         @Override
         protected Name convert(String str, CsvContext context) {
-            return null;
+            return new Name(str);
         }
     }
 }
