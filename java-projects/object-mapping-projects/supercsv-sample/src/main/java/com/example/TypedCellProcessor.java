@@ -16,6 +16,7 @@
 package com.example;
 
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
+import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
 
 public abstract class TypedCellProcessor<T> extends CellProcessorAdaptor {
@@ -24,6 +25,11 @@ public abstract class TypedCellProcessor<T> extends CellProcessorAdaptor {
 
     public TypedCellProcessor(Class<T> klass) {
         super();
+        this.klass = klass;
+    }
+
+    public TypedCellProcessor(Class<T> klass, CellProcessor next) {
+        super(next);
         this.klass = klass;
     }
 
