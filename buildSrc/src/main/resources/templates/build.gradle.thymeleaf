@@ -1,0 +1,9 @@
+apply plugin: '[(${lang})]'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+}

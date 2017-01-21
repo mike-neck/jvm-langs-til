@@ -1,10 +1,16 @@
 apply plugin: 'java'
 
+ext {
+    thymeleaf = "$thymeleafGroup:$thymeleafAf:$thymeleafVersion"
+}
+
 repositories {
     mavenCentral()
     jcenter()
 }
 
 dependencies {
-    gradleApi()
+    compile gradleApi()
+    compile thymeleaf
+    testCompile 'junit:junit:4.12'
 }
