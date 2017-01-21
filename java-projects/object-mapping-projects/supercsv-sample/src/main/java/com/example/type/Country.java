@@ -15,7 +15,7 @@
  */
 package com.example.type;
 
-import com.example.TypedCellProcessor;
+import com.example.processor.TypedCellProcessor;
 import org.supercsv.util.CsvContext;
 
 public enum Country {
