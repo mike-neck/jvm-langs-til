@@ -20,6 +20,12 @@ ext {
     bootstrap = "$webjars:$webjarsBootstrap:$webjarsBootstrapVersion"
     jquery = "$webjars:$webjarsJquery:$webjarsJqueryVersion"
 
+    servlet = "$servletGroup:$servletAf:$servletVersion"
+    jerseyMvc = "$jerseyExtGroup:$jerseyMvcAf:$jerseyMvcVersion"
+    jerseyContainerServlet = "$jerseyContainerGroup:$jerseyContainerServletAf:$jerseyContainerServletVersion"
+
+    webappRunner = "$webappRunnerGroup:$webappRunnerAf:$webappRunnerVersion"
+
     junit5 = "$junit5Group:$junit5Af:$junit5Version"
     junit5PluginJar = "$junit5PfGroup:$junit5PfAf:$junit5PfVersion:"
 }

@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath junit5PluginJar
+    }
+}
+
+apply plugin: 'war'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+configurations {
+    webapp
+}
+
+dependencies {
+    providedCompile servlet
+    compile        (jerseyMvc) {
+        exclude module: 'servlet-api'
+    }
+    compile         jerseyContainerServlet
+    compileOnly     jetbrainsAnnotations
+    compileOnly     lombok
+
+    webapp          webappRunner
+
+    testCompile     junit5
+}
