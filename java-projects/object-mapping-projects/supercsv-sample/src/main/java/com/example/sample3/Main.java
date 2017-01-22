@@ -68,7 +68,7 @@ public class Main {
     }
 
     @NotNull
-    private static NameBld id(int i) {
+    public static NameBld id(int i) {
         return n -> c -> s -> oe -> ol -> om -> new Artist(
                 new Id(i)
                 , new Name(n)
@@ -80,19 +80,19 @@ public class Main {
         );
     }
 
-    interface NameBld {
+    public interface NameBld {
         CountryBld name(String n);
     }
 
-    interface CountryBld {
+    public interface CountryBld {
         SinceBld country(Country c);
     }
 
-    interface SinceBld {
+    public interface SinceBld {
         EndBld since(int s);
     }
 
-    interface EndBld {
+    public interface EndBld {
         LabelBld end(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") OptionalInt e);
         default LabelBld end(int e) {
             return end(OptionalInt.of(e));
@@ -102,7 +102,7 @@ public class Main {
         }
     }
 
-    interface LabelBld {
+    public interface LabelBld {
         MembersBld label(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<String> ol);
         default MembersBld label(String l) {
             return label(Optional.of(l));
@@ -112,7 +112,7 @@ public class Main {
         }
     }
 
-    interface MembersBld {
+    public interface MembersBld {
         Artist members(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") OptionalInt om);
         default Artist members(int m) {
             return members(OptionalInt.of(m));

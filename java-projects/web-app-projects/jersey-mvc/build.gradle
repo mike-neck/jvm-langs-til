@@ -30,6 +30,11 @@ dependencies {
     }
     compile         jerseyContainerServlet
     compile         genson
+
+    compile        (rootProject.project(':java-projects:object-mapping-projects:supercsv-sample')) {
+        exclude module: 'slf4j-api'
+    }
+
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
 

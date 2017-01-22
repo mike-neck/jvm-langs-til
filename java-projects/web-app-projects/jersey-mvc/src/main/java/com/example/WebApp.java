@@ -15,6 +15,7 @@
  */
 package com.example;
 
+import com.example.view.CsvWriter;
 import com.owlike.genson.ext.jaxrs.GensonJsonConverter;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.mvc.MvcFeature;
@@ -26,7 +27,9 @@ public class WebApp extends ResourceConfig {
 
     public WebApp() {
         super();
-        register(MvcFeature.class, GensonJsonConverter.class);
+        register(MvcFeature.class);
+        register(GensonJsonConverter.class);
+        register(CsvWriter.class);
         packages(true, getClass().getPackage().getName());
     }
 }

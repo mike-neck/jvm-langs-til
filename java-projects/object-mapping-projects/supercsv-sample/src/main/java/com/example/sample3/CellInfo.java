@@ -23,7 +23,7 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 
 @RequiredArgsConstructor
 @Getter
-class CellInfo implements Comparable<CellInfo> {
+public class CellInfo implements Comparable<CellInfo> {
     private final int order;
     private final String name;
     private final String header;
