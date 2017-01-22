@@ -20,6 +20,9 @@ ext {
     bootstrap = "$webjars:$webjarsBootstrap:$webjarsBootstrapVersion"
     jquery = "$webjars:$webjarsJquery:$webjarsJqueryVersion"
 
+    thymeleaf = "$thymeleafGroup:$thymeleafAf:$thymeleafVersion"
+    thymeleafJava8Time = "$thymeleafExtGroup:$thymeleafJava8TimeAf:$thymeleafJava8TimeVersion"
+
     servlet = "$servletGroup:$servletAf:$servletVersion"
     jerseyMvc = "$jerseyExtGroup:$jerseyMvcAf:$jerseyMvcVersion"
     jerseyContainerServlet = "$jerseyContainerGroup:$jerseyContainerServletAf:$jerseyContainerServletVersion"

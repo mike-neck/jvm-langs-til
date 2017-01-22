@@ -23,6 +23,11 @@ dependencies {
     compile        (jerseyMvc) {
         exclude module: 'servlet-api'
     }
+    compile         thymeleaf
+    compile        (thymeleafJava8Time) {
+        exclude module: 'slf4j-api'
+        exclude module: 'thymeleaf'
+    }
     compile         jerseyContainerServlet
     compile         genson
     compileOnly     jetbrainsAnnotations
@@ -33,16 +38,13 @@ dependencies {
     testCompile     junit5
 }
 
-task 'webappRunner'(type: JavaExec) {
+task 'webappRunner'(type: JavaExec, dependsOn: 'war') {
     classpath = configurations.webapp.asFileTree
     args(tasks.war.outputs.files.asPath)
     args('--temp-directory', 'build/webapp-runner')
     main = 'webapp.runner.launch.Main'
 }
 
-task webappRunnerWithClean(type: JavaExec, dependsOn: 'clean') {
-    classpath = configurations.webapp.asFileTree
-    args(tasks.war.outputs.files.asPath)
-    args('--temp-directory', 'build/webapp-runner')
-    main = 'webapp.runner.launch.Main'
+task webappRunnerWithClean(dependsOn: 'clean') {
+    finalizedBy 'webappRunner'
 }
