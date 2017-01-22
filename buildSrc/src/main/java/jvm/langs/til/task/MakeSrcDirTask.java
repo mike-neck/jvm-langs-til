@@ -22,13 +22,7 @@ import org.gradle.api.Project;
 import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
-
-import static jvm.langs.til.JvmTil.GROOVY;
-import static jvm.langs.til.JvmTil.JAVA;
-import static jvm.langs.til.JvmTil.KOTLIN;
-import static jvm.langs.til.JvmTil.SCALA;
 
 public class MakeSrcDirTask extends DefaultTask {
 
@@ -38,13 +32,7 @@ public class MakeSrcDirTask extends DefaultTask {
 
     public static final String DESCRIPTION = "Prepares src directory.";
 
-    public static final List<String> EXCLUDE = Arrays.asList(
-            "jvm-langs-til"
-            , JAVA
-            , GROOVY
-            , KOTLIN
-            , SCALA
-    );
+    public static final List<String> EXCLUDE = JvmTil.Lang.getDirectoriesWith("jvm-langs-til");
 
     public static boolean notLangRootProject(String name) {
         return !EXCLUDE.contains(name);
