@@ -24,6 +24,8 @@ ext {
     jerseyMvc = "$jerseyExtGroup:$jerseyMvcAf:$jerseyMvcVersion"
     jerseyContainerServlet = "$jerseyContainerGroup:$jerseyContainerServletAf:$jerseyContainerServletVersion"
 
+    genson = "$gensonGroup:$gensonAf:$gensonVersion"
+
     webappRunner = "$webappRunnerGroup:$webappRunnerAf:$webappRunnerVersion"
 
     junit5 = "$junit5Group:$junit5Af:$junit5Version"

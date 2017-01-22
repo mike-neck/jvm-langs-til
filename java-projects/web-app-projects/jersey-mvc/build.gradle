@@ -24,10 +24,25 @@ dependencies {
         exclude module: 'servlet-api'
     }
     compile         jerseyContainerServlet
+    compile         genson
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
 
     webapp          webappRunner
 
     testCompile     junit5
+}
+
+task 'webappRunner'(type: JavaExec) {
+    classpath = configurations.webapp.asFileTree
+    args(tasks.war.outputs.files.asPath)
+    args('--temp-directory', 'build/webapp-runner')
+    main = 'webapp.runner.launch.Main'
+}
+
+task webappRunnerWithClean(type: JavaExec, dependsOn: 'clean') {
+    classpath = configurations.webapp.asFileTree
+    args(tasks.war.outputs.files.asPath)
+    args('--temp-directory', 'build/webapp-runner')
+    main = 'webapp.runner.launch.Main'
 }
