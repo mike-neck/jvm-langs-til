@@ -15,18 +15,29 @@
  */
 package com.example;
 
-import com.owlike.genson.ext.jaxrs.GensonJsonConverter;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.mvc.MvcFeature;
+import com.example.View.Of;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@ApplicationPath("")
-public class WebApp extends ResourceConfig {
+@Path("index")
+public class IndexController {
 
-    public WebApp() {
-        super();
-        register(MvcFeature.class, GensonJsonConverter.class);
-        packages(true, getClass().getPackage().getName());
+    @GET
+    public View root() {
+        final IndexModel model = new IndexModel(LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm")));
+        return Of.INDEX.with(model);
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IndexModel {
+        private String now;
     }
 }
