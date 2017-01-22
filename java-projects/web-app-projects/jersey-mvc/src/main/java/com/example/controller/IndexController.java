@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.controller;
 
-import com.example.View.Of;
+import com.example.view.View;
+import com.example.view.View.Of;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
