@@ -71,10 +71,11 @@ public final class JvmTil {
     }
 
     public enum Lang {
-        JAVA   ("java-projects", "java")
+        JAVA     ("java-projects"  , "java"  )
         , GROOVY ("groovy-projects", "groovy")
         , KOTLIN ("kotlin-projects", "kotlin")
-        , SCALA  ("scala-projects", "scala")
+        , SCALA  ("scala-projects" , "scala" )
+        , FREGE  ("frege-projects" , "frege" )
         ;
 
         private final String dir;
