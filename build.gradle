@@ -1,3 +1,4 @@
+apply plugin: 'base'
 apply plugin: 'init-new-project'
 
 ext {
@@ -16,6 +17,7 @@ ext {
             thymeleaf: "$springBoot:$starterThymeleaf:$springBootVersion",
             test: "$springBoot:$starterTest:$springBootVersion"
     ]
+    springOAuth = "$springSecOAuthGroup:$springSecOAuthAf:$springSecOAuthVersion"
 
     bootstrap = "$webjars:$webjarsBootstrap:$webjarsBootstrapVersion"
     jquery = "$webjars:$webjarsJquery:$webjarsJqueryVersion"
@@ -39,4 +41,8 @@ subprojects {
     if (project.file('secret.gradle').exists()) {
         apply from: 'secret.gradle'
     }
+}
+
+task organizeProjects(type: Exec, description: 'Organizes projects via directory tree.', group: 'Setup') {
+    commandLine './organize-projects.sh'
 }

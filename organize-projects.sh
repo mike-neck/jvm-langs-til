@@ -12,3 +12,9 @@ find . -type d -maxdepth 4 | \
     -e "s/^.\{2\}/include \'\:/g" \
     -e "s/\//\:/g" \
     -e "s/\([a-z0-9A-Z]\)$/\1\'/g" >> settings.gradle
+
+cat settings.gradle | \
+  grep -v 'rootProject.name' | \
+  sed \
+    -e "s/'//g" \
+    -e "s/include/project/g"

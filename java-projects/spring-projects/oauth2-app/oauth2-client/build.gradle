@@ -1,0 +1,43 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath springBootGradlePlugin
+        classpath junit5PluginJar
+    }
+}
+
+apply plugin: 'java'
+apply plugin: springBoot
+apply plugin: junit5Plugin
+
+jar {
+    baseName = 'spring-oauth2-client'
+    version = '0.0.1-SNAPSHOT'
+}
+
+tasks.withType(JavaCompile) {
+    it.sourceCompatibility = '1.8'
+    it.targetCompatibility = '1.8'
+    it.options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compileOnly lombok
+    compileOnly jetbrainsAnnotations
+    compile     springBootStarter.thymeleaf
+    compile     springBootStarter.security
+    compile     springOAuth
+
+    compile     bootstrap
+    compile     jquery
+}
