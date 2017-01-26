@@ -27,3 +27,5 @@ nbdist/
 !gradle/wrapper/gradle-wrapper.jar
 
 settings.gradle
+
+application-secret.properties
