@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath junit5PluginJar
+    }
+}
+
+apply plugin: 'java'
+apply plugin: junit5Plugin
+
+version = '0.1'
+group = 'org.mikeneck'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'https://repo.eclipse.org/content/repositories/yasson-releases'
+    }
+    maven {
+        url "https://maven.java.net/content/repositories/snapshots/"
+    }
+}
+
+dependencies {
+    compile     'org.eclipse:yasson:1.0.0-M1'
+    compileOnly lombok
+    compileOnly jetbrainsAnnotations
+
+    testCompile junit5
+}
