@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "name": "mike",
+    "roles": [
+      "TEAM_OPERATION",
+      "SELF_OPERATION",
+      "PROJECT_OPERATION"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "持田",
+    "roles": [
+      "SELF_OPERATION"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "(☝՞ਊ ՞)☝ｳｪｰｲwww",
+    "roles": [
+      "SYSTEM_ADMIN"
+    ]
+  }
+]

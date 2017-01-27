@@ -15,22 +15,31 @@
  */
 package com.example.sample1;
 
-import com.example.model.Task;
+import com.example.sample1.model.Task;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.LocalDate;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         final Jsonb jsonb = JsonbBuilder.create();
         final StringWriter writer = new StringWriter();
-        jsonb.toJson(task(), writer);
+        final Task t = task();
+        jsonb.toJson(t, writer);
         System.out.println(writer);
+
+        try (final StringReader reader = new StringReader(writer.toString())) {
+            final Task task = jsonb.fromJson(reader, Task.class);
+            System.out.println(task);
+            System.out.println(t.equals(task));
+        }
     }
 
     @NotNull

@@ -13,23 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.model;
+package com.example.sample2.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Task {
-
-    private String project;
-    private Integer number;
-    private String title;
-    private String description;
-    private String assignee;
-    private LocalDate created;
+public enum Role {
+    SELF_OPERATION, PROJECT_OPERATION, TEAM_OPERATION, SYSTEM_ADMIN
 }
