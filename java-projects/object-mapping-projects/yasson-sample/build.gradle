@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
     compile     'org.eclipse:yasson:1.0.0-M1'
+    compile     'org.glassfish:javax.json:1.1.0-SNAPSHOT'
     compileOnly lombok
     compileOnly jetbrainsAnnotations
 
