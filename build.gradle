@@ -5,6 +5,9 @@ ext {
     lombok = "$lombokGroup:$lombokAf:$lombokVersion"
     jetbrainsAnnotations = "$jbAnnoGroup:$jbAnnoAf:$jbAnnoVersion"
 
+    slf4j = "$slf4jGroup:$slf4jApiAf:$slf4jVersion"
+    logback = "$logbackGroup:$logbackAf:$logbackVersion"
+
     supercsvDozer = "$supercsvGroup:$supercsvDozerAf:$supercsvVersion"
 
     flyway = "$flywayGroup:$flywayCore:$flywayVersion"

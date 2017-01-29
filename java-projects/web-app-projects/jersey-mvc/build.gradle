@@ -31,9 +31,18 @@ dependencies {
     compile         jerseyContainerServlet
     compile         genson
 
+    compile         slf4j
+    compile         logback
+
     compile        (rootProject.project(':java-projects:object-mapping-projects:supercsv-sample')) {
         exclude module: 'slf4j-api'
     }
+    compile        (rootProject.project(':java-projects:utilities'))
+
+    compile         'org.webjars.bower:filesaver:1.3.3'
+    compile         'org.webjars.npm:whatwg-fetch:2.0.1'
+    compile         'org.webjars.npm:bootstrap.native:1.1.0'
+    compile         'org.webjars.npm:bootstrap-css-only:3.3.7'
 
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
@@ -43,13 +52,13 @@ dependencies {
     testCompile     junit5
 }
 
-task 'webappRunner'(type: JavaExec, dependsOn: 'war') {
+task 'webappRunner'(type: JavaExec, dependsOn: 'war', group: 'run web app') {
     classpath = configurations.webapp.asFileTree
     args(tasks.war.outputs.files.asPath)
     args('--temp-directory', 'build/webapp-runner')
     main = 'webapp.runner.launch.Main'
 }
 
-task webappRunnerWithClean(dependsOn: 'clean') {
+task webappRunnerWithClean(dependsOn: 'clean', group: 'run web app') {
     finalizedBy 'webappRunner'
 }

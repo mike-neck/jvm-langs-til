@@ -4,9 +4,17 @@
 <head>
     <meta charset="UTF-8"/>
     <title>ルートページ</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap-css-only/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap-css-only/3.3.7/css/bootstrap-theme.min.css">
 </head>
 <body>
-<h3 th:text="${model.now}"></h3>
-<h2>It works!</h2>
+<div class="container">
+    <div class="panel panel-default">
+        <h2 class="panel-heading">It works!</h2>
+        <p class="panel-body">
+        <h4 th:text="${model.now}"></h4>
+        </p>
+    </div>
+</div>
 </body>
 </html>
