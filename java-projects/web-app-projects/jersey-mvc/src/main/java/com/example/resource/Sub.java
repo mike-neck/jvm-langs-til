@@ -114,7 +114,7 @@ public class Sub {
         @NotNull
         @Contract("null -> fail")
         public static Calc fromString(String calc) {
-            if (calc == null) throw new NotFoundException("null resource not found.");
+            if (calc == null) throw new NotFoundException("null resource not utf8.");
             try {
                 return valueOf(calc.toUpperCase());
             } catch (IllegalArgumentException e) {
