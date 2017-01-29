@@ -17,6 +17,7 @@ package com.example;
 
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -24,14 +25,26 @@ import java.util.function.Function;
 
 public final class Functions {
 
-    private Functions() {
-        throw new UnsupportedOperationException("Cannot create instance.");
-    }
-
     public static class ExecutionException extends RuntimeException {
-        ExecutionException(Throwable cause) {
+        public ExecutionException() {
+            super();
+        }
+
+        public ExecutionException(@NonNls String message) {
+            super(message);
+        }
+
+        public ExecutionException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        public ExecutionException(Throwable cause) {
             super(cause);
         }
+    }
+
+    private Functions() {
+        throw new UnsupportedOperationException("Cannot create instance.");
     }
 
     @FunctionalInterface
@@ -58,12 +71,12 @@ public final class Functions {
     }
 
     @NotNull
-    @Contract("null->fail")
-    public static <A, B>Function<A, B> function(@NotNull @NonNull ExFunction<A, B> ef) {
+    @Contract("null -> fail")
+    public static <A, B> Function<A, B> function(@NotNull @NonNull ExFunction<A, B> f) {
         //noinspection Contract
         return a -> {
             try {
-                return ef.apply(a);
+                return f.apply(a);
             } catch (Throwable throwable) {
                 throw new ExecutionException(throwable);
             }

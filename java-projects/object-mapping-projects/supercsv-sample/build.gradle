@@ -32,6 +32,8 @@ dependencies {
     compile supercsvDozer
     compileOnly lombok
     compileOnly jetbrainsAnnotations
+
+    compile        (rootProject.project(':java-projects:utilities'))
 }
 
 mainClassName = appMain()
