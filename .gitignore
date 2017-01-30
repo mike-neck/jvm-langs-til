@@ -29,3 +29,6 @@ nbdist/
 settings.gradle
 
 application-secret.properties
+
+**/docker/**/*
+!**/docker/**/*.yml

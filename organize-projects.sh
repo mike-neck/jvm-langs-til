@@ -8,6 +8,7 @@ find . -type d -maxdepth 4 | \
   grep -e "\./[a-z]\+\-projects" | \
   grep -v "/src/\?" | \
   grep -v "/build/\?" | \
+  grep -v "/docker/\?" | \
   sed \
     -e "s/^.\{2\}/include \'\:/g" \
     -e "s/\//\:/g" \
