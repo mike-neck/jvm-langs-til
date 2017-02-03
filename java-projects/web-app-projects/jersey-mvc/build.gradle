@@ -9,6 +9,10 @@ buildscript {
 
 apply plugin: 'war'
 
+ext {
+    dockerMysqlDir = 'docker/jersey-mvc/db/data'
+}
+
 repositories {
     mavenCentral()
     jcenter()
@@ -30,6 +34,14 @@ dependencies {
     }
     compile         jerseyContainerServlet
     compile         genson
+    compile         eclipseLink
+    compile        ('org.glassfish.hk2:guice-bridge:2.5.0-b32') {
+        exclude module: 'guice'
+        exclude module: 'hk2-api'
+    }
+    compile         guice
+    compile         guiceServlet
+    compile         guicePersist
 
     compile         slf4j
     compile         logback
@@ -61,4 +73,14 @@ task 'webappRunner'(type: JavaExec, dependsOn: 'war', group: 'run web app') {
 
 task webappRunnerWithClean(dependsOn: 'clean', group: 'run web app') {
     finalizedBy 'webappRunner'
+}
+
+task deleteMysqlDataDir(type: Delete, group: 'run web app') {
+    delete file(dockerMysqlDir)
+}
+
+task makeMysqlDataDir(group: 'run web app') {
+    doLast {
+        mkdir dockerMysqlDir
+    }
 }

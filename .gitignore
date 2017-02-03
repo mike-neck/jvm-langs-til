@@ -6,6 +6,8 @@ out/
 .idea/
 *.ipr
 *.iws
+classes/
+
 
 bin/
 tmp/
@@ -30,5 +32,4 @@ settings.gradle
 
 application-secret.properties
 
-**/docker/**/*
-!**/docker/**/*.yml
+**/db/data

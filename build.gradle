@@ -12,6 +12,7 @@ ext {
 
     flyway = "$flywayGroup:$flywayCore:$flywayVersion"
     h2 = "$h2DbGroup:$h2Db:$h2DbVersion"
+    mysql = "$mysqlGroup:$mysqlAf:$mysqlVersion"
 
     springBootGradlePlugin = "$springBoot:$springBootPlugin:$springBootVersion"
     springBootStarter = [
@@ -31,6 +32,12 @@ ext {
     servlet = "$servletGroup:$servletAf:$servletVersion"
     jerseyMvc = "$jerseyExtGroup:$jerseyMvcAf:$jerseyMvcVersion"
     jerseyContainerServlet = "$jerseyContainerGroup:$jerseyContainerServletAf:$jerseyContainerServletVersion"
+
+    guice = "$guiceGroup:$guiceAf:$guiceVersion"
+    guiceServlet = "$guiceExtGroup:$guiceServletAf:$guiceVersion"
+    guicePersist = "$guiceExtGroup:$guicePersistAf:$guiceVersion"
+
+    eclipseLink = "$eclipseLinkGroup:$eclipseLinkJpaAf:$eclipseLinkVersion"
 
     genson = "$gensonGroup:$gensonAf:$gensonVersion"
 
