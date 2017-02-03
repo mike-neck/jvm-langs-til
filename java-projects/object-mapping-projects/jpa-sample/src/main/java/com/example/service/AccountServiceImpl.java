@@ -37,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account create(String name, String password) {
+    public Account signInAsNewAccount(String name, String password) {
         final LocalDateTime now = LocalDateTime.now(ASIA_TOKYO);
         final Account account = new Account(name, password, now);
         return repo.save(account);

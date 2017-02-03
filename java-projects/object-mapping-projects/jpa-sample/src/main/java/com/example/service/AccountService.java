@@ -21,7 +21,7 @@ import java.util.Optional;
 
 public interface AccountService {
 
-    Account create(String name, String password);
+    Account signInAsNewAccount(String name, String password);
 
     Optional<Account> findById(Long id);
 }

@@ -24,6 +24,10 @@ public interface AccountRepository {
 
     Account save(Account account);
 
+    List<Account> save(Account... accounts);
+
+    List<Account> save(List<Account> accounts);
+
     List<Account> findAll();
 
     Optional<Account> findById(Long id);

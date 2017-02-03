@@ -17,11 +17,18 @@ package com.example.repository;
 
 import com.example.entity.Account;
 import com.google.inject.persist.Transactional;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class AccountRepositoryImpl implements AccountRepository {
 
@@ -38,6 +45,24 @@ public class AccountRepositoryImpl implements AccountRepository {
         em.persist(account);
         em.flush();
         return account;
+    }
+
+    @Contract("null -> fail")
+    @NotNull
+    @Override
+    public List<Account> save(@NotNull Account... accounts) {
+        Objects.requireNonNull(accounts);
+        return save(Arrays.asList(accounts));
+    }
+
+    @Contract("null -> fail")
+    @NotNull
+    @Transactional
+    @Override
+    public List<Account> save(@NotNull List<Account> accounts) {
+        accounts.forEach(em::persist);
+        em.flush();
+        return accounts;
     }
 
     @Override

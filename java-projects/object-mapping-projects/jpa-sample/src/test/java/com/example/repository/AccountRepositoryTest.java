@@ -51,7 +51,7 @@ public class AccountRepositoryTest {
 
     @Test
     void testSave() {
-        final Account account = service.create("うさぎさん", "usagisan");
+        final Account account = service.signInAsNewAccount("うさぎさん", "usagisan");
         assertNotNull(account.getId());
         final Optional<Account> found = service.findById(account.getId());
         assertTrue(found.isPresent());
