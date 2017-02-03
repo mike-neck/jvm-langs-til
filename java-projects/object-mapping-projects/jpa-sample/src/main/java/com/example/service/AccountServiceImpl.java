@@ -29,26 +29,20 @@ public class AccountServiceImpl implements AccountService {
 
     private static final ZoneId ASIA_TOKYO = ZoneId.of("Asia/Tokyo");
 
-    private final EntityManager em;
     private final AccountRepository repo;
 
     @Inject
-    public AccountServiceImpl(EntityManager em, AccountRepository repo) {
-        this.em = em;
+    public AccountServiceImpl(AccountRepository repo) {
         this.repo = repo;
     }
 
-    @Transactional
     @Override
     public Account create(String name, String password) {
         final LocalDateTime now = LocalDateTime.now(ASIA_TOKYO);
         final Account account = new Account(name, password, now);
-        final Account save = repo.save(account);
-        em.flush();
-        return save;
+        return repo.save(account);
     }
 
-    @Transactional
     @Override
     public Optional<Account> findById(Long id) {
         return repo.findById(id);

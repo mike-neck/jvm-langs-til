@@ -25,7 +25,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AccountRepositoryTest {
 
@@ -45,9 +50,14 @@ public class AccountRepositoryTest {
     }
 
     @Test
-    void test() {
+    void testSave() {
         final Account account = service.create("うさぎさん", "usagisan");
-        System.out.println(account);
         assertNotNull(account.getId());
+        final Optional<Account> found = service.findById(account.getId());
+        assertTrue(found.isPresent());
+        found.ifPresent(a -> assertEquals(account, a));
+        if (!found.isPresent()) {
+            fail("expected Account can be found by id[" + account.getId() + "], but not found.");
+        }
     }
 }

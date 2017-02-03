@@ -16,6 +16,7 @@
 package com.example.repository;
 
 import com.example.entity.Account;
+import com.google.inject.persist.Transactional;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -31,9 +32,11 @@ public class AccountRepositoryImpl implements AccountRepository {
         this.em = em;
     }
 
+    @Transactional
     @Override
     public Account save(Account account) {
         em.persist(account);
+        em.flush();
         return account;
     }
 
@@ -43,6 +46,7 @@ public class AccountRepositoryImpl implements AccountRepository {
                 .getResultList();
     }
 
+    @Transactional
     @Override
     public Optional<Account> findById(Long id) {
         final Account account = em.find(Account.class, id);
