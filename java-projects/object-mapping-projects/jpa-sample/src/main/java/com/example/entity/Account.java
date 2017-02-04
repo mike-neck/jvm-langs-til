@@ -16,32 +16,22 @@
 package com.example.entity;
 
 import com.example.converter.LocalDateTimeConverter;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = { "privileges" })
+@ToString(exclude = { "privileges" })
 @Entity
 @Table(name = "account")
 public class Account implements Serializable {
@@ -67,9 +57,30 @@ public class Account implements Serializable {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Authority> privileges = new HashSet<>();
+
     public Account(String name, String password, LocalDateTime createdAt) {
         this.name = name;
         this.password = password;
         this.createdAt = createdAt;
+    }
+
+    public void addPrivilege(Team team, Privilege p) {
+        addPrivilege(new Authority(this, team, p));
+    }
+
+    public void addPrivilege(Authority authority) {
+        privileges.add(authority);
+    }
+
+    public void addPrivileges(Authority... authorities) {
+        if (authorities != null) {
+            addPrivileges(Arrays.asList(authorities));
+        }
+    }
+
+    public void addPrivileges(Collection<Authority> authorities) {
+        privileges.addAll(authorities);
     }
 }

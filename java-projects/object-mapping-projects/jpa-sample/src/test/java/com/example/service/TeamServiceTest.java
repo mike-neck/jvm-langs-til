@@ -18,6 +18,7 @@ package com.example.service;
 import com.example.AppTest;
 import com.example.TestModule;
 import com.example.entity.Account;
+import com.example.exception.BadRequestException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,10 +27,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static com.example.entity.Privilege.PRIVATE_EDIT;
+import static com.example.entity.Privilege.PRIVATE_REFER;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TeamServiceTest {
 
@@ -52,13 +52,19 @@ public class TeamServiceTest {
 
     @Test
     void testSave() {
-        final Account account = service.signInAsNewAccount(teamId, "うさぎさん", "usagisan");
+        final Account account = service.signInAsNewAccount(teamId, "うさぎさん", "usagisan", PRIVATE_REFER, PRIVATE_EDIT);
         assertNotNull(account.getId());
-        final Optional<Account> found = service.findById(account.getId());
+        final Optional<Account> found = service.findAccountById(account.getId());
         assertTrue(found.isPresent());
         found.ifPresent(a -> assertEquals(account, a));
         if (!found.isPresent()) {
             fail("expected Account can be found by id[" + account.getId() + "], but not found.");
         }
+    }
+
+    @Test
+    void testSavingNewAccountWithoutPrivilegesMakesException() {
+        assertThrows(BadRequestException.class, () ->
+                service.signInAsNewAccount(teamId, "新しいアカウント", "password"));
     }
 }

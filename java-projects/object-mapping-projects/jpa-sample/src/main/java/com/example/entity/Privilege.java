@@ -13,19 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example.entity;
 
-import com.example.entity.Account;
-import com.example.entity.Privilege;
-import com.example.entity.Team;
+public enum Privilege {
 
-import java.util.Optional;
+    PRIVATE_EDIT    ( 10)
+    , PRIVATE_REFER ( 20)
 
-public interface TeamService {
+    , MEMBER_EDIT   ( 30)
+    , MEMBER_REFER  ( 40)
 
-    Team createNewTeam(String name);
+    , TEAM_EDIT     ( 50)
+    , TEAM_REFER    ( 60)
 
-    Account signInAsNewAccount(Long teamId, String name, String password, Privilege... privileges);
+    , SYSTEM_EDIT   (200)
+    , SYSTEM_REFER  (300)
 
-    Optional<Account> findAccountById(Long id);
+    ;
+
+    private final int code;
+
+    Privilege(int code) {
+        this.code = code;
+    }
+
+    public int getCode() {
+        return code;
+    }
 }

@@ -13,19 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example.exception.type;
 
-import com.example.entity.Account;
-import com.example.entity.Privilege;
-import com.example.entity.Team;
+public enum BadRequest {
 
-import java.util.Optional;
+    INVALID_VALUE("invalid value: %s")
+    , INVALID_NUMBER_OF_PARAMETERS("invalid number of parameters: %s")
 
-public interface TeamService {
+    ;
 
-    Team createNewTeam(String name);
+    private final String message;
 
-    Account signInAsNewAccount(Long teamId, String name, String password, Privilege... privileges);
+    BadRequest(String message) {
+        this.message = message;
+    }
 
-    Optional<Account> findAccountById(Long id);
+    public String getMessage() {
+        return message;
+    }
+
+    public String getMessage(Object value) {
+        return String.format(message, value);
+    }
 }

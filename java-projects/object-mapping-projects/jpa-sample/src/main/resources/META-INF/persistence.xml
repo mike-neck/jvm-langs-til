@@ -4,6 +4,7 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>com.example.entity.Account</class>
+        <class>com.example.entity.Authority</class>
         <class>com.example.entity.SystemTimeZone</class>
         <class>com.example.entity.Team</class>
         <class>com.example.entity.Task</class>
