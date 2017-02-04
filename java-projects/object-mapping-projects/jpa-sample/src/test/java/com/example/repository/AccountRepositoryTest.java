@@ -18,7 +18,7 @@ package com.example.repository;
 import com.example.AppTest;
 import com.example.TestModule;
 import com.example.entity.Account;
-import com.example.service.AccountService;
+import com.example.service.TeamService;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,7 +36,8 @@ public class AccountRepositoryTest {
 
     private static Injector injector;
 
-    private AccountService service;
+    private TeamService service;
+    private Long teamId;
 
     @BeforeAll
     public static void prepareInjector() {
@@ -46,12 +47,13 @@ public class AccountRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        service = injector.getInstance(AccountService.class);
+        service = injector.getInstance(TeamService.class);
+        teamId = service.createNewTeam("名古屋").getId();
     }
 
     @Test
     void testSave() {
-        final Account account = service.signInAsNewAccount("うさぎさん", "usagisan");
+        final Account account = service.signInAsNewAccount(teamId, "うさぎさん", "usagisan");
         assertNotNull(account.getId());
         final Optional<Account> found = service.findById(account.getId());
         assertTrue(found.isPresent());

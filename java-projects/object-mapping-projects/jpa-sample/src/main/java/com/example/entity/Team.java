@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,44 +32,51 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "account")
-public class Account implements Serializable {
-
-    @SuppressWarnings("LongLiteralEndingWithLowercaseL")
-    private static final long serialVersionUID = -3655881587571904884l;
+@Table(name = "team")
+public class Team {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 180)
+    @Column(nullable = false, length = 80)
     private String name;
 
-    @Column(nullable = false, length = 511)
-    private String password;
+    @ManyToMany
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "team_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "account_id", nullable = false)
+    )
+    private Set<Account> members;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Convert(converter = LocalDateTimeConverter.class)
-    @Column(name = "created_at", nullable = false)
+    @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "members")
-    private Set<Team> belongsTo;
-
-    public Account(String name, String password, LocalDateTime createdAt, Team belongsTo) {
+    public Team(String name, LocalDateTime createdAt) {
         this.name = name;
-        this.password = password;
+        this.members = new HashSet<>();
         this.createdAt = createdAt;
-        this.belongsTo = new HashSet<>();
-        this.belongsTo.add(belongsTo);
+    }
+
+    public void addMember(Account account) {
+        members.add(account);
+    }
+
+    public void removeMember(Account account) {
+        members.remove(account);
+    }
+
+    public boolean contains(Account account) {
+        return members.contains(account);
     }
 }

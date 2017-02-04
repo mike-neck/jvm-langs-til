@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example.repository;
 
-import com.example.entity.Account;
+import javax.inject.Provider;
+import java.time.ZoneId;
 
-import java.util.Optional;
+public interface SystemTimeZoneRepository extends Provider<ZoneId> {
 
-public interface AccountService {
-
-    Account signInAsNewAccount(String name, String password);
-
-    Optional<Account> findById(Long id);
+    ZoneId getSystemTimeZone();
 }

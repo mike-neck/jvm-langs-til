@@ -13,23 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.entity;
 
-import com.example.modules.RepositoryModule;
-import com.example.modules.ServiceModule;
-import com.example.repository.SystemTimeZoneRepository;
-import com.google.inject.AbstractModule;
-import com.google.inject.persist.jpa.JpaPersistModule;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.ZoneId;
 
-public class TestModule extends AbstractModule {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "time_zone")
+public class SystemTimeZone {
 
-    @Override
-    protected void configure() {
-        install(new JpaPersistModule("jpa-sample"));
-        bind(ZoneId.class).toProvider(SystemTimeZoneRepository.class);
-        install(new RepositoryModule());
-        install(new ServiceModule());
+    @Id
+    @Column(length = 128)
+    private String timeZone;
+
+    public ZoneId getZoneId() {
+        return ZoneId.of(timeZone);
     }
 }

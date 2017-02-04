@@ -23,12 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class AccountRepositoryImpl implements AccountRepository {
 
@@ -71,7 +68,6 @@ public class AccountRepositoryImpl implements AccountRepository {
                 .getResultList();
     }
 
-    @Transactional
     @Override
     public Optional<Account> findById(Long id) {
         final Account account = em.find(Account.class, id);

@@ -13,23 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.exception;
 
-import com.example.modules.RepositoryModule;
-import com.example.modules.ServiceModule;
-import com.example.repository.SystemTimeZoneRepository;
-import com.google.inject.AbstractModule;
-import com.google.inject.persist.jpa.JpaPersistModule;
+public class NotFoundException extends RuntimeException {
 
-import java.time.ZoneId;
-
-public class TestModule extends AbstractModule {
-
-    @Override
-    protected void configure() {
-        install(new JpaPersistModule("jpa-sample"));
-        bind(ZoneId.class).toProvider(SystemTimeZoneRepository.class);
-        install(new RepositoryModule());
-        install(new ServiceModule());
+    public NotFoundException(Class<?> klass, Object id) {
+        super("Resource [object: " + klass.getSimpleName() + ", id:" + id + "] not found.");
     }
 }
