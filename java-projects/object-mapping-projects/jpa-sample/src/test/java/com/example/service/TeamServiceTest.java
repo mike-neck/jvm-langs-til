@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.repository;
+package com.example.service;
 
 import com.example.AppTest;
 import com.example.TestModule;
 import com.example.entity.Account;
-import com.example.service.TeamService;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class AccountRepositoryTest {
+public class TeamServiceTest {
 
     private static Injector injector;
 
