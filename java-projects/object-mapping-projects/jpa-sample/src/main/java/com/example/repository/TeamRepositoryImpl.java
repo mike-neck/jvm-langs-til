@@ -17,7 +17,6 @@ package com.example.repository;
 
 import com.example.entity.Team;
 import com.example.exception.NotFoundException;
-import com.google.inject.persist.Transactional;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Optional;
 
@@ -40,7 +38,6 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @NotNull
     @Contract("null -> fail")
-    @Transactional
     @Override
     public Team save(@NotNull @NonNull Team team) {
         em.persist(team);
@@ -65,7 +62,6 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @NotNull
     @Contract("null -> fail")
-    @Transactional
     @Override
     public Team update(@NotNull @NonNull Team team) {
         final Team t = em.find(Team.class, team.getId());

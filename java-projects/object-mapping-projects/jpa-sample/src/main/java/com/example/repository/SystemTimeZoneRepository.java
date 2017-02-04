@@ -15,10 +15,13 @@
  */
 package com.example.repository;
 
-import javax.inject.Provider;
-import java.time.ZoneId;
+import com.example.entity.SystemTimeZone;
 
-public interface SystemTimeZoneRepository extends Provider<ZoneId> {
+import java.util.Optional;
 
-    ZoneId getSystemTimeZone();
+public interface SystemTimeZoneRepository {
+
+    Optional<SystemTimeZone> findByZoneId(String zoneId);
+
+    SystemTimeZone save(SystemTimeZone zone);
 }

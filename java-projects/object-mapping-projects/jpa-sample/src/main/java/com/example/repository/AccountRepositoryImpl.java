@@ -16,7 +16,6 @@
 package com.example.repository;
 
 import com.example.entity.Account;
-import com.google.inject.persist.Transactional;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +35,6 @@ public class AccountRepositoryImpl implements AccountRepository {
         this.em = em;
     }
 
-    @Transactional
     @Override
     public Account save(Account account) {
         em.persist(account);
@@ -54,7 +52,6 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Contract("null -> fail")
     @NotNull
-    @Transactional
     @Override
     public List<Account> save(@NotNull List<Account> accounts) {
         accounts.forEach(em::persist);

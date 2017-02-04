@@ -16,18 +16,17 @@
 package com.example.repository;
 
 import com.example.entity.SystemTimeZone;
-import com.google.inject.persist.Transactional;
+import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
-import java.time.ZoneId;
+import java.util.Optional;
 
 @Singleton
 public class SystemTimeZoneRepositoryImpl implements SystemTimeZoneRepository {
-
-    private static final String DEFAULT_TIME_ZONE = "Asia/Tokyo";
 
     private final EntityManager em;
 
@@ -36,24 +35,16 @@ public class SystemTimeZoneRepositoryImpl implements SystemTimeZoneRepository {
         this.em = em;
     }
 
-    @NotNull
-    @Transactional
     @Override
-    public ZoneId getSystemTimeZone() {
-        final SystemTimeZone zone = em.find(SystemTimeZone.class, DEFAULT_TIME_ZONE);
-        if (zone != null) {
-            return zone.getZoneId();
-        } else {
-            final SystemTimeZone stz = new SystemTimeZone(DEFAULT_TIME_ZONE);
-            em.persist(stz);
-            em.flush();
-            return stz.getZoneId();
-        }
+    public SystemTimeZone save(SystemTimeZone zone) {
+        em.persist(zone);
+        return zone;
     }
 
     @NotNull
+    @Contract("null -> fail")
     @Override
-    public ZoneId get() {
-        return getSystemTimeZone();
+    public Optional<SystemTimeZone> findByZoneId(@NotNull @NonNull String zoneId) {
+        return Optional.ofNullable(em.find(SystemTimeZone.class, zoneId));
     }
 }

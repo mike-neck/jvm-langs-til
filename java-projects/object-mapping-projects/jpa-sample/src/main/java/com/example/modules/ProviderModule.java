@@ -13,21 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.modules;
 
-import com.example.modules.ProviderModule;
-import com.example.modules.RepositoryModule;
-import com.example.modules.ServiceModule;
+import com.example.service.SystemTimeZoneService;
 import com.google.inject.AbstractModule;
-import com.google.inject.persist.jpa.JpaPersistModule;
 
-public class TestModule extends AbstractModule {
+import java.time.ZoneId;
+
+public class ProviderModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        install(new JpaPersistModule("jpa-sample"));
-        install(new RepositoryModule());
-        install(new ProviderModule());
-        install(new ServiceModule());
+        bind(ZoneId.class).toProvider(SystemTimeZoneService.class);
     }
 }

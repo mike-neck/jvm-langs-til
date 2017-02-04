@@ -15,9 +15,22 @@
  */
 package com.example.exception;
 
+import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
+
 public class NotFoundException extends RuntimeException {
 
     public NotFoundException(Class<?> klass, Object id) {
         super("Resource [object: " + klass.getSimpleName() + ", id:" + id + "] not found.");
+    }
+
+    @SuppressWarnings("Contract")
+    @NotNull
+    @Contract("null,_->fail;_,null->fail")
+    public static Supplier<NotFoundException> notFound(@NotNull @NonNull Class<?> klass, @NotNull @NonNull Object id) {
+        return () -> new NotFoundException(klass, id);
     }
 }
