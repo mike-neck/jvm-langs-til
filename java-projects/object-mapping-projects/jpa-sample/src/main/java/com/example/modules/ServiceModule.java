@@ -15,6 +15,8 @@
  */
 package com.example.modules;
 
+import com.example.service.SystemTimeZoneService;
+import com.example.service.SystemTimeZoneServiceImpl;
 import com.example.service.TeamService;
 import com.example.service.TeamServiceImpl;
 import com.google.inject.AbstractModule;
@@ -22,6 +24,7 @@ import com.google.inject.AbstractModule;
 public class ServiceModule extends AbstractModule {
     @Override
     protected void configure() {
+        bind(SystemTimeZoneService.class).to(SystemTimeZoneServiceImpl.class);
         bind(TeamService.class).to(TeamServiceImpl.class);
     }
 }

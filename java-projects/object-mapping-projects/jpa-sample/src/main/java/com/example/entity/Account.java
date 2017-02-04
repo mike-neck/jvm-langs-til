@@ -33,6 +33,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -52,6 +53,9 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    private Long version;
+
     @Column(nullable = false, length = 180)
     private String name;
 
@@ -63,14 +67,9 @@ public class Account implements Serializable {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "members")
-    private Set<Team> belongsTo;
-
-    public Account(String name, String password, LocalDateTime createdAt, Team belongsTo) {
+    public Account(String name, String password, LocalDateTime createdAt) {
         this.name = name;
         this.password = password;
         this.createdAt = createdAt;
-        this.belongsTo = new HashSet<>();
-        this.belongsTo.add(belongsTo);
     }
 }

@@ -20,6 +20,7 @@ import com.example.entity.Team;
 import com.example.exception.NotFoundException;
 import com.example.repository.AccountRepository;
 import com.example.repository.TeamRepository;
+import com.google.inject.persist.Transactional;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import static com.example.exception.NotFoundException.notFound;
 
 public class TeamServiceImpl implements TeamService {
 
@@ -43,18 +46,20 @@ public class TeamServiceImpl implements TeamService {
         this.zoneId = zoneId;
     }
 
+    @Transactional
     @Override
     public Team createNewTeam(String name) {
         final Team team = new Team(name, LocalDateTime.now(zoneId));
         return teamRepository.save(team);
     }
 
+    @Transactional
     @Override
     public Account signInAsNewAccount(Long teamId, String name, String password) {
         final LocalDateTime now = LocalDateTime.now(zoneId);
         final Team team = teamRepository.findByIdForUpdate(teamId)
                 .orElseThrow(teamNotFound(teamId));
-        final Account account = new Account(name, password, now, team);
+        final Account account = new Account(name, password, now);
         team.addMember(account);
         teamRepository.update(team);
         return account;
@@ -69,6 +74,6 @@ public class TeamServiceImpl implements TeamService {
     @NotNull
     @Contract("null -> fail")
     private static Supplier<NotFoundException> teamNotFound(@NotNull @NonNull Long teamId) {
-        return () -> new NotFoundException(Team.class, teamId);
+        return notFound(Team.class, teamId);
     }
 }

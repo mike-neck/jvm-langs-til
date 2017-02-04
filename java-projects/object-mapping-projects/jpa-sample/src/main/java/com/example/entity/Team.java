@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -32,6 +33,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,15 +49,18 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    private Long version;
+
     @Column(nullable = false, length = 80)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             joinColumns = @JoinColumn(name = "team_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "account_id", nullable = false)
     )
-    private Set<Account> members;
+    private Set<Account> members = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Convert(converter = LocalDateTimeConverter.class)
@@ -64,7 +69,6 @@ public class Team {
 
     public Team(String name, LocalDateTime createdAt) {
         this.name = name;
-        this.members = new HashSet<>();
         this.createdAt = createdAt;
     }
 
