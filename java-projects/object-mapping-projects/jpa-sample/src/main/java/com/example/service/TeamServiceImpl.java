@@ -62,11 +62,11 @@ public class TeamServiceImpl implements TeamService {
 
     @Transactional
     @Override
-    public Account signInAsNewAccount(Long teamId, String name, String password, Privilege... privileges) {
+    public Account signInAsNewAccount(Long teamId, String name, String email, String password, Privilege... 
+            privileges) {
         final LocalDateTime now = LocalDateTime.now(zoneId);
 
-
-        final Account account = new Account(name, password, now);
+        final Account account = new Account(name, email, password, now);
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(teamNotFound(teamId));
         final Set<Authority> authorities = Optional.ofNullable(privileges)

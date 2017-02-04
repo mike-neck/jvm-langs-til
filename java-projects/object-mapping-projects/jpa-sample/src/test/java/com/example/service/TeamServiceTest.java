@@ -52,7 +52,8 @@ public class TeamServiceTest {
 
     @Test
     void testSave() {
-        final Account account = service.signInAsNewAccount(teamId, "うさぎさん", "usagisan", PRIVATE_REFER, PRIVATE_EDIT);
+        final Account account = service.signInAsNewAccount(teamId, "うさぎさん", "test1@example.com", "usagisan", 
+                PRIVATE_REFER, PRIVATE_EDIT);
         assertNotNull(account.getId());
         final Optional<Account> found = service.findAccountById(account.getId());
         assertTrue(found.isPresent());
@@ -65,6 +66,6 @@ public class TeamServiceTest {
     @Test
     void testSavingNewAccountWithoutPrivilegesMakesException() {
         assertThrows(BadRequestException.class, () ->
-                service.signInAsNewAccount(teamId, "新しいアカウント", "password"));
+                service.signInAsNewAccount(teamId, "新しいアカウント", "test1@example.com", "password"));
     }
 }

@@ -25,7 +25,7 @@ public interface TeamService {
 
     Team createNewTeam(String name);
 
-    Account signInAsNewAccount(Long teamId, String name, String password, Privilege... privileges);
+    Account signInAsNewAccount(Long teamId, String name, String email, String password, Privilege... privileges);
 
     Optional<Account> findAccountById(Long id);
 }

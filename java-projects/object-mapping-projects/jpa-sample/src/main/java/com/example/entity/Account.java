@@ -49,6 +49,9 @@ public class Account implements Serializable {
     @Column(nullable = false, length = 180)
     private String name;
 
+    @Column(nullable = false, length = 255, unique = true)
+    private String email;
+
     @Column(nullable = false, length = 511)
     private String password;
 
@@ -60,8 +63,9 @@ public class Account implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Authority> privileges = new HashSet<>();
 
-    public Account(String name, String password, LocalDateTime createdAt) {
+    public Account(String name, String email, String password, LocalDateTime createdAt) {
         this.name = name;
+        this.email = email;
         this.password = password;
         this.createdAt = createdAt;
     }
