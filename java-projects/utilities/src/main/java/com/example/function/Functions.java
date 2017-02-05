@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.function;
 
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
@@ -22,10 +22,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class Functions {
 
     public static class ExecutionException extends RuntimeException {
+
+        @SuppressWarnings("LongLiteralEndingWithLowercaseL")
+        private static final long serialVersionUID = 236710244125995017l;
+
         public ExecutionException() {
             super();
         }
@@ -68,6 +73,10 @@ public final class Functions {
     @FunctionalInterface
     public interface ExFunction<A, B> {
         B apply(A a) throws Throwable;
+        @NotNull
+        default <C> ExFunction<A, C> then(@NotNull @NonNull ExFunction<B, C> f) {
+            return a -> f.apply(this.apply(a));
+        }
     }
 
     @NotNull
@@ -77,6 +86,28 @@ public final class Functions {
         return a -> {
             try {
                 return f.apply(a);
+            } catch (Throwable throwable) {
+                throw new ExecutionException(throwable);
+            }
+        };
+    }
+
+    @FunctionalInterface
+    public interface ExSupplier<A> {
+        A get() throws Throwable;
+        @NotNull
+        default <B> ExSupplier<B> then(@NotNull @NonNull ExFunction<A, B> f) {
+            return () -> f.apply(this.get());
+        }
+    }
+
+    @SuppressWarnings("Contract")
+    @NotNull
+    @Contract("null -> fail")
+    public static <A> Supplier<A> supplier(@NotNull @NonNull ExSupplier<A> es) {
+        return () -> {
+            try {
+                return es.get();
             } catch (Throwable throwable) {
                 throw new ExecutionException(throwable);
             }

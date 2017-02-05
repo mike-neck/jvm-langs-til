@@ -26,7 +26,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
-import static com.example.Functions.consumer;
+import static com.example.function.Functions.consumer;
 
 public class CsvBeanWriter implements Closeable {
 

@@ -27,7 +27,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.util.Optional;
 
-import static com.example.Functions.function;
+import static com.example.function.Functions.function;
 
 public final class Resource {
 

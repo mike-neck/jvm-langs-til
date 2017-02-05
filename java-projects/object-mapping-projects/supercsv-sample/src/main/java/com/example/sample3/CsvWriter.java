@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.Functions.consumer;
+import static com.example.function.Functions.consumer;
 import static java.util.stream.Collectors.toList;
 
 public class CsvWriter<T> {

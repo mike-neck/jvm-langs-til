@@ -24,7 +24,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.Functions.consumer;
+import static com.example.function.Functions.consumer;
 
 public class Main {
 
