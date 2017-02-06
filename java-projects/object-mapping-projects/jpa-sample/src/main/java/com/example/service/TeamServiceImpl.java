@@ -66,7 +66,7 @@ public class TeamServiceImpl implements TeamService {
             privileges) {
         final LocalDateTime now = LocalDateTime.now(zoneId);
 
-        final Account account = new Account(name, email, password, now);
+        final Account account = new Account(email, now);
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(teamNotFound(teamId));
         final Set<Authority> authorities = Optional.ofNullable(privileges)

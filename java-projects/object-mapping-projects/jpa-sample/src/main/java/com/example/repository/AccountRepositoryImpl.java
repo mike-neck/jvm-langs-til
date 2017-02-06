@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +29,7 @@ import java.util.Optional;
 
 public class AccountRepositoryImpl implements AccountRepository {
 
+    private static final Class<Account> ACCOUNT = Account.class;
     private final EntityManager em;
 
     @Inject
@@ -67,13 +69,21 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Optional<Account> findById(Long id) {
-        final Account account = em.find(Account.class, id);
+        final Account account = em.find(ACCOUNT, id);
+        return Optional.ofNullable(account);
+    }
+
+    @Override
+    public Optional<Account> findByEmail(String email) {
+        final TypedQuery<Account> query = em.createQuery("select a from Account as a where a.email = :email", ACCOUNT);
+        final Account account = query.setParameter("email", email)
+                .getSingleResult();
         return Optional.ofNullable(account);
     }
 
     @Override
     public Optional<Account> findByUsername(String username) {
-        final Account account = em.createQuery("select a from Account as a where a.name = :username", Account.class)
+        final Account account = em.createQuery("select a from Account as a where a.name = :username", ACCOUNT)
                 .setParameter("username", username)
                 .getSingleResult();
         return Optional.ofNullable(account);

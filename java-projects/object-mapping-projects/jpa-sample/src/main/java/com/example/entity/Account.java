@@ -30,8 +30,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = { "privileges" })
-@ToString(exclude = { "privileges" })
+@EqualsAndHashCode(exclude = { "privileges", "name", "password" })
+@ToString(exclude = { "privileges", "name", "password" })
 @Entity
 @Table(name = "account")
 public class Account implements Serializable {
@@ -46,14 +46,14 @@ public class Account implements Serializable {
     @Version
     private Long version;
 
-    @Column(nullable = false, length = 180)
-    private String name;
+    @OneToOne(cascade = CascadeType.ALL)
+    private AccountName name;
 
-    @Column(nullable = false, length = 255, unique = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    private AccountPassword password;
+
+    @Column(nullable = false, unique = true)
     private String email;
-
-    @Column(nullable = false, length = 511)
-    private String password;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Convert(converter = LocalDateTimeConverter.class)
@@ -63,10 +63,8 @@ public class Account implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Authority> privileges = new HashSet<>();
 
-    public Account(String name, String email, String password, LocalDateTime createdAt) {
-        this.name = name;
+    public Account(String email, LocalDateTime createdAt) {
         this.email = email;
-        this.password = password;
         this.createdAt = createdAt;
     }
 

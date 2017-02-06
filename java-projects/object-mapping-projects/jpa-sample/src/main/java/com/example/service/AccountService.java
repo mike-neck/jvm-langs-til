@@ -13,31 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.repository;
+package com.example.service;
 
-import com.example.entity.Account;
 import com.example.entity.Activation;
+import com.example.entity.Privilege;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface AccountRepository {
-
-    Account save(Account account);
-
-    List<Account> save(Account... accounts);
-
-    List<Account> save(List<Account> accounts);
-
-    List<Account> findAll();
-
-    Optional<Account> findById(Long id);
-
-    Optional<Account> findByEmail(String email);
-
-    Optional<Account> findByUsername(String username);
-
-    Account update(Account account);
-
-    void delete(Account account);
+public interface AccountService {
+    Activation inviteNewAccount(Long teamId, String email, Privilege... privileges);
 }

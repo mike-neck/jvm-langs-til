@@ -15,29 +15,13 @@
  */
 package com.example.repository;
 
-import com.example.entity.Account;
 import com.example.entity.Activation;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface AccountRepository {
+public interface ActivationRepository {
 
-    Account save(Account account);
+    Activation save(Activation activation);
 
-    List<Account> save(Account... accounts);
-
-    List<Account> save(List<Account> accounts);
-
-    List<Account> findAll();
-
-    Optional<Account> findById(Long id);
-
-    Optional<Account> findByEmail(String email);
-
-    Optional<Account> findByUsername(String username);
-
-    Account update(Account account);
-
-    void delete(Account account);
+    Optional<Activation> findNotExpiredActivationById(Long id);
 }

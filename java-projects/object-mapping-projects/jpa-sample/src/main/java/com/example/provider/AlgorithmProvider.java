@@ -13,22 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.modules;
+package com.example.provider;
 
-import com.example.provider.AlgorithmProvider;
-import com.example.provider.MessageDigestProvider;
-import com.example.service.SystemTimeZoneService;
-import com.google.inject.AbstractModule;
+import javax.inject.Provider;
 
-import java.security.MessageDigest;
-import java.time.ZoneId;
+public class AlgorithmProvider implements Provider<MessageDigestProvider.Algorithm> {
 
-public class ProviderModule extends AbstractModule {
+    private static final String ALGORITHM = "SHA-128";
 
     @Override
-    protected void configure() {
-        bind(ZoneId.class).toProvider(SystemTimeZoneService.class);
-        bind(MessageDigestProvider.Algorithm.class).toProvider(AlgorithmProvider.class);
-        bind(MessageDigest.class).toProvider(MessageDigestProvider.class);
+    public MessageDigestProvider.Algorithm get() {
+        return new MessageDigestProvider.Algorithm(ALGORITHM);
     }
 }

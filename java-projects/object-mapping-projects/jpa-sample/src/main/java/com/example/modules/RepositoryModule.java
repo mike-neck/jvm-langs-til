@@ -15,12 +15,7 @@
  */
 package com.example.modules;
 
-import com.example.repository.AccountRepository;
-import com.example.repository.AccountRepositoryImpl;
-import com.example.repository.SystemTimeZoneRepository;
-import com.example.repository.SystemTimeZoneRepositoryImpl;
-import com.example.repository.TeamRepository;
-import com.example.repository.TeamRepositoryImpl;
+import com.example.repository.*;
 import com.google.inject.AbstractModule;
 
 public class RepositoryModule extends AbstractModule {
@@ -30,5 +25,6 @@ public class RepositoryModule extends AbstractModule {
         bind(SystemTimeZoneRepository.class).to(SystemTimeZoneRepositoryImpl.class);
         bind(AccountRepository.class).to(AccountRepositoryImpl.class);
         bind(TeamRepository.class).to(TeamRepositoryImpl.class);
+        bind(ActivationRepository.class).to(ActivationRepositoryImpl.class);
     }
 }

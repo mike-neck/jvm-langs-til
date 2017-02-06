@@ -13,31 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.repository;
+package com.example.entity;
 
-import com.example.entity.Account;
-import com.example.entity.Activation;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.*;
 
-public interface AccountRepository {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "account_name")
+public class AccountName {
 
-    Account save(Account account);
+    @Id
+    @OneToOne
+    private Account account;
 
-    List<Account> save(Account... accounts);
+    @Version
+    private Long version;
 
-    List<Account> save(List<Account> accounts);
-
-    List<Account> findAll();
-
-    Optional<Account> findById(Long id);
-
-    Optional<Account> findByEmail(String email);
-
-    Optional<Account> findByUsername(String username);
-
-    Account update(Account account);
-
-    void delete(Account account);
+    @Column(length = 127, nullable = false)
+    private String name;
 }
