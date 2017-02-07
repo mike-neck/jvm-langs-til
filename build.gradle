@@ -45,6 +45,11 @@ ext {
 
     junit5 = "$junit5Group:$junit5Af:$junit5Version"
     junit5PluginJar = "$junit5PfGroup:$junit5PfAf:$junit5PfVersion:"
+
+    // Scala
+    scalaLib = "$scalaLangGroup:$scalaLibAf:$scalaVersion"
+    scalaTest = "$scalaTestGroup:$scalaTestAf212:$scalaTestVersion"
+    scalaJava8 = "$scalaLangModuleGroup:$scalaJava8CompatAf:$scalaJava8CompatVersion"
 }
 
 subprojects {

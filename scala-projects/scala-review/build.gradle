@@ -1,0 +1,12 @@
+apply plugin: 'scala'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile     scalaLib
+    compile     scalaJava8
+    testCompile scalaTest
+}
