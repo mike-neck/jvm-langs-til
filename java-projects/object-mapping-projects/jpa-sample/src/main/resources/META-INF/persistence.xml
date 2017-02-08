@@ -6,6 +6,7 @@
         <class>com.example.entity.Account</class>
         <class>com.example.entity.AccountPassword</class>
         <class>com.example.entity.AccountName</class>
+        <class>com.example.entity.Activation</class>
         <class>com.example.entity.Authority</class>
         <class>com.example.entity.SystemTimeZone</class>
         <class>com.example.entity.Team</class>
