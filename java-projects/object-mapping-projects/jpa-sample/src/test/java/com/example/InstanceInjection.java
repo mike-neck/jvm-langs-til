@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example;
 
-import com.example.entity.Account;
-import com.example.entity.Activation;
-import com.example.entity.Privilege;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface AccountService {
-    Account createNewAccount(String email);
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface InstanceInjection {
 
-    Activation inviteNewAccount(Long teamId, String email, Privilege... privileges);
+    Class<?> [] value();
 }

@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example.exception;
 
 import com.example.entity.Account;
-import com.example.entity.Activation;
-import com.example.entity.Privilege;
+import com.example.exception.type.BadRequest;
 
-public interface AccountService {
-    Account createNewAccount(String email);
+public class AccountAlreadyExistsException extends BadRequestException {
 
-    Activation inviteNewAccount(Long teamId, String email, Privilege... privileges);
+    @SuppressWarnings("LongLiteralEndingWithLowercaseL")
+    private static final long serialVersionUID = -3269962553332485879l;
+
+    public AccountAlreadyExistsException(String process, String email) {
+        super(Account.class, process, BadRequest.EMAIL_ALREADY_USED, email);
+    }
 }

@@ -15,16 +15,29 @@
  */
 package com.example;
 
-import com.google.inject.persist.PersistService;
+import com.google.inject.persist.Transactional;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.stream.Stream;
 
-@Singleton
-public class AppTest {
+public class DbCleaner {
+
+    private final EntityManager em;
 
     @Inject
-    public AppTest(PersistService service) {
-        service.start();
+    public DbCleaner(EntityManager em) {
+        this.em = em;
+    }
+
+    @Transactional
+    void runClean() throws IOException {
+        try(final Stream<String> stream = new BufferedReader(Resource.reader("delete-all.sql")).lines()) {
+            stream.map(em::createNativeQuery)
+                    .forEach(Query::executeUpdate);
+        }
     }
 }

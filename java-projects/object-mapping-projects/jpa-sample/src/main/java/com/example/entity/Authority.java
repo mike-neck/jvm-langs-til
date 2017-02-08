@@ -53,17 +53,9 @@ public class Authority implements Serializable {
     private Long id;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinTable(
-            joinColumns = @JoinColumn(name = "account_id")
-            , inverseJoinColumns = @JoinColumn(name = "authority_id")
-    )
     private Account account;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
-    @JoinTable(
-            joinColumns = @JoinColumn(name = "team_id")
-            , inverseJoinColumns = @JoinColumn(name = "authority_id")
-    )
     private Team team;
 
     @Enumerated(EnumType.STRING)

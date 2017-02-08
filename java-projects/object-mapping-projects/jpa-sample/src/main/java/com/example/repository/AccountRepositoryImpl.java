@@ -76,17 +76,25 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public Optional<Account> findByEmail(String email) {
         final TypedQuery<Account> query = em.createQuery("select a from Account as a where a.email = :email", ACCOUNT);
-        final Account account = query.setParameter("email", email)
-                .getSingleResult();
-        return Optional.ofNullable(account);
+        final List<Account> accounts = query.setParameter("email", email)
+                .getResultList();
+        return asOptional(accounts);
+    }
+
+    private static <T> Optional<T> asOptional(List<T> resultList) {
+        if (resultList.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(resultList.get(0));
+        }
     }
 
     @Override
     public Optional<Account> findByUsername(String username) {
-        final Account account = em.createQuery("select a from Account as a where a.name = :username", ACCOUNT)
+        final List<Account> accounts = em.createQuery("select a from Account as a where a.name = :username", ACCOUNT)
                 .setParameter("username", username)
-                .getSingleResult();
-        return Optional.ofNullable(account);
+                .getResultList();
+        return asOptional(accounts);
     }
 
     @Override

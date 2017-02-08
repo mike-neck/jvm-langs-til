@@ -20,6 +20,8 @@ public enum BadRequest {
     INVALID_VALUE("invalid value: %s")
     , INVALID_NUMBER_OF_PARAMETERS("invalid number of parameters: %s")
 
+    , EMAIL_ALREADY_USED("email already is used by existing account: %s")
+
     ;
 
     private final String message;

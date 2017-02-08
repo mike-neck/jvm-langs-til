@@ -19,11 +19,13 @@ import com.example.entity.Account;
 import com.example.entity.Activation;
 import com.example.entity.Privilege;
 import com.example.entity.Team;
+import com.example.exception.AccountAlreadyExistsException;
 import com.example.exception.BadRequestException;
 import com.example.exception.type.BadRequest;
 import com.example.repository.AccountRepository;
 import com.example.repository.ActivationRepository;
 import com.example.repository.TeamRepository;
+import com.google.inject.persist.Transactional;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -53,6 +55,16 @@ public class AccountServiceImpl implements AccountService {
         this.zoneId = zoneId;
     }
 
+    @Transactional
+    @Override
+    public Account createNewAccount(String email) {
+        accountRepository.findByEmail(email)
+                .ifPresent(a -> { throw new AccountAlreadyExistsException("createNewAccount", email); });
+        final Account account = new Account(email, LocalDateTime.now(zoneId));
+        return accountRepository.save(account);
+    }
+
+    @Transactional
     @Override
     public Activation inviteNewAccount(Long teamId, String email, Privilege... privileges) {
         if (privileges == null || privileges.length == 0) {

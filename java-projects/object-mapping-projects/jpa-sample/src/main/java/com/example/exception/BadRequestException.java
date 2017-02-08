@@ -26,9 +26,23 @@ public class BadRequestException extends RuntimeException {
     @SuppressWarnings("LongLiteralEndingWithLowercaseL")
     private static final long serialVersionUID = 6711961449032923461l;
 
+    private final String process;
+
+    private final BadRequest reason;
+
     public BadRequestException(Class<?> klass, String process, BadRequest reason, Object causeObj) {
         super("BadRequest at " + klass.getSimpleName() + " process: " + process + "/ Reason [" + reason.getMessage(
                 causeObj) + "]");
+        this.process = process;
+        this.reason = reason;
+    }
+
+    public String getProcess() {
+        return process;
+    }
+
+    public BadRequest getReason() {
+        return reason;
     }
 
     @NotNull
