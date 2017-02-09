@@ -16,16 +16,14 @@
 package com.example.service;
 
 import com.example.TestInitializer;
-import com.example.entity.Account;
+import com.example.entity.Activation;
 import com.example.exception.AccountAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith({TestInitializer.class})
 public class AccountServiceTest {
@@ -42,8 +40,10 @@ public class AccountServiceTest {
 
         @Test
         void creatingNewAccountWillBeSucceeded(AccountService service) {
-            final Account account = service.createNewAccount("test01@localhost");
-            assertNotNull(account);
+            final Activation activation = service.createNewAccount("test01@localhost");
+            assertNotNull(activation);
+            final String email = activation.getAccount().getEmail();
+            assertEquals("test01@localhost", email);
         }
 
         @Test

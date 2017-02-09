@@ -41,7 +41,7 @@ public class Activation {
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime expiration;
 
-    @Column(length = 32)
+    @Column(length = 64)
     private String token;
 
     @Temporal(TemporalType.TIMESTAMP)

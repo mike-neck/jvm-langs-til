@@ -15,12 +15,12 @@
  */
 package com.example.service;
 
-import com.example.entity.Account;
 import com.example.entity.Activation;
+import com.example.entity.ActivationTeam;
 import com.example.entity.Privilege;
 
 public interface AccountService {
-    Account createNewAccount(String email);
+    Activation createNewAccount(String email);
 
-    Activation inviteNewAccount(Long teamId, String email, Privilege... privileges);
+    ActivationTeam inviteNewAccount(Long teamId, String email, Privilege... privileges);
 }

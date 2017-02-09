@@ -54,16 +54,19 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public Account createNewAccount(String email) {
+    public Activation createNewAccount(String email) {
         accountRepository.findByEmail(email)
                 .ifPresent(a -> { throw new AccountAlreadyExistsException("createNewAccount", email); });
-        final Account account = new Account(email, LocalDateTime.now(zoneId));
-        return accountRepository.save(account);
+        final LocalDateTime now = LocalDateTime.now(zoneId);
+        final Account account = new Account(email, now);
+        accountRepository.save(account);
+        final Activation activation = new Activation(account, now, hashService.generateToken(email, now), now);
+        return activationRepository.save(activation);
     }
 
     @Transactional
     @Override
-    public Activation inviteNewAccount(Long teamId, String email, Privilege... privileges) {
+    public ActivationTeam inviteNewAccount(Long teamId, String email, Privilege... privileges) {
         if (privileges == null || privileges.length == 0) {
             throw new BadRequestException(AccountServiceImpl.class, "inviteNewAccount",
                     BadRequest.INVALID_NUMBER_OF_PARAMETERS,
@@ -77,10 +80,12 @@ public class AccountServiceImpl implements AccountService {
         final Optional<Account> accOpt = accountRepository.findByEmail(email);
 
         final Account account = accOpt.orElseGet(() -> new Account(email, now));
+        accountRepository.save(account);
         final Activation activation = new Activation(account, now.plusDays(7L),
-                hashService.generateToken(teamId, email, now), now);
-        final ActivationTeam activationTeam = new ActivationTeam(team, activation, ps, now);
+                hashService.generateToken(email, now), now);
         activationRepository.save(activation);
-        return activation;
+
+        final ActivationTeam activationTeam = new ActivationTeam(team, activation, ps, now);
+        return activationRepository.save(activationTeam);
     }
 }

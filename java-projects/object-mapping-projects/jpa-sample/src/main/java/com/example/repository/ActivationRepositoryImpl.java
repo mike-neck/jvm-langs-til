@@ -16,6 +16,7 @@
 package com.example.repository;
 
 import com.example.entity.Activation;
+import com.example.entity.ActivationTeam;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -58,5 +59,13 @@ public class ActivationRepositoryImpl implements ActivationRepository {
                 .setParameter("now", now)
                 .getSingleResult();
         return Optional.ofNullable(activation);
+    }
+
+    @NotNull
+    @Contract("null -> fail")
+    @Override
+    public ActivationTeam save(@NotNull @NonNull ActivationTeam activationTeam) {
+        em.persist(activationTeam);
+        return activationTeam;
     }
 }

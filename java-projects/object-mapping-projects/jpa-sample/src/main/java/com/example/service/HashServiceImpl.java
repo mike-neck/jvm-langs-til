@@ -38,10 +38,9 @@ public class HashServiceImpl implements HashService {
     }
 
     @Override
-    public String generateToken(@NotNull @NonNull Long teamId, @NotNull @NonNull String email,
+    public String generateToken(@NotNull @NonNull String email,
             @NotNull @NonNull LocalDateTime time) {
         final MessageDigest md = provider.get();
-        md.update(longToBytes(teamId));
         md.update(email.getBytes());
         final ZoneOffset offset = zoneId.getRules().getOffset(time);
         md.update(longToBytes(time.toEpochSecond(offset)));

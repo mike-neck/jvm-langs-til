@@ -16,6 +16,7 @@
 package com.example.repository;
 
 import com.example.entity.Activation;
+import com.example.entity.ActivationTeam;
 
 import java.util.Optional;
 
@@ -24,4 +25,6 @@ public interface ActivationRepository {
     Activation save(Activation activation);
 
     Optional<Activation> findNotExpiredActivationById(Long id);
+
+    ActivationTeam save(ActivationTeam activationTeam);
 }

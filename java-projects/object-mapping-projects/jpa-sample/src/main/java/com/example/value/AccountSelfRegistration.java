@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.provider;
+package com.example.value;
 
-import javax.inject.Provider;
+import com.example.entity.Activation;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-public class AlgorithmProvider implements Provider<MessageDigestProvider.Algorithm> {
+@Data
+@RequiredArgsConstructor
+public class AccountSelfRegistration {
 
-    private static final String ALGORITHM = "SHA-256";
-
-    @Override
-    public MessageDigestProvider.Algorithm get() {
-        return new MessageDigestProvider.Algorithm(ALGORITHM);
-    }
+    private final Activation activation;
 }
