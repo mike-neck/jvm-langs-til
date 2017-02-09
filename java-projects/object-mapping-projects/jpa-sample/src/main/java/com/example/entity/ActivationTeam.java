@@ -30,8 +30,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "activation_by_team")
-public class ActivationByTeam implements Serializable {
+@Table(name = "activation_team")
+public class ActivationTeam implements Serializable {
 
     @SuppressWarnings("LongLiteralEndingWithLowercaseL")
     private static final long serialVersionUID = -4196912682665414114l;
@@ -49,7 +49,11 @@ public class ActivationByTeam implements Serializable {
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Privilege.class)
     @Column(nullable = false, name = "privileges")
-    @JoinTable(name = "activation_privileges", joinColumns = @JoinColumn(name = "activation_id"))
+    @JoinTable(name = "activation_team_privilege"
+            , joinColumns = @JoinColumn(name = "activation_id")
+            , inverseJoinColumns = @JoinColumn(name = "privilege_id")
+
+    )
     private Set<Privilege> privileges = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -57,7 +61,7 @@ public class ActivationByTeam implements Serializable {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public ActivationByTeam(Team team, Activation activation, Set<Privilege> privileges, LocalDateTime createdAt) {
+    public ActivationTeam(Team team, Activation activation, Set<Privilege> privileges, LocalDateTime createdAt) {
         this.team = team;
         this.activation = activation;
         this.privileges = privileges;

@@ -79,7 +79,7 @@ public class AccountServiceImpl implements AccountService {
         final Account account = accOpt.orElseGet(() -> new Account(email, now));
         final Activation activation = new Activation(account, now.plusDays(7L),
                 hashService.generateToken(teamId, email, now), now);
-        final ActivationByTeam activationByTeam = new ActivationByTeam(team, activation, ps, now);
+        final ActivationTeam activationTeam = new ActivationTeam(team, activation, ps, now);
         activationRepository.save(activation);
         return activation;
     }
