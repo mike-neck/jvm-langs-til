@@ -15,10 +15,7 @@
  */
 package com.example.service;
 
-import com.example.entity.Account;
-import com.example.entity.Activation;
-import com.example.entity.Privilege;
-import com.example.entity.Team;
+import com.example.entity.*;
 import com.example.exception.AccountAlreadyExistsException;
 import com.example.exception.BadRequestException;
 import com.example.exception.type.BadRequest;
@@ -80,8 +77,9 @@ public class AccountServiceImpl implements AccountService {
         final Optional<Account> accOpt = accountRepository.findByEmail(email);
 
         final Account account = accOpt.orElseGet(() -> new Account(email, now));
-        final Activation activation = new Activation(account, team, ps, now.plusDays(2L), hashService
-                .generatePasscode(teamId, email, now));
+        final Activation activation = new Activation(account, now.plusDays(7L),
+                hashService.generateToken(teamId, email, now), now);
+        final ActivationByTeam activationByTeam = new ActivationByTeam(team, activation, ps, now);
         activationRepository.save(activation);
         return activation;
     }

@@ -19,5 +19,5 @@ import java.time.LocalDateTime;
 
 public interface HashService {
 
-    String generatePasscode(Long teamId, String email, LocalDateTime time);
+    String generateToken(Long teamId, String email, LocalDateTime time);
 }

@@ -21,38 +21,46 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "activation")
-public class Activation {
+@Table(name = "activation_by_team")
+public class ActivationByTeam implements Serializable {
+
+    @SuppressWarnings("LongLiteralEndingWithLowercaseL")
+    private static final long serialVersionUID = -4196912682665414114l;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(optional = false)
+    private Team team;
+
     @OneToOne(optional = false)
-    private Account account;
+    private Activation activation;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime expiration;
-
-    @Column(length = 32)
-    private String token;
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = Privilege.class)
+    @Column(nullable = false, name = "privileges")
+    @JoinTable(name = "activation_privileges", joinColumns = @JoinColumn(name = "activation_id"))
+    private Set<Privilege> privileges = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Convert(converter = LocalDateTimeConverter.class)
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Activation(Account account, LocalDateTime expiration, String token, LocalDateTime createdAt) {
-        this.account = account;
-        this.expiration = expiration;
-        this.token = token;
+    public ActivationByTeam(Team team, Activation activation, Set<Privilege> privileges, LocalDateTime createdAt) {
+        this.team = team;
+        this.activation = activation;
+        this.privileges = privileges;
         this.createdAt = createdAt;
     }
 }
