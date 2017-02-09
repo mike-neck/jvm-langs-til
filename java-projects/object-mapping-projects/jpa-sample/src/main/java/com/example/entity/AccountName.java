@@ -15,11 +15,13 @@
  */
 package com.example.entity;
 
+import com.example.converter.LocalDateTimeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -37,4 +39,14 @@ public class AccountName {
 
     @Column(length = 127, nullable = false)
     private String name;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Convert(converter = LocalDateTimeConverter.class)
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Convert(converter = LocalDateTimeConverter.class)
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 }

@@ -18,25 +18,9 @@ package com.example.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.function.Predicate;
 
 @Data
 @NoArgsConstructor
@@ -66,13 +50,5 @@ public class Authority implements Serializable {
         this.account = account;
         this.team = team;
         this.privilege = privilege;
-    }
-
-    @SuppressWarnings("Contract")
-    @NotNull
-    @Contract("null,_->fail;_,null->fail")
-    public static Predicate<Authority> findByTeamAndPrivilege(
-            @NotNull @NonNull Team team, @NotNull @NonNull Privilege privilege) {
-        return a -> a.team.equals(team) && a.privilege.equals(privilege);
     }
 }

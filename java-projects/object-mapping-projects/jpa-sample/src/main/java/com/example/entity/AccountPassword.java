@@ -44,4 +44,9 @@ public class AccountPassword {
     @Convert(converter = LocalDateTimeConverter.class)
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Convert(converter = LocalDateTimeConverter.class)
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 }
