@@ -18,9 +18,14 @@ package com.example.service;
 import com.example.entity.Activation;
 import com.example.entity.ActivationTeam;
 import com.example.entity.Privilege;
+import com.example.story.Scenario;
+import com.example.story.Story;
 
 public interface AccountService {
+
+    @Scenario(Story.TEAM_ORGANIZATION_USER_CREATE_NEW_ACCOUNT)
     Activation createNewAccount(String email);
 
+    @Scenario(Story.TEAM_ORGANIZATION_INVITING_MEMBER)
     ActivationTeam inviteNewAccount(Long teamId, String email, Privilege... privileges);
 }
