@@ -15,7 +15,7 @@
  */
 package com.example.story;
 
-public interface Scenario {
+public @interface Scenario {
 
     Story value();
 }
