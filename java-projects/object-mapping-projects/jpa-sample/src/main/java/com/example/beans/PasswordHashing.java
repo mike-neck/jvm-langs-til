@@ -13,19 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example.beans;
 
-import com.example.value.single.Password;
+import com.example.conf.PasswordConfig;
+import de.mkammerer.argon2.Argon2;
+import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
+import javax.inject.Inject;
 
-public interface HashService {
+public class PasswordHashing {
 
-    String generateToken(String email, LocalDateTime time);
+    private final Argon2 argon2;
+
+    private final PasswordConfig config;
+
+    @Inject
+    public PasswordHashing(Argon2 argon2, PasswordConfig config) {
+        this.argon2 = argon2;
+        this.config = config;
+    }
 
     @NotNull
-    @Contract("null -> fail")
-    String hashPassword(@NotNull Password password);
+    @Contract("null->fail")
+    public String getPasswordHash(@NotNull @NonNull String password) {
+        return argon2.hash(config.iteration(), config.memory(), config.parallel(), password);
+    }
 }

@@ -15,7 +15,10 @@
  */
 package com.example.service;
 
+import com.example.beans.PasswordHashing;
+import com.example.value.single.Password;
 import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
@@ -29,11 +32,13 @@ import java.time.ZoneOffset;
 public class HashServiceImpl implements HashService {
 
     private final Provider<MessageDigest> provider;
+    private final PasswordHashing hashing;
     private final ZoneId zoneId;
 
     @Inject
-    public HashServiceImpl(Provider<MessageDigest> provider, ZoneId zoneId) {
+    public HashServiceImpl(Provider<MessageDigest> provider, PasswordHashing hashing, ZoneId zoneId) {
         this.provider = provider;
+        this.hashing = hashing;
         this.zoneId = zoneId;
     }
 
@@ -45,6 +50,13 @@ public class HashServiceImpl implements HashService {
         final ZoneOffset offset = zoneId.getRules().getOffset(time);
         md.update(longToBytes(time.toEpochSecond(offset)));
         return bytesToString(md.digest());
+    }
+
+    @NotNull
+    @Contract("null -> fail")
+    @Override
+    public String hashPassword(@NotNull @NonNull Password password) {
+        return hashing.getPasswordHash(password.getValue());
     }
 
     @NotNull

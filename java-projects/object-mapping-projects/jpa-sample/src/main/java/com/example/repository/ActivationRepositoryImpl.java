@@ -17,6 +17,7 @@ package com.example.repository;
 
 import com.example.entity.Activation;
 import com.example.entity.ActivationTeam;
+import com.example.value.single.AccountId;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -50,15 +51,40 @@ public class ActivationRepositoryImpl implements ActivationRepository {
     @Contract("null->fail")
     @Override
     public Optional<Activation> findNotExpiredActivationById(@NotNull @NonNull Long id) {
-        final LocalDateTime now = LocalDateTime.now(zoneId);
-        final Activation activation = em.createQuery(
+        return em.createQuery(
                 "select a from Activation a " +
                         "where a.id = :id " +
                         "and a.expiration <= :now", Activation.class)
                 .setParameter("id", id)
-                .setParameter("now", now)
-                .getSingleResult();
-        return Optional.ofNullable(activation);
+                .setParameter("now", LocalDateTime.now(zoneId))
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    @NotNull
+    @Contract("null -> fail")
+    @Override
+    public Optional<Activation> findNotExpiredActivationByToken(@NotNull @NonNull String token) {
+        return em.createQuery(
+                "select a " +
+                        "from Activation a " +
+                        "where a.token = :token " +
+                        "and :now < a.expiration", Activation.class)
+                .setParameter("token", token)
+                .setParameter("now", LocalDateTime.now(zoneId))
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    @NotNull
+    @Contract("null -> fail")
+    @Override
+    public AccountId delete(@NotNull @NonNull Activation activation) {
+        final AccountId accountId = new AccountId(activation.getAccount().getId());
+        em.remove(activation);
+        return accountId;
     }
 
     @NotNull

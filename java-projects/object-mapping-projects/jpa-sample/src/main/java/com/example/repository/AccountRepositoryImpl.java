@@ -16,6 +16,9 @@
 package com.example.repository;
 
 import com.example.entity.Account;
+import com.example.entity.AccountName;
+import com.example.entity.AccountPassword;
+import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,19 +40,38 @@ public class AccountRepositoryImpl implements AccountRepository {
         this.em = em;
     }
 
+    @NotNull
     @Override
-    public Account save(Account account) {
+    public Account save(@NotNull Account account) {
         em.persist(account);
         em.flush();
         return account;
     }
 
-    @Contract("null -> fail")
     @NotNull
+    @Contract("null,_->fail;_,null->fail")
     @Override
-    public List<Account> save(@NotNull Account... accounts) {
-        Objects.requireNonNull(accounts);
-        return save(Arrays.asList(accounts));
+    public AccountName save(@NotNull @NonNull AccountName name, @NotNull @NonNull AccountPassword password) {
+        em.persist(name);
+        em.persist(password);
+        em.flush();
+        return name;
+    }
+
+    @NotNull
+    @Contract("null -> fail")
+    @Override
+    public AccountName save(@NotNull @NonNull AccountName name) {
+        em.persist(name);
+        em.flush();
+        return name;
+    }
+
+    @Contract("null -> fail")
+    @Override
+    public void save(@NotNull @NonNull AccountPassword password) {
+        em.persist(password);
+        em.flush();
     }
 
     @Contract("null -> fail")
@@ -61,20 +83,23 @@ public class AccountRepositoryImpl implements AccountRepository {
         return accounts;
     }
 
+    @NotNull
     @Override
     public List<Account> findAll() {
         return em.createQuery("select a from Account as a", Account.class)
                 .getResultList();
     }
 
+    @NotNull
     @Override
-    public Optional<Account> findById(Long id) {
+    public Optional<Account> findById(@NotNull Long id) {
         final Account account = em.find(ACCOUNT, id);
         return Optional.ofNullable(account);
     }
 
+    @NotNull
     @Override
-    public Optional<Account> findByEmail(String email) {
+    public Optional<Account> findByEmail(@NotNull String email) {
         final TypedQuery<Account> query = em.createQuery("select a from Account as a where a.email = :email", ACCOUNT);
         final List<Account> accounts = query.setParameter("email", email)
                 .getResultList();
@@ -89,21 +114,23 @@ public class AccountRepositoryImpl implements AccountRepository {
         }
     }
 
+    @NotNull
     @Override
-    public Optional<Account> findByUsername(String username) {
+    public Optional<Account> findByUsername(@NotNull String username) {
         final List<Account> accounts = em.createQuery("select a from Account as a where a.name = :username", ACCOUNT)
                 .setParameter("username", username)
                 .getResultList();
         return asOptional(accounts);
     }
 
+    @NotNull
     @Override
-    public Account update(Account account) {
+    public Account update(@NotNull Account account) {
         return em.merge(account);
     }
 
     @Override
-    public void delete(Account account) {
+    public void delete(@NotNull Account account) {
         em.remove(account);
     }
 }

@@ -15,6 +15,7 @@
  */
 package com.example;
 
+import com.example.module.TestModule;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;

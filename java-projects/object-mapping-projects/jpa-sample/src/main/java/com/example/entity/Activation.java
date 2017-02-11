@@ -16,6 +16,8 @@
 package com.example.entity;
 
 import com.example.converter.LocalDateTimeConverter;
+import com.example.value.single.ActivationExpiration;
+import com.example.value.single.CreatedAt;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,10 +51,10 @@ public class Activation {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Activation(Account account, LocalDateTime expiration, String token, LocalDateTime createdAt) {
+    public Activation(Account account, ActivationExpiration expiration, String token, CreatedAt createdAt) {
         this.account = account;
-        this.expiration = expiration;
+        this.expiration = expiration.getValue();
         this.token = token;
-        this.createdAt = createdAt;
+        this.createdAt = createdAt.getValue();
     }
 }

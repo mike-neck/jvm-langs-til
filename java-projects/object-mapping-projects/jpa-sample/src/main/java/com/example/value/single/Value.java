@@ -13,19 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example.value.single;
 
-import com.example.value.single.Password;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import java.io.Serializable;
 
-import java.time.LocalDateTime;
+public interface Value<T> extends Serializable {
 
-public interface HashService {
-
-    String generateToken(String email, LocalDateTime time);
-
-    @NotNull
-    @Contract("null -> fail")
-    String hashPassword(@NotNull Password password);
+    T getValue();
 }

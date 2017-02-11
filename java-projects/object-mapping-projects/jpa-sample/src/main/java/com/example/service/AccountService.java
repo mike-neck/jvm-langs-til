@@ -15,17 +15,27 @@
  */
 package com.example.service;
 
+import com.example.entity.AccountName;
 import com.example.entity.Activation;
 import com.example.entity.ActivationTeam;
 import com.example.entity.Privilege;
 import com.example.story.Scenario;
 import com.example.story.Story;
+import com.example.value.single.Password;
+import com.example.value.single.Username;
+import com.google.inject.persist.Transactional;
 
 public interface AccountService {
 
+    @Transactional
     @Scenario(Story.TEAM_ORGANIZATION_USER_CREATE_NEW_ACCOUNT)
     Activation createNewAccount(String email);
 
+    @Transactional
+    @Scenario(Story.TEAM_ORGANIZATION_USER_MAIL_VERIFICATION)
+    AccountName userEmailVerification(String token, Username username, Password password);
+
+    @Transactional
     @Scenario(Story.TEAM_ORGANIZATION_INVITING_MEMBER)
     ActivationTeam inviteNewAccount(Long teamId, String email, Privilege... privileges);
 }

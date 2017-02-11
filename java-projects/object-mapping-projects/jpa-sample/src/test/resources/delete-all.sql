@@ -1,4 +1,5 @@
 DELETE FROM task;
+DELETE FROM ActivationTeam_PRIVILEGES;
 DELETE FROM activation_team;
 DELETE FROM activation;
 DELETE FROM account_authority;

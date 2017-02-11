@@ -29,6 +29,8 @@ dependencies {
     compile         slf4j
     compile         logback
 
+    compile         'de.mkammerer:argon2-jvm:2.2'
+
     compile         mysql
 
     compileOnly     jetbrainsAnnotations

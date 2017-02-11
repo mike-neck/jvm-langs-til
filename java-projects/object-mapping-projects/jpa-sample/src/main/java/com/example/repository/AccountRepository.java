@@ -16,28 +16,56 @@
 package com.example.repository;
 
 import com.example.entity.Account;
+import com.example.entity.AccountName;
+import com.example.entity.AccountPassword;
 import com.example.entity.Activation;
+import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AccountRepository {
 
-    Account save(Account account);
+    @Contract("null -> fail")
+    @NotNull
+    Account save(@NotNull Account account);
 
-    List<Account> save(Account... accounts);
+    @NotNull
+    @Contract("null,_->fail;_,null->fail")
+    AccountName save(@NotNull AccountName name, @NotNull AccountPassword password);
 
-    List<Account> save(List<Account> accounts);
+    @NotNull
+    @Contract("null -> fail")
+    AccountName save(@NotNull AccountName name);
 
+    @Contract("null -> fail")
+    void save(@NotNull AccountPassword password);
+
+    @Contract("null -> fail")
+    @NotNull
+    List<Account> save(@NotNull List<Account> accounts);
+
+    @NotNull
     List<Account> findAll();
 
-    Optional<Account> findById(Long id);
+    @Contract("null -> fail")
+    @NotNull
+    Optional<Account> findById(@NotNull Long id);
 
-    Optional<Account> findByEmail(String email);
+    @Contract("null -> fail")
+    @NotNull
+    Optional<Account> findByEmail(@NotNull String email);
 
-    Optional<Account> findByUsername(String username);
+    @Contract("null -> fail")
+    @NotNull
+    Optional<Account> findByUsername(@NotNull String username);
 
-    Account update(Account account);
+    @Contract("null -> fail")
+    @NotNull
+    Account update(@NotNull Account account);
 
-    void delete(Account account);
+    @Contract("null -> fail")
+    void delete(@NotNull Account account);
 }

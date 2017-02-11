@@ -49,4 +49,11 @@ public class AccountPassword {
     @Convert(converter = LocalDateTimeConverter.class)
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public AccountPassword(Account account, String password, LocalDateTime createdAt) {
+        this.account = account;
+        this.password = password;
+        this.createdAt = createdAt;
+        this.updatedAt = createdAt;
+    }
 }

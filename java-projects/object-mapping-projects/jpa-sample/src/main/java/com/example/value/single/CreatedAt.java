@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example.value.single;
 
-import com.example.value.single.Password;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
-public interface HashService {
+@Data
+@RequiredArgsConstructor
+public class CreatedAt implements Value<LocalDateTime> {
 
-    String generateToken(String email, LocalDateTime time);
+    @SuppressWarnings("LongLiteralEndingWithLowercaseL")
+    private static final long serialVersionUID = -4369240664292051231l;
 
-    @NotNull
-    @Contract("null -> fail")
-    String hashPassword(@NotNull Password password);
+    private final LocalDateTime value;
 }

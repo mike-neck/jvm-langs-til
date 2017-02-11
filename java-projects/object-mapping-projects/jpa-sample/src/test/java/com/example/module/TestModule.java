@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.module;
 
+import com.example.conf.PasswordConfig;
 import com.example.modules.ProviderModule;
 import com.example.modules.RepositoryModule;
 import com.example.modules.ServiceModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 
 public class TestModule extends AbstractModule {
 
@@ -29,5 +32,8 @@ public class TestModule extends AbstractModule {
         install(new RepositoryModule());
         install(new ProviderModule());
         install(new ServiceModule());
+
+        bind(Argon2.class).toProvider(Argon2Factory::create);
+        bind(PasswordConfig.class).toInstance(() -> 8192);
     }
 }

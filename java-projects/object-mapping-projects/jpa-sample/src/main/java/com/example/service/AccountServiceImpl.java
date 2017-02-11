@@ -18,10 +18,15 @@ package com.example.service;
 import com.example.entity.*;
 import com.example.exception.AccountAlreadyExistsException;
 import com.example.exception.BadRequestException;
+import com.example.exception.NotFoundException;
 import com.example.exception.type.BadRequest;
 import com.example.repository.AccountRepository;
 import com.example.repository.ActivationRepository;
 import com.example.repository.TeamRepository;
+import com.example.value.single.ActivationExpiration;
+import com.example.value.single.CreatedAt;
+import com.example.value.single.Password;
+import com.example.value.single.Username;
 import com.google.inject.persist.Transactional;
 
 import javax.inject.Inject;
@@ -60,8 +65,24 @@ public class AccountServiceImpl implements AccountService {
         final LocalDateTime now = LocalDateTime.now(zoneId);
         final Account account = new Account(email, now);
         accountRepository.save(account);
-        final Activation activation = new Activation(account, now, hashService.generateToken(email, now), now);
+        final Activation activation = new Activation(account, ActivationExpiration.fromNow(now), hashService
+                .generateToken(email, now), new CreatedAt(now));
         return activationRepository.save(activation);
+    }
+
+    @Transactional
+    @Override
+    public AccountName userEmailVerification(String token, Username username, Password password) {
+        final Optional<Activation> op = activationRepository.findNotExpiredActivationByToken(token);
+        final Activation activation = op.orElseThrow(() -> new NotFoundException(Activation.class, token));
+        final Account account = activation.getAccount();
+        final LocalDateTime now = LocalDateTime.now(zoneId);
+
+        final AccountName name = new AccountName(account, username.getValue(), now);
+        final AccountPassword pass = new AccountPassword(account, hashService.hashPassword(password), now);
+
+        activationRepository.delete(activation);
+        return accountRepository.save(name, pass);
     }
 
     @Transactional
@@ -74,15 +95,14 @@ public class AccountServiceImpl implements AccountService {
         }
         final Team team = teamRepository.findById(teamId).orElseThrow(notFound(Team.class, teamId));
         final Set<Privilege> ps = new HashSet<>(Arrays.asList(privileges));
-
         final LocalDateTime now = LocalDateTime.now(zoneId);
 
         final Optional<Account> accOpt = accountRepository.findByEmail(email);
 
         final Account account = accOpt.orElseGet(() -> new Account(email, now));
         accountRepository.save(account);
-        final Activation activation = new Activation(account, now.plusDays(7L),
-                hashService.generateToken(email, now), now);
+        final Activation activation = new Activation(account, ActivationExpiration.fromNow(now),
+                hashService.generateToken(email, now), new CreatedAt(now));
         activationRepository.save(activation);
 
         final ActivationTeam activationTeam = new ActivationTeam(team, activation, ps, now);

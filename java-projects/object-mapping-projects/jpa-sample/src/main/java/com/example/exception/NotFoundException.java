@@ -15,16 +15,26 @@
  */
 package com.example.exception;
 
+import lombok.Getter;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
+@Getter
 public class NotFoundException extends RuntimeException {
+
+    @SuppressWarnings("LongLiteralEndingWithLowercaseL")
+    private static final long serialVersionUID = -1611566821407532760l;
+
+    private final Class<?> entityClass;
+    private final Object key;
 
     public NotFoundException(Class<?> klass, Object id) {
         super("Resource [object: " + klass.getSimpleName() + ", id:" + id + "] not found.");
+        this.entityClass = klass;
+        this.key = id;
     }
 
     @SuppressWarnings("Contract")

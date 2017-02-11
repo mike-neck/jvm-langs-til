@@ -46,10 +46,10 @@ public class Account implements Serializable {
     @Version
     private Long version;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "account")
     private AccountName name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "account")
     private AccountPassword password;
 
     @Column(nullable = false, unique = true)

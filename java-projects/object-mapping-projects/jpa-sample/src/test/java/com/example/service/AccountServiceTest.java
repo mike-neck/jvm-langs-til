@@ -16,9 +16,16 @@
 package com.example.service;
 
 import com.example.TestInitializer;
+import com.example.entity.AccountName;
 import com.example.entity.Activation;
 import com.example.exception.AccountAlreadyExistsException;
+import com.example.exception.NotFoundException;
+import com.example.story.Scenario;
+import com.example.story.Story;
+import com.example.value.single.Password;
+import com.example.value.single.Username;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith({TestInitializer.class})
 public class AccountServiceTest {
 
+    @Scenario(Story.TEAM_ORGANIZATION_USER_CREATE_NEW_ACCOUNT)
     @Nested
     class CreateNewAccountTest {
 
@@ -53,6 +61,41 @@ public class AccountServiceTest {
                 fail("If email is existing, account registration should fail.");
             } catch (AccountAlreadyExistsException e) {
                 assertEquals("createNewAccount", e.getProcess());
+            }
+        }
+    }
+
+    @Scenario(Story.TEAM_ORGANIZATION_USER_MAIL_VERIFICATION)
+    @Nested
+    class UserEmailVerificationTest {
+
+        private static final String NON_EXISTING_TOKEN = "xxxxxxxxxxxxxxx";
+
+        private Activation activation;
+
+        private final Username username = new Username("test-user");
+        private final Password password = new Password("test-password");
+
+        @BeforeEach
+        void setup(AccountService service) {
+            activation = service.createNewAccount("test@example.com");
+        }
+
+        @DisplayName("トークンが正しい場合は登録される")
+        @Test
+        void providedProperToken(AccountService service) {
+            final AccountName name = service.userEmailVerification(activation.getToken(), username, password);
+
+            assertEquals("test-user", name.getName());
+        }
+
+        @DisplayName("トークンがない場合はNotFoundException")
+        @Test
+        void providedNotProperToken(AccountService service) {
+            try {
+                service.userEmailVerification(NON_EXISTING_TOKEN, username, password);
+            } catch (NotFoundException e) {
+                assertTrue(e.getEntityClass().equals(Activation.class));
             }
         }
     }

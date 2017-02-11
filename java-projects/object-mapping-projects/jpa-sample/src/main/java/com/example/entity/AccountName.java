@@ -49,4 +49,11 @@ public class AccountName {
     @Convert(converter = LocalDateTimeConverter.class)
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public AccountName(Account account, String name, LocalDateTime createdAt) {
+        this.account = account;
+        this.name = name;
+        this.createdAt = createdAt;
+        this.updatedAt = createdAt;
+    }
 }

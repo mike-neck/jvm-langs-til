@@ -17,14 +17,32 @@ package com.example.repository;
 
 import com.example.entity.Activation;
 import com.example.entity.ActivationTeam;
+import com.example.value.single.AccountId;
+import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
 public interface ActivationRepository {
 
-    Activation save(Activation activation);
+    @NotNull
+    @Contract("null -> fail")
+    Activation save(@NotNull Activation activation);
 
-    Optional<Activation> findNotExpiredActivationById(Long id);
+    @NotNull
+    @Contract("null -> fail")
+    Optional<Activation> findNotExpiredActivationById(@NotNull Long id);
 
-    ActivationTeam save(ActivationTeam activationTeam);
+    @NotNull
+    @Contract("null -> fail")
+    Optional<Activation> findNotExpiredActivationByToken(@NotNull String token);
+
+    @NotNull
+    @Contract("null -> fail")
+    AccountId delete(@NotNull Activation activation);
+
+    @NotNull
+    @Contract("null -> fail")
+    ActivationTeam save(@NotNull ActivationTeam activationTeam);
 }

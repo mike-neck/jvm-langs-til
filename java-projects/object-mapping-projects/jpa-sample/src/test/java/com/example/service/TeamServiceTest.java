@@ -16,7 +16,7 @@
 package com.example.service;
 
 import com.example.AppTest;
-import com.example.TestModule;
+import com.example.module.TestModule;
 import com.example.entity.Account;
 import com.example.exception.BadRequestException;
 import com.google.inject.Guice;

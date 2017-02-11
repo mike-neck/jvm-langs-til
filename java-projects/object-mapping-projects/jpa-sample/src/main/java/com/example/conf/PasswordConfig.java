@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example.conf;
 
-import com.example.value.single.Password;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+public interface PasswordConfig {
 
-import java.time.LocalDateTime;
+    default int iteration() {
+        return 3;
+    }
 
-public interface HashService {
+    int memory();
 
-    String generateToken(String email, LocalDateTime time);
-
-    @NotNull
-    @Contract("null -> fail")
-    String hashPassword(@NotNull Password password);
+    default int parallel() {
+        return 1;
+    }
 }
