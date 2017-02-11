@@ -70,6 +70,13 @@ public final class Functions {
         };
     }
 
+    @NotNull
+    @Contract("null->fail")
+    public static <T> ExConsumer<T> exConsumer(@NotNull @NonNull Consumer<T> c) {
+        //noinspection Contract
+        return c::accept;
+    }
+
     @FunctionalInterface
     public interface ExFunction<A, B> {
         B apply(A a) throws Throwable;
