@@ -23,14 +23,13 @@ import com.example.exception.type.BadRequest;
 import com.example.repository.AccountRepository;
 import com.example.repository.ActivationRepository;
 import com.example.repository.TeamRepository;
-import com.example.type.Tuple;
+import com.example.data.Tuple;
 import com.example.value.single.ActivationExpiration;
 import com.example.value.single.CreatedAt;
 import com.example.value.single.Password;
 import com.example.value.single.Username;
 import com.google.inject.persist.Transactional;
 import lombok.NonNull;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
@@ -108,12 +107,13 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public PaymentMethod createPaymentMethod(@NotNull Long accountId, @NotNull String paymentMethodName) {
-        return accountRepository.findById(accountId)
+        return accountRepository.findAccountById(accountId)
                 .map(a -> new PaymentMethod(a, paymentMethodName, LocalDateTime.now(zoneId)))
                 .map(accountRepository::save)
                 .orElseThrow(notFound(Account.class, accountId));
     }
 
+    @NotNull
     @Transactional
     @Override
     public ActivationTeam inviteNewAccount(@NotNull @NonNull Long teamId, @NotNull @NonNull String email,

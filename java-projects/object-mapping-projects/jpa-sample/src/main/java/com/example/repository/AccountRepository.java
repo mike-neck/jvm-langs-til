@@ -16,6 +16,7 @@
 package com.example.repository;
 
 import com.example.entity.*;
+import com.example.value.single.PaymentMethodId;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +50,7 @@ public interface AccountRepository {
 
     @Contract("null -> fail")
     @NotNull
-    Optional<Account> findById(@NotNull Long id);
+    Optional<Account> findAccountById(@NotNull Long id);
 
     @Contract("null -> fail")
     @NotNull
@@ -69,4 +70,8 @@ public interface AccountRepository {
     @Contract("null -> fail")
     @NotNull
     PaymentMethod save(@NotNull PaymentMethod paymentMethod);
+
+    @Contract("null,_->fail;_,null->fail")
+    @NotNull
+    Optional<PaymentMethod> findPaymentByAccountAndName(@NotNull Account account, @NotNull String name);
 }

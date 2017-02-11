@@ -93,7 +93,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @NotNull
     @Override
-    public Optional<Account> findById(@NotNull Long id) {
+    public Optional<Account> findAccountById(@NotNull Long id) {
         final Account account = em.find(ACCOUNT, id);
         return Optional.ofNullable(account);
     }
@@ -141,5 +141,23 @@ public class AccountRepositoryImpl implements AccountRepository {
         em.persist(paymentMethod);
         em.flush();
         return paymentMethod;
+    }
+
+    @NotNull
+    @Contract("null,_->fail;_,null->fail")
+    @Override
+    public Optional<PaymentMethod> findPaymentByAccountAndName(
+            @NotNull @NonNull Account account,
+            @NotNull @NonNull String name) {
+        return em.createQuery(
+                "select p from PaymentMethod  p " +
+                        "where p.account = :account " +
+                        "and p.name = :name",
+                PaymentMethod.class)
+                .setParameter("account", account)
+                .setParameter("name", name)
+                .getResultList()
+                .stream()
+                .findFirst();
     }
 }

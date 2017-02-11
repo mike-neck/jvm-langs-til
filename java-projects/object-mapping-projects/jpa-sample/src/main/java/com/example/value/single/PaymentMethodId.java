@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package com.example.value.single;
 
-import com.example.entity.Team;
-import com.example.value.single.AccountId;
-import com.example.value.single.PaymentMethodName;
-import com.google.inject.persist.Transactional;
-import org.jetbrains.annotations.NotNull;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-public interface TeamService {
+@Data
+@RequiredArgsConstructor
+public class PaymentMethodId implements Value<Long> {
 
-    @Transactional
-    @NotNull
-    Team createNewTeam(@NotNull AccountId aid, @NotNull PaymentMethodName payment, @NotNull String name);
+    @SuppressWarnings("LongLiteralEndingWithLowercaseL")
+    private static final long serialVersionUID = -4576499487606141523l;
+
+    private final Long value;
 }

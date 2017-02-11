@@ -17,6 +17,7 @@ package com.example;
 
 import com.example.entity.Account;
 import com.example.entity.Activation;
+import com.example.entity.PaymentMethod;
 import com.example.service.AccountService;
 import com.example.value.single.Password;
 import com.example.value.single.Username;
@@ -40,5 +41,9 @@ public class TestHelper {
         final Activation activation = accountService.createNewAccount(email);
         return accountService.userEmailVerification(activation.getToken(), username, password)
                 .getAccount();
+    }
+
+    public PaymentMethod createPayment(Account account, String methodName) {
+        return accountService.createPaymentMethod(account.getId(), methodName);
     }
 }

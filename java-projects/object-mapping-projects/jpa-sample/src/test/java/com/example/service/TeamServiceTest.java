@@ -15,57 +15,59 @@
  */
 package com.example.service;
 
-import com.example.AppTest;
-import com.example.module.TestModule;
+import com.example.TestHelper;
+import com.example.TestInitializer;
 import com.example.entity.Account;
-import com.example.exception.BadRequestException;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import org.junit.jupiter.api.BeforeAll;
+import com.example.entity.PaymentMethod;
+import com.example.entity.Team;
+import com.example.exception.NotFoundException;
+import com.example.story.Scenario;
+import com.example.story.Story;
+import com.example.value.single.AccountId;
+import com.example.value.single.PaymentMethodName;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import static com.example.entity.Privilege.PRIVATE_EDIT;
-import static com.example.entity.Privilege.PRIVATE_REFER;
-import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith({TestInitializer.class})
 public class TeamServiceTest {
 
-    private static Injector injector;
+    @Scenario(Story.TEAM_ORGANIZATION_TEAM_CREATION)
+    @Nested
+    class TeamCreationTest {
 
-    private TeamService service;
-    private Long teamId;
+        private Account account;
+        private PaymentMethod payment;
+        private Account noPayment;
 
-    @BeforeAll
-    public static void prepareInjector() {
-        injector = Guice.createInjector(new TestModule());
-        injector.getInstance(AppTest.class);
-    }
-
-    @BeforeEach
-    public void setup() {
-        service = injector.getInstance(TeamService.class);
-        teamId = service.createNewTeam("名古屋").getId();
-    }
-
-    @Test
-    void testSave() {
-        final Account account = service.signInAsNewAccount(teamId, "うさぎさん", "test1@example.com", "usagisan", 
-                PRIVATE_REFER, PRIVATE_EDIT);
-        assertNotNull(account.getId());
-        final Optional<Account> found = service.findAccountById(account.getId());
-        assertTrue(found.isPresent());
-        found.ifPresent(a -> assertEquals(account, a));
-        if (!found.isPresent()) {
-            fail("expected Account can be found by id[" + account.getId() + "], but not found.");
+        @BeforeEach
+        void setup(TestHelper helper) {
+            this.account = helper.createAccount("test@example.com", "test-user", "test-password");
+            this.payment = helper.createPayment(account, "test-payment");
+            this.noPayment = helper.createAccount("no-payment@example.com", "no-payment", "no-payment");
         }
-    }
 
-    @Test
-    void testSavingNewAccountWithoutPrivilegesMakesException() {
-        assertThrows(BadRequestException.class, () ->
-                service.signInAsNewAccount(teamId, "新しいアカウント", "test1@example.com", "password"));
+        @Test
+        void accountWithPaymentCanCreateTeam(TeamService service) {
+            final Team team = service.createNewTeam(new AccountId(account.getId()),
+                    new PaymentMethodName(payment.getName()),
+                    "test-team");
+            assertNotNull(team);
+        }
+
+        @Test
+        void accountWithoutPaymentCannotCreateTeam(TeamService service) {
+            try {
+                service.createNewTeam(new AccountId(account.getId()), new PaymentMethodName("test"), "cannot-create");
+                fail("account without payment cannot create team.");
+            } catch (Exception e) {
+                assertTrue(e instanceof NotFoundException);
+            }
+        }
     }
 }

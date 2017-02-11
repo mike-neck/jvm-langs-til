@@ -15,14 +15,15 @@
  */
 package com.example.service;
 
+import com.example.data.ExOptional;
 import com.example.entity.Account;
-import com.example.entity.Authority;
-import com.example.entity.Privilege;
+import com.example.entity.PaymentMethod;
 import com.example.entity.Team;
 import com.example.exception.NotFoundException;
-import com.example.exception.type.BadRequest;
 import com.example.repository.AccountRepository;
 import com.example.repository.TeamRepository;
+import com.example.value.single.AccountId;
+import com.example.value.single.PaymentMethodName;
 import com.google.inject.persist.Transactional;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
@@ -31,14 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
 import java.util.function.Supplier;
 
-import static com.example.exception.BadRequestException.badRequest;
 import static com.example.exception.NotFoundException.notFound;
-import static java.util.stream.Collectors.toSet;
 
 public class TeamServiceImpl implements TeamService {
 
@@ -53,37 +49,19 @@ public class TeamServiceImpl implements TeamService {
         this.zoneId = zoneId;
     }
 
+    @NotNull
     @Transactional
     @Override
-    public Team createNewTeam(String name) {
-        final Team team = new Team(name, LocalDateTime.now(zoneId));
-        return teamRepository.save(team);
-    }
-
-    @Transactional
-    @Override
-    public Account signInAsNewAccount(Long teamId, String name, String email, String password, Privilege... 
-            privileges) {
-        final LocalDateTime now = LocalDateTime.now(zoneId);
-
-        final Account account = new Account(email, now);
-        final Team team = teamRepository.findById(teamId)
-                .orElseThrow(teamNotFound(teamId));
-        final Set<Authority> authorities = Optional.ofNullable(privileges)
-                .filter(as -> as.length > 0)
-                .map(Arrays::stream)
-                .map(s -> s.map(p -> new Authority(account, team, p)))
-                .map(s -> s.collect(toSet()))
-                .orElseThrow(badRequest(TeamServiceImpl.class, "signInAsNewAccount", BadRequest
-                        .INVALID_NUMBER_OF_PARAMETERS, privileges));
-        account.addPrivileges(authorities);
-        accountRepository.save(account);
-        return account;
-    }
-
-    @Override
-    public Optional<Account> findAccountById(Long id) {
-        return accountRepository.findById(id);
+    public Team createNewTeam(
+            @NotNull @NonNull AccountId aid,
+            @NotNull @NonNull PaymentMethodName payment,
+            @NotNull @NonNull String name) {
+        return ExOptional.of(accountRepository.findAccountById(aid.getValue()), notFound(Account.class, aid))
+                .flatMap(a -> accountRepository.findPaymentByAccountAndName(a, payment.getValue()),
+                        a -> new NotFoundException(PaymentMethod.class, payment))
+                .map(p -> new Team(name, p, LocalDateTime.now(zoneId)))
+                .map(teamRepository::save)
+                .getOrThrow();
     }
 
     @SuppressWarnings("Contract")
