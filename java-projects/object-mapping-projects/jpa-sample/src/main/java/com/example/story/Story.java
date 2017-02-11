@@ -24,13 +24,18 @@ public enum Story {
     TEAM_ORGANIZATION_USER_MAIL_VERIFICATION(1, 2, "ユーザーは受け取ったメール記載の認証用URLからアカウントの登録を行う"
             , "名前、パスワードを登録する"
     ),
-    TEAM_ORGANIZATION_TEAM_CREATION(1, 3, "ユーザーはチームを作成する"
+    TEAM_ORGANIZATION_USER_LOGIN(1, 3, "ユーザーはシステムにログインする"
+            , "email、パスワードを入力する"
+            , "存在しない組み合わせの場合はログインできない"
+            , "存在する組み合わせの場合はログイン成功"
+    ),
+    TEAM_ORGANIZATION_TEAM_CREATION(1, 4, "ユーザーはチームを作成する"
             , "チーム名を登録する"
     ),
-    TEAM_ORGANIZATION_INVITING_MEMBER(1, 4, "ユーザーは異なるユーザーにチーム権限とともに招待する"
+    TEAM_ORGANIZATION_INVITING_MEMBER(1, 5, "ユーザーは異なるユーザーにチーム権限とともに招待する"
             , "メンバーの権限、emailアドレスを登録する"
     ),
-    TEAM_ORGANIZATION_MEMBER_REGISTRATION(1, 5, "招待されたユーザーは受け取ったメール記載の認証用URLにアクセスしてアカウントの登録を行う"
+    TEAM_ORGANIZATION_MEMBER_REGISTRATION(1, 6, "招待されたユーザーは受け取ったメール記載の認証用URLにアクセスしてアカウントの登録を行う"
             , "名前、パスワードを登録する"
     );
 

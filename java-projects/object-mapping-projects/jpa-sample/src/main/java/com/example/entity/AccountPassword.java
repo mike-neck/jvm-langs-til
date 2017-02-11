@@ -55,5 +55,6 @@ public class AccountPassword {
         this.password = password;
         this.createdAt = createdAt;
         this.updatedAt = createdAt;
+        account.setPassword(this);
     }
 }

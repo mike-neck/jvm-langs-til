@@ -55,5 +55,6 @@ public class AccountName {
         this.name = name;
         this.createdAt = createdAt;
         this.updatedAt = createdAt;
+        account.setName(this);
     }
 }

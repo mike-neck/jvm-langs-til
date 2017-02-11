@@ -16,6 +16,7 @@
 package com.example.service;
 
 import com.example.TestInitializer;
+import com.example.entity.Account;
 import com.example.entity.AccountName;
 import com.example.entity.Activation;
 import com.example.exception.AccountAlreadyExistsException;
@@ -96,6 +97,49 @@ public class AccountServiceTest {
                 service.userEmailVerification(NON_EXISTING_TOKEN, username, password);
             } catch (NotFoundException e) {
                 assertTrue(e.getEntityClass().equals(Activation.class));
+            }
+        }
+    }
+
+    @Scenario(Story.TEAM_ORGANIZATION_USER_LOGIN)
+    @Nested
+    class UserLoginTest {
+
+        private static final String MAIL = "test@example.com";
+        private final Username username = new Username("test-name");
+        private final Password password = new Password("test-password");
+
+        private AccountName name;
+
+        @BeforeEach
+        void setup(AccountService service) {
+            final Activation activation = service.createNewAccount(MAIL);
+            name = service.userEmailVerification(activation.getToken(), username, password);
+        }
+
+        @Test
+        void userCanLoginWithEmailAndPassword(AccountService service) {
+            final AccountName name = service.userLogin(MAIL, password);
+            assertEquals(this.name, name);
+        }
+
+        @Test
+        void userCannotLoginWithUnknownEmail(AccountService service) {
+            try {
+                service.userLogin("unknown@example.com", password);
+                fail("Unknown email is forbidden.");
+            } catch (NotFoundException e) {
+                assertEquals(Account.class, e.getEntityClass());
+            }
+        }
+
+        @Test
+        void userCannotLoginWithUnknownPassword(AccountService service) {
+            try {
+                service.userLogin(MAIL, new Password("test"));
+                fail("Unknown email is forbidden.");
+            } catch (NotFoundException e) {
+                assertEquals(Account.class, e.getEntityClass());
             }
         }
     }

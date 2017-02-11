@@ -23,11 +23,14 @@ import com.example.exception.type.BadRequest;
 import com.example.repository.AccountRepository;
 import com.example.repository.ActivationRepository;
 import com.example.repository.TeamRepository;
+import com.example.type.Tuple;
 import com.example.value.single.ActivationExpiration;
 import com.example.value.single.CreatedAt;
 import com.example.value.single.Password;
 import com.example.value.single.Username;
 import com.google.inject.persist.Transactional;
+import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -59,7 +62,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public Activation createNewAccount(String email) {
+    public Activation createNewAccount(@NotNull @NonNull String email) {
         accountRepository.findByEmail(email)
                 .ifPresent(a -> { throw new AccountAlreadyExistsException("createNewAccount", email); });
         final LocalDateTime now = LocalDateTime.now(zoneId);
@@ -72,7 +75,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public AccountName userEmailVerification(String token, Username username, Password password) {
+    public AccountName userEmailVerification(@NotNull @NonNull String token, @NotNull @NonNull Username username,
+            @NotNull @NonNull Password password) {
         final Optional<Activation> op = activationRepository.findNotExpiredActivationByToken(token);
         final Activation activation = op.orElseThrow(() -> new NotFoundException(Activation.class, token));
         final Account account = activation.getAccount();
@@ -82,13 +86,28 @@ public class AccountServiceImpl implements AccountService {
         final AccountPassword pass = new AccountPassword(account, hashService.hashPassword(password), now);
 
         activationRepository.delete(activation);
-        return accountRepository.save(name, pass);
+        accountRepository.save(name, pass);
+        accountRepository.save(account);
+        return name;
+    }
+
+    @NotNull
+    @Override
+    public AccountName userLogin(@NotNull @NonNull String email, @NotNull @NonNull Password password) {
+        return accountRepository.findByEmail(email)
+                .map(Tuple.mkTuple(Account::getPassword))
+                .map(Tuple.mapTuple(AccountPassword::getPassword))
+                .filter(Tuple.conditionTuple(h -> hashService.verifyPassword(h, password)))
+                .map(Tuple::getLeft)
+                .map(Account::getName)
+                .orElseThrow(() -> new NotFoundException(Account.class, email));
     }
 
     @Transactional
     @Override
-    public ActivationTeam inviteNewAccount(Long teamId, String email, Privilege... privileges) {
-        if (privileges == null || privileges.length == 0) {
+    public ActivationTeam inviteNewAccount(@NotNull @NonNull Long teamId, @NotNull @NonNull String email,
+            @NotNull @NonNull Privilege... privileges) {
+        if (privileges.length == 0) {
             throw new BadRequestException(AccountServiceImpl.class, "inviteNewAccount",
                     BadRequest.INVALID_NUMBER_OF_PARAMETERS,
                     "privileges");

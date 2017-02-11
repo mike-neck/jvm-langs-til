@@ -24,18 +24,22 @@ import com.example.story.Story;
 import com.example.value.single.Password;
 import com.example.value.single.Username;
 import com.google.inject.persist.Transactional;
+import org.jetbrains.annotations.NotNull;
 
 public interface AccountService {
 
     @Transactional
     @Scenario(Story.TEAM_ORGANIZATION_USER_CREATE_NEW_ACCOUNT)
-    Activation createNewAccount(String email);
+    Activation createNewAccount(@NotNull String email);
 
     @Transactional
     @Scenario(Story.TEAM_ORGANIZATION_USER_MAIL_VERIFICATION)
-    AccountName userEmailVerification(String token, Username username, Password password);
+    AccountName userEmailVerification(@NotNull String token, @NotNull Username username, @NotNull Password password);
+
+    @Scenario(Story.TEAM_ORGANIZATION_USER_LOGIN)
+    AccountName userLogin(@NotNull String email, @NotNull Password password);
 
     @Transactional
     @Scenario(Story.TEAM_ORGANIZATION_INVITING_MEMBER)
-    ActivationTeam inviteNewAccount(Long teamId, String email, Privilege... privileges);
+    ActivationTeam inviteNewAccount(@NotNull Long teamId, @NotNull String email, @NotNull Privilege... privileges);
 }
