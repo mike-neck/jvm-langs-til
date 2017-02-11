@@ -28,4 +28,7 @@ public interface HashService {
     @NotNull
     @Contract("null -> fail")
     String hashPassword(@NotNull Password password);
+
+    @Contract("null,_->fail;_,null->fail")
+    boolean verifyPassword(@NotNull String passwordHash, @NotNull Password password);
 }

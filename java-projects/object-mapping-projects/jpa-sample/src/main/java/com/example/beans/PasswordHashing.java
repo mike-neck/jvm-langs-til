@@ -40,4 +40,9 @@ public class PasswordHashing {
     public String getPasswordHash(@NotNull @NonNull String password) {
         return argon2.hash(config.iteration(), config.memory(), config.parallel(), password);
     }
+
+    @Contract("null,_->fail;_,null->fail")
+    public boolean verify(@NotNull @NonNull String hash, @NotNull @NonNull String password) {
+        return argon2.verify(hash, password);
+    }
 }

@@ -59,6 +59,12 @@ public class HashServiceImpl implements HashService {
         return hashing.getPasswordHash(password.getValue());
     }
 
+    @Contract("null,_->fail;_,null->fail")
+    @Override
+    public boolean verifyPassword(@NotNull @NonNull String passwordHash, @NotNull @NonNull Password password) {
+        return hashing.verify(passwordHash, password.getValue());
+    }
+
     @NotNull
     private byte[] longToBytes(long value) {
         final ByteBuffer buf = ByteBuffer.allocate(Long.BYTES);
