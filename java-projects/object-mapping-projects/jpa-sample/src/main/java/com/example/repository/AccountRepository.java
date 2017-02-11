@@ -15,10 +15,7 @@
  */
 package com.example.repository;
 
-import com.example.entity.Account;
-import com.example.entity.AccountName;
-import com.example.entity.AccountPassword;
-import com.example.entity.Activation;
+import com.example.entity.*;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -68,4 +65,8 @@ public interface AccountRepository {
 
     @Contract("null -> fail")
     void delete(@NotNull Account account);
+
+    @Contract("null -> fail")
+    @NotNull
+    PaymentMethod save(@NotNull PaymentMethod paymentMethod);
 }

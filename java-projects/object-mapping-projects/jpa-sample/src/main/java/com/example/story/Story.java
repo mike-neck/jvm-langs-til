@@ -29,13 +29,16 @@ public enum Story {
             , "存在しない組み合わせの場合はログインできない"
             , "存在する組み合わせの場合はログイン成功"
     ),
-    TEAM_ORGANIZATION_TEAM_CREATION(1, 4, "ユーザーはチームを作成する"
+    TEAM_ORGANIZATION_CREATE_PAYMENT_METHOD(1, 4, "ユーザーは支払い方法を登録する"
+            , "識別できる名前を登録する"
+    ),
+    TEAM_ORGANIZATION_TEAM_CREATION(1, 5, "ユーザーはチームを作成する"
             , "チーム名を登録する"
     ),
-    TEAM_ORGANIZATION_INVITING_MEMBER(1, 5, "ユーザーは異なるユーザーにチーム権限とともに招待する"
+    TEAM_ORGANIZATION_INVITING_MEMBER(1, 6, "ユーザーは異なるユーザーにチーム権限とともに招待する"
             , "メンバーの権限、emailアドレスを登録する"
     ),
-    TEAM_ORGANIZATION_MEMBER_REGISTRATION(1, 6, "招待されたユーザーは受け取ったメール記載の認証用URLにアクセスしてアカウントの登録を行う"
+    TEAM_ORGANIZATION_MEMBER_REGISTRATION(1, 7, "招待されたユーザーは受け取ったメール記載の認証用URLにアクセスしてアカウントの登録を行う"
             , "名前、パスワードを登録する"
     );
 

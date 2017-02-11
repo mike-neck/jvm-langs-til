@@ -9,6 +9,7 @@
         <class>com.example.entity.Activation</class>
         <class>com.example.entity.ActivationTeam</class>
         <class>com.example.entity.Authority</class>
+        <class>com.example.entity.PaymentMethod</class>
         <class>com.example.entity.SystemTimeZone</class>
         <class>com.example.entity.Team</class>
         <class>com.example.entity.Task</class>

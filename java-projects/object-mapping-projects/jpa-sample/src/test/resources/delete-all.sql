@@ -7,4 +7,5 @@ DELETE FROM authority;
 DELETE FROM account_name;
 DELETE FROM account_password;
 DELETE FROM team;
+DELETE FROM payment_method;
 DELETE FROM account;

@@ -18,6 +18,7 @@ package com.example.repository;
 import com.example.entity.Account;
 import com.example.entity.AccountName;
 import com.example.entity.AccountPassword;
+import com.example.entity.PaymentMethod;
 import lombok.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -132,5 +133,13 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public void delete(@NotNull Account account) {
         em.remove(account);
+    }
+
+    @NotNull
+    @Override
+    public PaymentMethod save(@NotNull PaymentMethod paymentMethod) {
+        em.persist(paymentMethod);
+        em.flush();
+        return paymentMethod;
     }
 }

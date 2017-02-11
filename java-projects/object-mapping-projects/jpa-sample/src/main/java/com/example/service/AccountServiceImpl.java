@@ -30,6 +30,7 @@ import com.example.value.single.Password;
 import com.example.value.single.Username;
 import com.google.inject.persist.Transactional;
 import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
@@ -101,6 +102,16 @@ public class AccountServiceImpl implements AccountService {
                 .map(Tuple::getLeft)
                 .map(Account::getName)
                 .orElseThrow(() -> new NotFoundException(Account.class, email));
+    }
+
+    @NotNull
+    @Transactional
+    @Override
+    public PaymentMethod createPaymentMethod(@NotNull Long accountId, @NotNull String paymentMethodName) {
+        return accountRepository.findById(accountId)
+                .map(a -> new PaymentMethod(a, paymentMethodName, LocalDateTime.now(zoneId)))
+                .map(accountRepository::save)
+                .orElseThrow(notFound(Account.class, accountId));
     }
 
     @Transactional

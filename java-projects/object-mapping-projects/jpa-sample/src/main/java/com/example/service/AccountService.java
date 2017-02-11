@@ -15,10 +15,7 @@
  */
 package com.example.service;
 
-import com.example.entity.AccountName;
-import com.example.entity.Activation;
-import com.example.entity.ActivationTeam;
-import com.example.entity.Privilege;
+import com.example.entity.*;
 import com.example.story.Scenario;
 import com.example.story.Story;
 import com.example.value.single.Password;
@@ -38,6 +35,9 @@ public interface AccountService {
 
     @Scenario(Story.TEAM_ORGANIZATION_USER_LOGIN)
     AccountName userLogin(@NotNull String email, @NotNull Password password);
+
+    @Scenario(Story.TEAM_ORGANIZATION_CREATE_PAYMENT_METHOD)
+    PaymentMethod createPaymentMethod(@NotNull Long accountId, @NotNull String paymentMethodName);
 
     @Transactional
     @Scenario(Story.TEAM_ORGANIZATION_INVITING_MEMBER)

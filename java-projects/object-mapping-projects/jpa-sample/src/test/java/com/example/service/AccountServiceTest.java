@@ -15,10 +15,12 @@
  */
 package com.example.service;
 
+import com.example.TestHelper;
 import com.example.TestInitializer;
 import com.example.entity.Account;
 import com.example.entity.AccountName;
 import com.example.entity.Activation;
+import com.example.entity.PaymentMethod;
 import com.example.exception.AccountAlreadyExistsException;
 import com.example.exception.NotFoundException;
 import com.example.story.Scenario;
@@ -30,6 +32,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import javax.persistence.PersistenceException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -141,6 +145,55 @@ public class AccountServiceTest {
             } catch (NotFoundException e) {
                 assertEquals(Account.class, e.getEntityClass());
             }
+        }
+    }
+
+    @Scenario(Story.TEAM_ORGANIZATION_CREATE_PAYMENT_METHOD)
+    @Nested
+    class CreatePaymentMethodTest {
+
+        private static final String MAIL = "test@example.com";
+        private final Username username = new Username("test-name");
+        private final Password password = new Password("test-password");
+
+        private AccountName name;
+
+        @BeforeEach
+        void setup(AccountService service) {
+            final Activation activation = service.createNewAccount(MAIL);
+            name = service.userEmailVerification(activation.getToken(), username, password);
+        }
+
+        @Test
+        void userCanCreatePaymentMethod(AccountService service) {
+            final Long id = name.getAccount().getId();
+            final PaymentMethod paymentMethod = service.createPaymentMethod(id, "test-card");
+            assertNotNull(paymentMethod.getId());
+            assertEquals("test-card", paymentMethod.getName());
+        }
+
+        @Test
+        void userCannotCreatePaymentMethodWithExistingName(AccountService service) {
+            final Long id = name.getAccount().getId();
+            service.createPaymentMethod(id, "test-card");
+
+            try {
+                service.createPaymentMethod(id, "test-card");
+                fail("Unique key is applied to payment_method(account, name)");
+            } catch (RuntimeException e) {
+                assertTrue(e instanceof PersistenceException);
+            }
+        }
+
+        @Test
+        void userCanCreatePaymentMethodWithTheSameNameAsTheOtherUserCreated(AccountService service, TestHelper helper) {
+            final Long id = name.getAccount().getId();
+
+            final Account account = helper.createAccount("another@example.com", "another", "another");
+            service.createPaymentMethod(account.getId(), "test-card");
+
+            final PaymentMethod method = service.createPaymentMethod(id, "test-card");
+            assertEquals("test-card", method.getName());
         }
     }
 }
