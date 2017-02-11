@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Data
 @RequiredArgsConstructor
@@ -81,5 +82,12 @@ public class Tuple<L, R> {
             @NotNull @NonNull Functions.ExConsumer<? super R> cr) {
         //noinspection Contract
         return t -> t.consumeLeft(cl).consumeRight(cr);
+    }
+
+    @NotNull
+    @Contract("null->fail")
+    public static <L, R> Predicate<Tuple<L, R>> conditionTuple(@NotNull @NonNull Functions.ExPredicate<R> pr) {
+        //noinspection Contract
+        return t -> Functions.predicate(pr).test(t.right);
     }
 }

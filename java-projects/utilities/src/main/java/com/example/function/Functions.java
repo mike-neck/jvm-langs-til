@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public final class Functions {
@@ -115,6 +116,24 @@ public final class Functions {
         return () -> {
             try {
                 return es.get();
+            } catch (Throwable throwable) {
+                throw new ExecutionException(throwable);
+            }
+        };
+    }
+
+    @FunctionalInterface
+    public interface ExPredicate<A> {
+        boolean test(A a) throws Throwable;
+    }
+
+    @SuppressWarnings("Contract")
+    @NotNull
+    @Contract("null->fail")
+    public static <A> Predicate<A> predicate(@NotNull @NonNull ExPredicate<A> p) {
+        return a -> {
+            try {
+                return p.test(a);
             } catch (Throwable throwable) {
                 throw new ExecutionException(throwable);
             }
