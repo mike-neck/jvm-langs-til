@@ -8,6 +8,8 @@ ext {
     slf4j = "$slf4jGroup:$slf4jApiAf:$slf4jVersion"
     logback = "$logbackGroup:$logbackAf:$logbackVersion"
 
+    assertj = "$assertjGroup:$assertjCoreAf:$assertjVersion"
+
     supercsvDozer = "$supercsvGroup:$supercsvDozerAf:$supercsvVersion"
 
     flyway = "$flywayGroup:$flywayCore:$flywayVersion"
@@ -29,6 +31,7 @@ ext {
     springCloud = [
             kafka: "$springCloudGroup:$springCloudStreamKafka"
             , rabbitmq: "$springCloudGroup:$springCloudStreamRabbitMq"
+            , testSupport: "$springCloudGroup:$springCloudStreamTestSupport"
     ]
 
     bootstrap = "$webjars:$webjarsBootstrap:$webjarsBootstrapVersion"

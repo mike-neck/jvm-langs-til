@@ -30,6 +30,8 @@ dependencies {
     compile     springCloud.rabbitmq
     compile     springBootStarter.actuator
     testCompile springBootStarter.test
+    testCompile springCloud.testSupport
+    testCompile assertj
 }
 
 dependencyManagement {
