@@ -4,7 +4,7 @@ set -e
 
 echo "rootProject.name = '${PWD##*/}'" > settings.gradle
 
-find . -type d -maxdepth 4 | \
+find . -type d -maxdepth 5 | \
   grep -e "\./[a-z]\+\-projects" | \
   grep -v "/src/\?" | \
   grep -v "/build/\?" | \
