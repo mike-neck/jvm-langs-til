@@ -27,6 +27,7 @@ ext {
 
     springCloud = [
             kafka: "$springCloudGroup:$springCloudStreamKafka"
+            , rabbitmq: "$springCloudGroup:$springCloudStreamRabbitMq"
     ]
 
     bootstrap = "$webjars:$webjarsBootstrap:$webjarsBootstrapVersion"
