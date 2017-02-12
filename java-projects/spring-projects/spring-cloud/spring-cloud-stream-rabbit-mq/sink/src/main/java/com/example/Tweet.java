@@ -15,6 +15,7 @@
  */
 package com.example;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,7 @@ public class Tweet {
         private boolean result;
 
         // TODO フォーマットが有効にならない
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         private LocalDateTime time;
 

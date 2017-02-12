@@ -15,31 +15,13 @@
  */
 package com.example;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.time.LocalDateTime;
+@SpringBootApplication
+public class SinkApp {
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Tweet {
-
-    private String text;
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class WithResults {
-
-        private boolean result;
-
-        // TODO フォーマットが有効にならない
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        private LocalDateTime time;
-
-        private Tweet tweet;
+    public static void main(String[] args) {
+        SpringApplication.run(SinkApp.class, args);
     }
 }

@@ -15,31 +15,15 @@
  */
 package com.example;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
 
-import java.time.LocalDateTime;
+@EnableBinding(Sink.class)
+public class RabbitListener {
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Tweet {
-
-    private String text;
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class WithResults {
-
-        private boolean result;
-
-        // TODO フォーマットが有効にならない
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        private LocalDateTime time;
-
-        private Tweet tweet;
+    @StreamListener(Sink.INPUT)
+    public void logMessage(Tweet tweet) {
+        System.out.println(tweet);
     }
 }
