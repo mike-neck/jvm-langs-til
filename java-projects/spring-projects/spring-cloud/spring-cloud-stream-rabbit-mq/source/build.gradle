@@ -23,7 +23,12 @@ repositories {
 dependencies {
     compileOnly lombok
     compileOnly jetbrainsAnnotations
+
+    compile     jacksonDataType.jdk8
+    compile     jacksonDataType.jsr310
+
     compile     springCloud.rabbitmq
+    compile     springBootStarter.actuator
     testCompile springBootStarter.test
 }
 

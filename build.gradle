@@ -19,6 +19,7 @@ ext {
             dataJpa: "$springBoot:$starterDataJpa:$springBootVersion",
             security: "$springBoot:$starterSecurity:$springBootVersion",
             thymeleaf: "$springBoot:$starterThymeleaf:$springBootVersion",
+            actuator: "$springBoot:$starterActuatorAf:$springBootVersion",
             test: "$springBoot:$starterTest:$springBootVersion"
     ]
     springOAuth = "$springSecOAuthGroup:$springSecOAuthAf:$springSecOAuthVersion"
@@ -45,6 +46,11 @@ ext {
     guicePersist = "$guiceExtGroup:$guicePersistAf:$guiceVersion"
 
     eclipseLink = "$eclipseLinkGroup:$eclipseLinkJpaAf:$eclipseLinkVersion"
+
+    jacksonDataType = [
+            jdk8: "$jacksonDataTypeGroup:$jacksonDataTypeJdk8Af:$jacksonVersion"
+            , jsr310: "$jacksonDataTypeGroup:$jacksonDataTypeJsr310Af:$jacksonVersion"
+    ]
 
     genson = "$gensonGroup:$gensonAf:$gensonVersion"
 
