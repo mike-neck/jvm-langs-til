@@ -23,6 +23,12 @@ ext {
     ]
     springOAuth = "$springSecOAuthGroup:$springSecOAuthAf:$springSecOAuthVersion"
 
+    springCloudDep = "$springCloudGroup:$springCloudDependencies:$springCloudDepVersion"
+
+    springCloud = [
+            kafka: "$springCloudGroup:$springCloudStreamKafka"
+    ]
+
     bootstrap = "$webjars:$webjarsBootstrap:$webjarsBootstrapVersion"
     jquery = "$webjars:$webjarsJquery:$webjarsJqueryVersion"
 
