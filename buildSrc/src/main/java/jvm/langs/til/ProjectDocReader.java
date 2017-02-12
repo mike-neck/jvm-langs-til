@@ -13,15 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.value;
+package jvm.langs.til;
 
-import com.example.entity.Activation;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
-@Data
-@RequiredArgsConstructor
-public class AccountSelfRegistration {
-
-    private final Activation activation;
+public class ProjectDocReader {
 }

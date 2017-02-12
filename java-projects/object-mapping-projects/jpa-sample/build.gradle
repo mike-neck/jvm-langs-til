@@ -23,6 +23,8 @@ repositories {
 dependencies {
     compile         rootProject.project(':java-projects:utilities')
 
+    compile         rootProject.project(':java-projects:common-projects:entities')
+
     compile         eclipseLink
     compile         guice
     compile         guicePersist
