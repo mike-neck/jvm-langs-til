@@ -27,6 +27,8 @@ dependencies {
     compile     jacksonDataType.jdk8
     compile     jacksonDataType.jsr310
 
+    compile     rootProject.project(':java-projects:spring-projects:spring-cloud:spring-cloud-stream-rabbit-mq:value')
+
     compile     springCloud.rabbitmq
     compile     springBootStarter.actuator
     testCompile springBootStarter.test

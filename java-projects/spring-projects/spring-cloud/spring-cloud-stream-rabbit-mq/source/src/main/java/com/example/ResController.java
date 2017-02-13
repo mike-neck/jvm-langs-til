@@ -15,6 +15,7 @@
  */
 package com.example;
 
+import com.example.value.Tweet;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.web.bind.annotation.PostMapping;

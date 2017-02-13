@@ -15,16 +15,29 @@
  */
 package com.example;
 
+import com.example.data.Tuple;
 import com.example.value.Tweet;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@EnableBinding(Sink.class)
-public class RabbitListener {
+import java.util.List;
 
-    @StreamListener(Sink.INPUT)
-    public void logMessage(Tweet tweet) {
-        System.out.println(tweet);
+import static java.util.stream.Collectors.toList;
+
+@RestController
+public class LogView {
+
+    private final Store store;
+
+    public LogView(Store store) {
+        this.store = store;
+    }
+
+    @GetMapping
+    public List<Tweet> viewAll() {
+        return store.getList()
+                .stream()
+                .map(Tuple::getRight)
+                .collect(toList());
     }
 }

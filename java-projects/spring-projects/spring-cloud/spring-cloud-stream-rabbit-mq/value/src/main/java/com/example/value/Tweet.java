@@ -13,35 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.value;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Tweet {
 
     private String text;
 
     @Data
-    @AllArgsConstructor
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class WithResults {
 
         private boolean result;
-
-        // TODO フォーマットが有効にならない
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        private LocalDateTime time;
-
+        // TODO 本当はLocalDateTimeでやりたい
+        private String time;
         private Tweet tweet;
+
+        private static final DateTimeFormatter ISO = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
+        public WithResults(boolean result, LocalDateTime time, Tweet tweet) {
+            this.result = result;
+            this.time = time.format(ISO);
+            this.tweet = tweet;
+        }
     }
 }

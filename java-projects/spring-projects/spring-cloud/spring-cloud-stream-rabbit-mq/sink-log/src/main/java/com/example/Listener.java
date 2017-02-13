@@ -15,31 +15,22 @@
  */
 package com.example;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.example.value.Tweet;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
 
-import java.time.LocalDateTime;
+@EnableBinding(Sink.class)
+public class Listener {
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Tweet {
+    private final Store store;
 
-    private String text;
+    public Listener(Store store) {
+        this.store = store;
+    }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class WithResults {
-
-        private boolean result;
-
-        // TODO フォーマットが有効にならない
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        private LocalDateTime time;
-
-        private Tweet tweet;
+    @StreamListener(Sink.INPUT)
+    public void listen(Tweet tweet) {
+        store.add(tweet);
     }
 }

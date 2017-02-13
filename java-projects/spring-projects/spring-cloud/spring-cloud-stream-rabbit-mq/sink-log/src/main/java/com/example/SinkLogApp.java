@@ -15,16 +15,19 @@
  */
 package com.example;
 
-import com.example.value.Tweet;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
-@EnableBinding(Sink.class)
-public class RabbitListener {
+@SpringBootApplication
+public class SinkLogApp {
 
-    @StreamListener(Sink.INPUT)
-    public void logMessage(Tweet tweet) {
-        System.out.println(tweet);
+    public static void main(String[] args) {
+        SpringApplication.run(SinkLogApp.class, args);
+    }
+
+    @Bean
+    Store store() {
+        return new Store();
     }
 }
