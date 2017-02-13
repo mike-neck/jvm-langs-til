@@ -15,6 +15,7 @@
  */
 package com.example;
 
+import com.example.value.Tweet;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

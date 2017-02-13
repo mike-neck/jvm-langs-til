@@ -1,0 +1,7 @@
+applications:
+- name: rabbit-source-mike
+  memory: 512m
+  buildpack: java_buildpack
+  path: build/libs/
+  services:
+  - rabbitmq-binder

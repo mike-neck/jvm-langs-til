@@ -30,7 +30,7 @@ public class Store {
 
     private final List<Tuple<LocalDateTime, Tweet>> list = new CopyOnWriteArrayList<>();
 
-    public List<Tweet> add(Tweet tweet) {
+    public void add(Tweet tweet) {
         final LocalDateTime now = LocalDateTime.now();
         final LocalDateTime twenty = now.minusMinutes(20L);
         final List<Tuple<LocalDateTime, Tweet>> old = list.stream()
@@ -38,8 +38,5 @@ public class Store {
                 .collect(toList());
         list.removeAll(old);
         list.add(new Tuple<>(now, tweet));
-        return list.stream()
-                .map(Tuple::getRight)
-                .collect(toList());
     }
 }

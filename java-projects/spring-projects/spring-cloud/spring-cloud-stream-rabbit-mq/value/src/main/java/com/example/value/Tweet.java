@@ -39,7 +39,7 @@ public class Tweet {
         private String time;
         private Tweet tweet;
 
-        private static final DateTimeFormatter ISO = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+        private static final DateTimeFormatter ISO = DateTimeFormatter.ISO_DATE_TIME;
 
         public WithResults(boolean result, LocalDateTime time, Tweet tweet) {
             this.result = result;
