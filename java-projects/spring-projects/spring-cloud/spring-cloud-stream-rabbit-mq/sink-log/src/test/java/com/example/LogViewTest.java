@@ -32,18 +32,16 @@ public class LogViewTest {
 
     private Listener listener;
 
-    private List<Tuple<LocalDateTime, Tweet>> list;
-
     @Before
     public void setup() {
         Store store = new Store();
-        this.list = store.getList();
+        List<Tuple<LocalDateTime, Tweet>> list = store.getList();
         this.logView = new LogView(store);
         this.listener = new Listener(store);
 
         final LocalDateTime now = LocalDateTime.now();
-        this.list.add(new Tuple<>(now.minusMinutes(20L), new Tweet("20 min before.")));
-        this.list.add(new Tuple<>(now.minusMinutes(19L), new Tweet("19 min before.")));
+        list.add(new Tuple<>(now.minusMinutes(20L), new Tweet("20 min before.")));
+        list.add(new Tuple<>(now.minusMinutes(19L), new Tweet("19 min before.")));
     }
 
     @Test
