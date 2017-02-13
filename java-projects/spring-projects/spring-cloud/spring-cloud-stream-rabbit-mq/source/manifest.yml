@@ -1,7 +1,7 @@
 applications:
 - name: rabbit-source-mike
   memory: 512m
-  buildpack: java_buildpack
-  path: build/libs/
+  buildpack: java_buildpack_offline
+  path: build/libs/source.jar
   services:
   - rabbitmq-binder
