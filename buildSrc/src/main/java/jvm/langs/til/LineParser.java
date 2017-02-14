@@ -13,20 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.service;
+package jvm.langs.til;
 
-import com.example.entity.Team;
-import com.example.story.Scenario;
-import com.example.story.Story;
-import com.example.value.single.AccountId;
-import com.example.value.single.PaymentMethodName;
-import com.google.inject.persist.Transactional;
-import org.jetbrains.annotations.NotNull;
-
-public interface TeamService {
-
-    @Transactional
-    @Scenario(Story.TEAM_ORGANIZATION_TEAM_CREATION)
-    @NotNull
-    Team createNewTeam(@NotNull AccountId aid, @NotNull PaymentMethodName payment, @NotNull String name);
+public class LineParser {
 }

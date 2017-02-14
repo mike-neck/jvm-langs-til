@@ -17,15 +17,14 @@ package com.example.service;
 
 import com.example.TestHelper;
 import com.example.TestInitializer;
-import com.example.entity.Account;
-import com.example.entity.AccountName;
-import com.example.entity.Activation;
-import com.example.entity.PaymentMethod;
+import com.example.entity.*;
 import com.example.exception.AccountAlreadyExistsException;
 import com.example.exception.NotFoundException;
 import com.example.story.Scenario;
 import com.example.story.Story;
+import com.example.value.single.AccountId;
 import com.example.value.single.Password;
+import com.example.value.single.PaymentMethodName;
 import com.example.value.single.Username;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -194,6 +193,40 @@ public class AccountServiceTest {
 
             final PaymentMethod method = service.createPaymentMethod(id, "test-card");
             assertEquals("test-card", method.getName());
+        }
+    }
+
+    @Scenario(Story.TEAM_ORGANIZATION_TEAM_CREATION)
+    @Nested
+    class TeamCreationTest {
+
+        private Account account;
+        private PaymentMethod payment;
+        private Account noPayment;
+
+        @BeforeEach
+        void setup(TestHelper helper) {
+            this.account = helper.createAccount("test@example.com", "test-user", "test-password");
+            this.payment = helper.createPayment(account, "test-payment");
+            this.noPayment = helper.createAccount("no-payment@example.com", "no-payment", "no-payment");
+        }
+
+        @Test
+        void accountWithPaymentCanCreateTeam(AccountService service) {
+            final Team team = service.createNewTeam(new AccountId(account.getId()),
+                    new PaymentMethodName(payment.getName()),
+                    "test-team");
+            assertNotNull(team);
+        }
+
+        @Test
+        void accountWithoutPaymentCannotCreateTeam(AccountService service) {
+            try {
+                service.createNewTeam(new AccountId(account.getId()), new PaymentMethodName("test"), "cannot-create");
+                fail("account without payment cannot create team.");
+            } catch (Exception e) {
+                assertTrue(e instanceof NotFoundException);
+            }
         }
     }
 }

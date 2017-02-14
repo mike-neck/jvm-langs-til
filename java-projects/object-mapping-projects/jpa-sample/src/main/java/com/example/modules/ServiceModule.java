@@ -22,7 +22,6 @@ public class ServiceModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(SystemTimeZoneService.class).to(SystemTimeZoneServiceImpl.class);
-        bind(TeamService.class).to(TeamServiceImpl.class);
         bind(AccountService.class).to(AccountServiceImpl.class);
         bind(HashService.class).to(HashServiceImpl.class);
     }

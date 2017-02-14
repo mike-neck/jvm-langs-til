@@ -15,6 +15,7 @@
  */
 package com.example.service;
 
+import com.example.data.ExOptional;
 import com.example.entity.*;
 import com.example.exception.AccountAlreadyExistsException;
 import com.example.exception.BadRequestException;
@@ -24,10 +25,7 @@ import com.example.repository.AccountRepository;
 import com.example.repository.ActivationRepository;
 import com.example.repository.TeamRepository;
 import com.example.data.Tuple;
-import com.example.value.single.ActivationExpiration;
-import com.example.value.single.CreatedAt;
-import com.example.value.single.Password;
-import com.example.value.single.Username;
+import com.example.value.single.*;
 import com.google.inject.persist.Transactional;
 import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
@@ -111,6 +109,21 @@ public class AccountServiceImpl implements AccountService {
                 .map(a -> new PaymentMethod(a, paymentMethodName, LocalDateTime.now(zoneId)))
                 .map(accountRepository::save)
                 .orElseThrow(notFound(Account.class, accountId));
+    }
+
+    @NotNull
+    @Transactional
+    @Override
+    public Team createNewTeam(
+            @NotNull @NonNull AccountId aid,
+            @NotNull @NonNull PaymentMethodName payment,
+            @NotNull @NonNull String name) {
+        return ExOptional.of(accountRepository.findAccountById(aid.getValue()), notFound(Account.class, aid))
+                .flatMap(a -> accountRepository.findPaymentByAccountAndName(a, payment.getValue()),
+                        a -> new NotFoundException(PaymentMethod.class, payment))
+                .map(p -> new Team(name, p, LocalDateTime.now(zoneId)))
+                .map(teamRepository::save)
+                .getOrThrow();
     }
 
     @NotNull

@@ -3,3 +3,7 @@
 set -eu
 
 docker-compose up -d
+
+sleep 5s
+
+docker ps

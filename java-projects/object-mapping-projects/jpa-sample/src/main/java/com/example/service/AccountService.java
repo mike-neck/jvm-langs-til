@@ -18,7 +18,9 @@ package com.example.service;
 import com.example.entity.*;
 import com.example.story.Scenario;
 import com.example.story.Story;
+import com.example.value.single.AccountId;
 import com.example.value.single.Password;
+import com.example.value.single.PaymentMethodName;
 import com.example.value.single.Username;
 import com.google.inject.persist.Transactional;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +40,11 @@ public interface AccountService {
 
     @Scenario(Story.TEAM_ORGANIZATION_CREATE_PAYMENT_METHOD)
     PaymentMethod createPaymentMethod(@NotNull Long accountId, @NotNull String paymentMethodName);
+
+    @Transactional
+    @Scenario(Story.TEAM_ORGANIZATION_TEAM_CREATION)
+    @NotNull
+    Team createNewTeam(@NotNull AccountId aid, @NotNull PaymentMethodName payment, @NotNull String name);
 
     @Transactional
     @Scenario(Story.TEAM_ORGANIZATION_INVITING_MEMBER)
