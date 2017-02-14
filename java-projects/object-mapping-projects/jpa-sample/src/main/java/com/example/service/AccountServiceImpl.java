@@ -28,6 +28,7 @@ import com.example.data.Tuple;
 import com.example.value.single.*;
 import com.google.inject.persist.Transactional;
 import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
@@ -39,6 +40,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.example.exception.NotFoundException.notFound;
+import static java.util.stream.Collectors.toSet;
 
 public class AccountServiceImpl implements AccountService {
 
@@ -121,9 +123,32 @@ public class AccountServiceImpl implements AccountService {
         return ExOptional.of(accountRepository.findAccountById(aid.getValue()), notFound(Account.class, aid))
                 .flatMap(a -> accountRepository.findPaymentByAccountAndName(a, payment.getValue()),
                         a -> new NotFoundException(PaymentMethod.class, payment))
-                .map(p -> new Team(name, p, LocalDateTime.now(zoneId)))
-                .map(teamRepository::save)
+                .map(Tuple.mkTuple(p -> new Team(name, p, LocalDateTime.now(zoneId))))
+                .map(Tuple.mapTuple(teamRepository::save))
+                .map(Tuple::reverse)
+                .map(Tuple.mapTuple(PaymentMethod::getAccount))
+                .map(Tuple.mkTuple(AccountServiceImpl::createOwnerAuthorities))
+                .map(Tuple.mapTuple(teamRepository::save))
+                .map(Tuple.bimapTuple((t, s) -> setPrivileges(t.getRight(), s)))
+                .map(Tuple.mapTuple(accountRepository::save))
+                .map(Tuple::getLeft)
+                .map(Tuple::getLeft)
                 .getOrThrow();
+    }
+
+    private static Set<Authority> createOwnerAuthorities(Tuple<Team, Account> tuple) {
+        return Privilege.ownerPrivileges()
+                .stream()
+                .map(p -> new Authority(tuple.getRight(), tuple.getLeft(), p))
+                .collect(toSet());
+    }
+
+    @NotNull
+    @Contract("null,_->fail;_,null->fail")
+    private static Account setPrivileges(@NotNull @NonNull Account account,
+            @NotNull @NonNull Set<Authority> privileges) {
+        account.setPrivileges(privileges);
+        return account;
     }
 
     @NotNull

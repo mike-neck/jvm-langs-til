@@ -26,7 +26,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "authority")
+@Table(
+        name = "authority"
+        , uniqueConstraints = {@UniqueConstraint(columnNames = {
+        "account_id", "team_id", "privilege"
+})})
 public class Authority implements Serializable {
 
     @SuppressWarnings("LongLiteralEndingWithLowercaseL")

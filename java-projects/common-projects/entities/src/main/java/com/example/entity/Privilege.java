@@ -15,6 +15,13 @@
  */
 package com.example.entity;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public enum Privilege {
 
     PRIVATE_EDIT    ( 10)
@@ -39,5 +46,18 @@ public enum Privilege {
 
     public int getCode() {
         return code;
+    }
+
+    @NotNull
+    @Contract(" -> !null")
+    public static Set<Privilege> ownerPrivileges() {
+        return new HashSet<>(Arrays.asList(
+                PRIVATE_EDIT
+                , PRIVATE_REFER
+                , MEMBER_EDIT
+                , MEMBER_REFER
+                , TEAM_EDIT
+                , TEAM_REFER
+        ));
     }
 }

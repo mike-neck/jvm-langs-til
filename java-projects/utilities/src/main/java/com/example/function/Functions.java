@@ -20,10 +20,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public final class Functions {
 
@@ -55,7 +52,7 @@ public final class Functions {
 
     @FunctionalInterface
     public interface ExConsumer<T> {
-        void accept(T t) throws Throwable;
+        void accept(@NotNull T t) throws Throwable;
     }
 
     @NotNull
@@ -80,7 +77,7 @@ public final class Functions {
 
     @FunctionalInterface
     public interface ExFunction<A, B> {
-        B apply(A a) throws Throwable;
+        B apply(@NotNull A a) throws Throwable;
         @NotNull
         default <C> ExFunction<A, C> then(@NotNull @NonNull ExFunction<B, C> f) {
             return a -> f.apply(this.apply(a));
@@ -94,6 +91,25 @@ public final class Functions {
         return a -> {
             try {
                 return f.apply(a);
+            } catch (Throwable throwable) {
+                throw new ExecutionException(throwable);
+            }
+        };
+    }
+
+    @FunctionalInterface
+    public interface ExBiFunction<A, B, C> {
+        @NotNull
+        C apply(@NotNull A a, @NotNull B b) throws Throwable;
+    }
+
+    @NotNull
+    @Contract("null->fail")
+    public static <A, B, C> BiFunction<A, B, C> biFunction(@NotNull @NonNull ExBiFunction<A, B, C> f) {
+        //noinspection Contract
+        return (a, b) -> {
+            try {
+                return f.apply(a, b);
             } catch (Throwable throwable) {
                 throw new ExecutionException(throwable);
             }
@@ -124,7 +140,7 @@ public final class Functions {
 
     @FunctionalInterface
     public interface ExPredicate<A> {
-        boolean test(A a) throws Throwable;
+        boolean test(@NotNull A a) throws Throwable;
     }
 
     @SuppressWarnings("Contract")

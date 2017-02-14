@@ -15,6 +15,7 @@
  */
 package com.example.repository;
 
+import com.example.entity.Authority;
 import com.example.entity.Team;
 import com.example.exception.NotFoundException;
 import lombok.NonNull;
@@ -25,7 +26,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 public class TeamRepositoryImpl implements TeamRepository {
 
@@ -42,6 +45,14 @@ public class TeamRepositoryImpl implements TeamRepository {
     public Team save(@NotNull @NonNull Team team) {
         em.persist(team);
         return team;
+    }
+
+    @NotNull
+    @Contract("null -> fail")
+    @Override
+    public Set<Authority> save(@NotNull @NonNull Set<Authority> authorities) {
+        authorities.forEach(em::persist);
+        return authorities;
     }
 
     @NotNull

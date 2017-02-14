@@ -39,6 +39,10 @@ public class Tuple<L, R> {
         return new Tuple<>(left, Functions.function(f).apply(right));
     }
 
+    public <N> Tuple<L, N> bimap(@NotNull @NonNull Functions.ExBiFunction<? super L, ? super R, ? extends N> f) {
+        return new Tuple<>(left, Functions.biFunction(f).apply(left, right));
+    }
+
     @NotNull
     public Tuple<R, L> reverse() {
         return new Tuple<>(right, left);
@@ -74,6 +78,14 @@ public class Tuple<L, R> {
             @NotNull @NonNull Functions.ExFunction<? super R, ? extends N> f) {
         //noinspection Contract
         return t -> new Tuple<>(t.left, Functions.function(f).apply(t.right));
+    }
+
+    @NotNull
+    @Contract("null->fail")
+    public static <L, R, N> Function<Tuple<L, R>, Tuple<L, N>> bimapTuple(
+            @NotNull @NonNull Functions.ExBiFunction<? super L, ? super R, ? extends N> f) {
+        //noinspection Contract
+        return t -> new Tuple<>(t.left, Functions.biFunction(f).apply(t.left, t.right));
     }
 
     @NotNull

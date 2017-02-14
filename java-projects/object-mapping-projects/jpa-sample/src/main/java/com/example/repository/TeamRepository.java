@@ -15,15 +15,22 @@
  */
 package com.example.repository;
 
+import com.example.entity.Authority;
 import com.example.entity.Team;
 import lombok.NonNull;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface TeamRepository {
 
     Team save(Team team);
+
+    @NotNull
+    @Contract("null -> fail")
+    Set<Authority> save(Set<Authority> authorities);
 
     Optional<Team> findById(Long id);
 
