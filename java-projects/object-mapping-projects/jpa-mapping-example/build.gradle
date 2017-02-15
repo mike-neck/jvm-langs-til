@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath junit5PluginJar
+        classpath jpaSchemaGradlePlugin
+    }
+}
+
+apply plugin: 'java'
+apply plugin: junit5Plugin
+apply plugin: jpaSchemaGen
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile         eclipseLink
+    compile         guice
+    compile         guicePersist
+
+    compileOnly     jetbrainsAnnotations
+    compileOnly     lombok
+
+    testCompile     junit5
+}
+
+generateSchema {
+    def outputDir = "${buildDir}/ddl"
+    def fileName = 'create.sql'
+
+    project.tasks.generateSchema.outputs.file file("$outputDir/$fileName")
+
+    vendor = 'eclipselink'
+    packageToScan = ['com.example.entity', 'com.example.converter']
+    scriptAction = 'create'
+    format = true
+
+    createOutputFileName = fileName
+    outputDirectory = file(outputDir)
+    databaseProductName = 'MySQL'
+}
