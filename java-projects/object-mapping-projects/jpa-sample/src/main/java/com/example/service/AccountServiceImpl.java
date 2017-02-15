@@ -113,16 +113,15 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(notFound(Account.class, accountId));
     }
 
-    @NotNull
     @Transactional
     @Override
     public Team createNewTeam(
             @NotNull @NonNull AccountId aid,
-            @NotNull @NonNull PaymentMethodName payment,
+            @NonNull PaymentMethodId pid,
             @NotNull @NonNull String name) {
         return ExOptional.of(accountRepository.findAccountById(aid.getValue()), notFound(Account.class, aid))
-                .flatMap(a -> accountRepository.findPaymentByAccountAndName(a, payment.getValue()),
-                        a -> new NotFoundException(PaymentMethod.class, payment))
+                .flatMap(a -> accountRepository.findPaymentByAccountAndId(a, pid.getValue()),
+                        a -> new NotFoundException(PaymentMethod.class, pid))
                 .map(Tuple.mkTuple(p -> new Team(name, p, LocalDateTime.now(zoneId))))
                 .map(Tuple.mapTuple(teamRepository::save))
                 .map(Tuple::reverse)
@@ -136,7 +135,9 @@ public class AccountServiceImpl implements AccountService {
                 .getOrThrow();
     }
 
-    private static Set<Authority> createOwnerAuthorities(Tuple<Team, Account> tuple) {
+    @NotNull
+    @Contract("null->fail")
+    private static Set<Authority> createOwnerAuthorities(@NotNull @NonNull Tuple<Team, Account> tuple) {
         return Privilege.ownerPrivileges()
                 .stream()
                 .map(p -> new Authority(tuple.getRight(), tuple.getLeft(), p))

@@ -26,9 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class AccountRepositoryImpl implements AccountRepository {
@@ -143,19 +141,18 @@ public class AccountRepositoryImpl implements AccountRepository {
         return paymentMethod;
     }
 
-    @NotNull
     @Contract("null,_->fail;_,null->fail")
     @Override
-    public Optional<PaymentMethod> findPaymentByAccountAndName(
+    public Optional<PaymentMethod> findPaymentByAccountAndId(
             @NotNull @NonNull Account account,
-            @NotNull @NonNull String name) {
+            @NotNull @NonNull Long pid) {
         return em.createQuery(
                 "select p from PaymentMethod  p " +
                         "where p.account = :account " +
-                        "and p.name = :name",
+                        "and p.id = :pid",
                 PaymentMethod.class)
                 .setParameter("account", account)
-                .setParameter("name", name)
+                .setParameter("pid", pid)
                 .getResultList()
                 .stream()
                 .findFirst();

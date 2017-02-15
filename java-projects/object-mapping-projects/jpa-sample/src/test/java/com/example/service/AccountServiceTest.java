@@ -22,10 +22,7 @@ import com.example.exception.AccountAlreadyExistsException;
 import com.example.exception.NotFoundException;
 import com.example.story.Scenario;
 import com.example.story.Story;
-import com.example.value.single.AccountId;
-import com.example.value.single.Password;
-import com.example.value.single.PaymentMethodName;
-import com.example.value.single.Username;
+import com.example.value.single.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -214,18 +211,31 @@ public class AccountServiceTest {
         @Test
         void accountWithPaymentCanCreateTeam(AccountService service) {
             final Team team = service.createNewTeam(new AccountId(account.getId()),
-                    new PaymentMethodName(payment.getName()),
+                    new PaymentMethodId(payment.getId()),
                     "test-team");
             assertNotNull(team);
         }
 
         @Test
-        void accountWithoutPaymentCannotCreateTeam(AccountService service) {
+        void accountWithUnknownPaymentCanNotCreateTeam(AccountService service) {
             try {
-                service.createNewTeam(new AccountId(account.getId()), new PaymentMethodName("test"), "cannot-create");
+                service.createNewTeam(new AccountId(account.getId()), new PaymentMethodId(0L), "cannot-create");
+                fail("not existing payment method.");
+            } catch (Exception e) {
+                assertTrue(e instanceof NotFoundException);
+            }
+        }
+
+        @SuppressWarnings("ConstantConditions")
+        @Test
+        void accountWithoutPaymentCanNotCreateTeam(AccountService service) {
+            try {
+                service.createNewTeam(new AccountId(noPayment.getId()), new PaymentMethodId(payment.getId()),
+                        "cannot-create");
                 fail("account without payment cannot create team.");
             } catch (Exception e) {
                 assertTrue(e instanceof NotFoundException);
+                assertTrue(((NotFoundException) e).getEntityClass().equals(PaymentMethod.class));
             }
         }
     }
