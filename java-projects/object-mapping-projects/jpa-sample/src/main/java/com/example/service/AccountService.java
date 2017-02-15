@@ -22,6 +22,8 @@ import com.example.value.single.*;
 import com.google.inject.persist.Transactional;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
+
 public interface AccountService {
 
     @Transactional
@@ -44,5 +46,5 @@ public interface AccountService {
 
     @Transactional
     @Scenario(Story.TEAM_ORGANIZATION_INVITING_MEMBER)
-    ActivationTeam inviteNewAccount(@NotNull Long teamId, @NotNull String email, @NotNull Privilege... privileges);
+    ActivationTeam inviteNewAccount(@NotNull Long teamId, @NotNull String email, @NotNull Set<Privilege> privileges);
 }

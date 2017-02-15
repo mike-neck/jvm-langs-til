@@ -156,14 +156,13 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public ActivationTeam inviteNewAccount(@NotNull @NonNull Long teamId, @NotNull @NonNull String email,
-            @NotNull @NonNull Privilege... privileges) {
-        if (privileges.length == 0) {
+            @NotNull @NonNull Set<Privilege> privileges) {
+        if (privileges.size() == 0) {
             throw new BadRequestException(AccountServiceImpl.class, "inviteNewAccount",
                     BadRequest.INVALID_NUMBER_OF_PARAMETERS,
                     "privileges");
         }
         final Team team = teamRepository.findById(teamId).orElseThrow(notFound(Team.class, teamId));
-        final Set<Privilege> ps = new HashSet<>(Arrays.asList(privileges));
         final LocalDateTime now = LocalDateTime.now(zoneId);
 
         final Optional<Account> accOpt = accountRepository.findByEmail(email);
@@ -174,7 +173,7 @@ public class AccountServiceImpl implements AccountService {
                 hashService.generateToken(email, now), new CreatedAt(now));
         activationRepository.save(activation);
 
-        final ActivationTeam activationTeam = new ActivationTeam(team, activation, ps, now);
+        final ActivationTeam activationTeam = new ActivationTeam(team, activation, privileges, now);
         return activationRepository.save(activationTeam);
     }
 }

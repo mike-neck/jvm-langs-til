@@ -24,17 +24,16 @@ import java.util.Set;
 
 public enum Privilege {
 
-    PRIVATE_EDIT    ( 10)
-    , PRIVATE_REFER ( 20)
-
-    , MEMBER_EDIT   ( 30)
-    , MEMBER_REFER  ( 40)
-
-    , TEAM_EDIT     ( 50)
-    , TEAM_REFER    ( 60)
-
-    , SYSTEM_EDIT   (200)
-    , SYSTEM_REFER  (300)
+    PRIVATE_EDIT(10),
+    PRIVATE_REFER(20),
+    MEMBER_EDIT(30),
+    MEMBER_REFER(40),
+    MEMBER_CREATION(50),
+    PROJECT_CREATION(60),
+    TEAM_EDIT(70),
+    TEAM_REFER(80),
+    SYSTEM_EDIT(200),
+    SYSTEM_REFER(300)
 
     ;
 
@@ -56,6 +55,32 @@ public enum Privilege {
                 , PRIVATE_REFER
                 , MEMBER_EDIT
                 , MEMBER_REFER
+                , MEMBER_CREATION
+                , TEAM_EDIT
+                , TEAM_REFER
+        ));
+    }
+
+    @NotNull
+    @Contract("-> !null")
+    public static Set<Privilege> userPrivileges() {
+        return new HashSet<>(Arrays.asList(
+                PRIVATE_EDIT
+                , PRIVATE_REFER
+                , MEMBER_REFER
+        ));
+    }
+
+    @NotNull
+    @Contract("-> !null")
+    public static Set<Privilege> adminPrivileges() {
+        return new HashSet<>(Arrays.asList(
+                PRIVATE_EDIT
+                , PRIVATE_REFER
+                , MEMBER_EDIT
+                , MEMBER_REFER
+                , MEMBER_CREATION
+                , PROJECT_CREATION
                 , TEAM_EDIT
                 , TEAM_REFER
         ));

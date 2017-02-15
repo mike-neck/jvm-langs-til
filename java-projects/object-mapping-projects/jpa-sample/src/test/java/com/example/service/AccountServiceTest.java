@@ -19,7 +19,9 @@ import com.example.TestHelper;
 import com.example.TestInitializer;
 import com.example.entity.*;
 import com.example.exception.AccountAlreadyExistsException;
+import com.example.exception.BadRequestException;
 import com.example.exception.NotFoundException;
+import com.example.exception.type.BadRequest;
 import com.example.story.Scenario;
 import com.example.story.Story;
 import com.example.value.single.*;
@@ -30,6 +32,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.persistence.PersistenceException;
+
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -236,6 +240,54 @@ public class AccountServiceTest {
             } catch (Exception e) {
                 assertTrue(e instanceof NotFoundException);
                 assertTrue(((NotFoundException) e).getEntityClass().equals(PaymentMethod.class));
+            }
+        }
+    }
+
+    @Scenario(Story.TEAM_ORGANIZATION_INVITING_MEMBER)
+    @Nested
+    class InviteNewAccountTest {
+
+        private Account account;
+        private PaymentMethod payment;
+        private Team team;
+
+        @BeforeEach
+        void setup(TestHelper helper) {
+            account = helper.createAccount("test@localhost", "test-user", "test-pass");
+            payment = helper.createPayment(account, "payment");
+            team = helper.createTeam(account, payment, "team-name");
+        }
+
+        @Test
+        void invitingNewAccountWithUserPrivileges(AccountService service) {
+            final ActivationTeam activation = service.inviteNewAccount(team.getId(), "user@localhost",
+                    Privilege.userPrivileges());
+            assertNotNull(activation);
+            assertNotNull(activation.getActivation());
+            assertNotNull(activation.getActivation().getAccount());
+            assertEquals(3, activation.getPrivileges().size());
+        }
+
+        @Test
+        void invitingNewAccountWithAdminPrivileges(AccountService service) {
+            final ActivationTeam at = service.inviteNewAccount(team.getId(), "admin@localhost",
+                    Privilege.adminPrivileges());
+            assertNotNull(at);
+            assertNotNull(at.getActivation());
+            assertNotNull(at.getActivation().getAccount());
+            assertEquals(8, at.getPrivileges().size());
+        }
+
+        @SuppressWarnings("ConstantConditions")
+        @Test
+        void invitingNewAccountWithNoPrivilegeWillBeFail(AccountService service) {
+            try {
+                service.inviteNewAccount(team.getId(), "fail@localhost", Collections.emptySet());
+                fail("cannot store no privilege user.");
+            } catch (Exception e) {
+                assertTrue(e instanceof BadRequestException);
+                assertEquals(BadRequest.INVALID_NUMBER_OF_PARAMETERS, ((BadRequestException) e).getReason());
             }
         }
     }

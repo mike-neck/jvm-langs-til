@@ -18,8 +18,11 @@ package com.example;
 import com.example.entity.Account;
 import com.example.entity.Activation;
 import com.example.entity.PaymentMethod;
+import com.example.entity.Team;
 import com.example.service.AccountService;
+import com.example.value.single.AccountId;
 import com.example.value.single.Password;
+import com.example.value.single.PaymentMethodId;
 import com.example.value.single.Username;
 
 import javax.inject.Inject;
@@ -45,5 +48,13 @@ public class TestHelper {
 
     public PaymentMethod createPayment(Account account, String methodName) {
         return accountService.createPaymentMethod(account.getId(), methodName);
+    }
+
+    public Team createTeam(Account account, PaymentMethod payment, String teamName) {
+        return accountService.createNewTeam(
+                new AccountId(account.getId())
+                , new PaymentMethodId(payment.getId())
+                , teamName
+        );
     }
 }
