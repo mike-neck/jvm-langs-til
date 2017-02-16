@@ -25,6 +25,8 @@ dependencies {
     compile         guice
     compile         guicePersist
 
+    compile         'com.github.marschall:threeten-jpa:1.5.1'
+
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
 
