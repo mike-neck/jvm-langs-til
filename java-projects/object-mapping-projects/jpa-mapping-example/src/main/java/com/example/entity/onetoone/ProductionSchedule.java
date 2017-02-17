@@ -29,7 +29,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "production_schedule",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"productName"})}
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"product_name"})}
 )
 @NamedQueries({
         @NamedQuery(
@@ -45,12 +45,12 @@ public class ProductionSchedule implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "product_name", length = 32)
+    @Column(name = "product_name", length = 12, nullable = false)
     private String productName;
 
     @Convert(converter = LocalDateTimeConverter.class)
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "production_expected")
+    @Column(name = "production_expected", nullable = false)
     private LocalDateTime productionExpected;
 
     public ProductionSchedule(String productName, LocalDateTime productionExpected) {

@@ -19,16 +19,30 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.jupiter.api.extension.*;
 
-public class InjectorInitializer implements BeforeAllCallback, ParameterResolver {
+import javax.persistence.EntityManager;
+
+public class InjectorInitializer implements BeforeAllCallback, BeforeEachCallback, ParameterResolver {
 
     private static final ExtensionContext.Namespace NAMESPACE =
             ExtensionContext.Namespace.create(InjectorInitializer.class, Injector.class);
 
+    private static final JpaInitialize.Module MODULE = new JpaInitialize.Module();
+
     @Override
     public void beforeAll(ContainerExtensionContext context) throws Exception {
         final ExtensionContext.Store store = context.getStore(NAMESPACE);
-        final Injector injector = Guice.createInjector(new JpaInitialize.Module());
-        store.put(InjectorInitializer.class, injector);
+        final Injector injector = store.getOrComputeIfAbsent(MODULE, Guice::createInjector, Injector.class);
+        final JpaInitialize initializer = store.getOrComputeIfAbsent(JpaInitialize.class, injector::getInstance,
+                JpaInitialize.class);
+        initializer.init();
+    }
+
+    @Override
+    public void beforeEach(TestExtensionContext context) throws Exception {
+        final ExtensionContext.Store store = context.getStore(NAMESPACE);
+        final Injector injector = store.get(MODULE, Injector.class);
+        final JpaInitialize initializer = store.get(JpaInitialize.class, JpaInitialize.class);
+        initializer.cleanDb(injector.getInstance(EntityManager.class));
     }
 
     @Override
@@ -41,6 +55,6 @@ public class InjectorInitializer implements BeforeAllCallback, ParameterResolver
     @Override
     public Object resolve(ParameterContext parameterContext, ExtensionContext extensionContext)
             throws ParameterResolutionException {
-        return extensionContext.getStore(NAMESPACE).get(InjectorInitializer.class);
+        return extensionContext.getStore(NAMESPACE).get(MODULE);
     }
 }

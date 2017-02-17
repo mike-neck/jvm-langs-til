@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
-    <persistence-unit name="mapping" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="jpa-mapping-example" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
         <class>com.github.marschall.threeten.jpa.LocalDateTimeConverter</class>
         <class>com.github.marschall.threeten.jpa.LocalDateConverter</class>
 
+        <class>com.example.entity.onetoone.ProductionSchedule</class>
+        <class>com.example.entity.onetoone.ProductionResult</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jpa-mapping-example"/>

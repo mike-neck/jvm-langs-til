@@ -40,6 +40,6 @@ public class ProductionResult implements Serializable {
 
     @Convert(converter = LocalDateTimeConverter.class)
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "production_actual")
+    @Column(name = "production_actual", nullable = false)
     private LocalDateTime productionActual;
 }
