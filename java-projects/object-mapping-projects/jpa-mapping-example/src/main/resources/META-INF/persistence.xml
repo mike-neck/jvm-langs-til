@@ -6,6 +6,9 @@
         <class>com.github.marschall.threeten.jpa.LocalDateTimeConverter</class>
         <class>com.github.marschall.threeten.jpa.LocalDateConverter</class>
 
+        <class>com.example.entity.onetomany.Artist</class>
+        <class>com.example.entity.onetomany.ArtistDispatchContract</class>
+
         <class>com.example.entity.onetoone.ProductionSchedule</class>
         <class>com.example.entity.onetoone.ProductionResult</class>
 

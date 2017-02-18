@@ -98,6 +98,17 @@ public class Tuple<L, R> {
 
     @NotNull
     @Contract("null->fail")
+    public static <L, R> Function<Tuple<L, R>, Tuple<L, R>> peekTuple(
+            @NotNull @NonNull Functions.ExConsumer<? super Tuple<L, R>> c) {
+        //noinspection Contract
+        return t -> {
+            Functions.consumer(c).accept(t);
+            return t;
+        };
+    }
+
+    @NotNull
+    @Contract("null->fail")
     public static <L, R> Predicate<Tuple<L, R>> conditionTuple(@NotNull @NonNull Functions.ExPredicate<R> pr) {
         //noinspection Contract
         return t -> Functions.predicate(pr).test(t.right);
