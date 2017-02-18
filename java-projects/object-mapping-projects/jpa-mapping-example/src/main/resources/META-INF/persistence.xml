@@ -9,6 +9,11 @@
         <class>com.example.entity.onetomany.Artist</class>
         <class>com.example.entity.onetomany.ArtistDispatchContract</class>
 
+        <class>com.example.entity.onetomany.File</class>
+        <class>com.example.entity.onetomany.Permission</class>
+        <class>com.example.entity.onetomany.Right</class>
+        <class>com.example.entity.onetomany.User</class>
+
         <class>com.example.entity.onetoone.ProductionSchedule</class>
         <class>com.example.entity.onetoone.ProductionResult</class>
 

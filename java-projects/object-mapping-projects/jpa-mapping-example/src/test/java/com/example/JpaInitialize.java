@@ -15,6 +15,7 @@
  */
 package com.example;
 
+import com.example.annotation.Algorithm;
 import com.google.inject.AbstractModule;
 import com.google.inject.persist.PersistService;
 import com.google.inject.persist.Transactional;
@@ -68,6 +69,7 @@ public class JpaInitialize {
         protected void configure() {
             install(new JpaPersistModule("jpa-mapping-example"));
             bind(ZoneId.class).toProvider(() -> ZoneId.of("Asia/Tokyo"));
+            bind(String.class).annotatedWith(Algorithm.class).toInstance("SHA-512");
         }
     }
 }
