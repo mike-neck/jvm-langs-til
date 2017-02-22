@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
-    <persistence-unit name="error-jpa-project" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="error-jpa-sample" transaction-type="RESOURCE_LOCAL">
+
+        <class>com.github.marschall.threeten.jpa.LocalDateTimeConverter</class>
+        <class>com.example.entity.Customer</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/error-jpa-sample"/>
