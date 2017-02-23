@@ -24,6 +24,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 @ExtendWith({JpaInitializer.class})
 public class UpdateOnceInTransaction {
 
@@ -32,9 +35,12 @@ public class UpdateOnceInTransaction {
     @BeforeEach
     void setup(Injector injector) {
         final CustomerRepository repository = injector.getInstance(CustomerRepository.class);
+        final EntityTransaction tx = injector.getInstance(EntityManager.class).getTransaction();
+        tx.begin();
         final Customer c = new Customer("test");
         final Customer customer = repository.create(c);
         id = customer.getId();
+        tx.commit();
         System.out.println("Before : " + customer);
     }
 

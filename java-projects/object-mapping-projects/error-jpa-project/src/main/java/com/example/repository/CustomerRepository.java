@@ -62,6 +62,7 @@ public class CustomerRepository {
     @NotNull
     public Optional<Customer> findCustomerForUpdate(Long id) {
         return em.createQuery("select c from Customer c where c.id = :id", Customer.class)
+                .setParameter("id", id)
                 .setLockMode(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
                 .getResultList()
                 .stream()
