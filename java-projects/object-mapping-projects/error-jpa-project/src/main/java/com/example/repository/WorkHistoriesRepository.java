@@ -37,6 +37,7 @@ public class WorkHistoriesRepository {
     public WorkHistories create(WorkHistories wh) {
         wh.setCreated(LocalDateTime.now(zone));
         em.persist(wh);
+        em.flush();
         return wh;
     }
 

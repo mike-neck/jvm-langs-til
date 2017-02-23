@@ -16,7 +16,9 @@
 package com.example;
 
 import com.example.entity.Customer;
+import com.example.entity.WorkHistories;
 import com.example.repository.CustomerRepository;
+import com.example.repository.WorkHistoriesRepository;
 import com.example.work.Run;
 import com.example.work.Start;
 import com.google.inject.Injector;
@@ -55,6 +57,19 @@ public class UpdateOnceInTransaction {
                 final Customer c = repository.update(customer);
                 System.out.println("Update : " + c);
             });
+            run.transaction(em -> {
+                final CustomerRepository cr = injector.getInstance(CustomerRepository.class);
+                final WorkHistoriesRepository whr = injector.getInstance(WorkHistoriesRepository.class);
+                final Customer customer = cr.findCustomer(id).orElseThrow(RuntimeException::new);
+                System.out.println("Update Confirm : " + customer);
+                final WorkHistories wh = new WorkHistories("test", "test-update");
+                whr.create(wh);
+                final Customer c = cr.findCustomer(id).orElseThrow(RuntimeException::new);
+                System.out.println("After commit of another entity : " + c);
+            });
         }
+        final CustomerRepository cr = injector.getInstance(CustomerRepository.class);
+        final Customer c = cr.findCustomer(id).orElseThrow(RuntimeException::new);
+        System.out.println("After unit of work : " + c);
     }
 }

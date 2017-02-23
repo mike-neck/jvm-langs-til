@@ -16,12 +16,16 @@
 package com.example.entity;
 
 import com.github.marschall.threeten.jpa.LocalDateTimeConverter;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "work_histories")
 public class WorkHistories {
@@ -39,4 +43,9 @@ public class WorkHistories {
     @Convert(converter = LocalDateTimeConverter.class)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime created;
+
+    public WorkHistories(String beforeUpdate, String afterUpdate) {
+        this.beforeUpdate = beforeUpdate;
+        this.afterUpdate = afterUpdate;
+    }
 }

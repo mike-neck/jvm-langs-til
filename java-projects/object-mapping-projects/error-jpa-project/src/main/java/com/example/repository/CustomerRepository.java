@@ -68,4 +68,13 @@ public class CustomerRepository {
                 .stream()
                 .findFirst();
     }
+
+    @NotNull
+    public Optional<Customer> findCustomer(Long id) {
+        return em.createQuery("select c from Customer c where c.id = :id", Customer.class)
+                .setParameter("id", id)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
 }
