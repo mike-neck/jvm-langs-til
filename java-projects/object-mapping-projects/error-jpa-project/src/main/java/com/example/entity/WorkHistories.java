@@ -16,39 +16,27 @@
 package com.example.entity;
 
 import com.github.marschall.threeten.jpa.LocalDateTimeConverter;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(name = "customer")
-public class Customer {
+@Table(name = "work_histories")
+public class WorkHistories {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Version
-    private int version;
+    @Column(name = "before_update", nullable = false, length = 20)
+    private String beforeUpdate;
 
-    @Column(length = 20, nullable = false, name = "name")
-    private String name;
+    @Column(name = "after_update", nullable = false, length = 20)
+    private String afterUpdate;
 
     @Convert(converter = LocalDateTimeConverter.class)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime created;
-
-    @Convert(converter = LocalDateTimeConverter.class)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime updated;
-
-    public Customer(String name) {
-        this.name = name;
-    }
 }

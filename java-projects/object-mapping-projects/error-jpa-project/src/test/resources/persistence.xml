@@ -4,6 +4,7 @@
 
         <class>com.github.marschall.threeten.jpa.LocalDateTimeConverter</class>
         <class>com.example.entity.Customer</class>
+        <class>com.example.entity.WorkHistories</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/error-jpa-sample"/>

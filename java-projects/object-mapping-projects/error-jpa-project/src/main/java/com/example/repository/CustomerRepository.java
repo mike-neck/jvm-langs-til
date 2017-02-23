@@ -38,6 +38,9 @@ public class CustomerRepository {
 
     @NotNull
     public Customer create(Customer customer) {
+        final LocalDateTime now = currentTime();
+        customer.setCreated(now);
+        customer.setUpdated(now);
         em.persist(customer);
         em.flush();
         return customer;
@@ -45,10 +48,15 @@ public class CustomerRepository {
 
     @NotNull
     public Customer update(Customer customer) {
-        customer.setUpdated(LocalDateTime.now(zone));
+        customer.setUpdated(currentTime());
         em.persist(customer);
         em.flush();
         return customer;
+    }
+
+    @NotNull
+    private LocalDateTime currentTime() {
+        return LocalDateTime.now(zone);
     }
 
     @NotNull
