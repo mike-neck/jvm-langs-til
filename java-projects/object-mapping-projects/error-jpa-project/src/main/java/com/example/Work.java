@@ -18,11 +18,15 @@ package com.example;
 import com.example.function.Functions;
 import com.example.work.Run;
 import com.example.work.Start;
+import com.example.work.Tx;
 import com.google.inject.persist.Transactional;
 import com.google.inject.persist.UnitOfWork;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 public class Work implements Start, Run {
 
@@ -42,14 +46,22 @@ public class Work implements Start, Run {
     }
 
     @Override
-    @Transactional
-    public void transaction(Functions.ExConsumer<EntityManager> txScript) throws Throwable {
-        txScript.accept(em);
-    }
-
-    @Override
     public void close() throws Exception {
         unitOfWork.end();
     }
 
+    @Transactional
+    @Override
+    public <R> Tx<R> transaction(Functions.ExBiFunction<? super EntityManager, ? super Void, ? extends R> script)
+            throws Throwable {
+        @SuppressWarnings("ConstantConditions")
+        final R value = script.apply(em, null);
+        return new Tx.Impl<>(em, value);
+    }
+
+    @NotNull
+    @Override
+    public Optional<Void> finish() {
+        return Optional.empty();
+    }
 }

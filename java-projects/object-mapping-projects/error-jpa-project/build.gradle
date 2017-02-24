@@ -35,6 +35,7 @@ dependencies {
     compile         mysql
 
     testCompile     junit5
+    testCompileOnly jetbrainsAnnotations
 }
 
 generateSchema {

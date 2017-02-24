@@ -15,10 +15,5 @@
  */
 package com.example.work;
 
-import com.example.function.Functions;
-
-import javax.persistence.EntityManager;
-
-public interface Run extends AutoCloseable {
-    void transaction(Functions.ExConsumer<EntityManager> txScript) throws Throwable;
+public interface Run extends AutoCloseable, Tx<Void> {
 }

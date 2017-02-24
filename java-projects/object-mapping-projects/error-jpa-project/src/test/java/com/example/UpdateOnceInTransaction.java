@@ -15,19 +15,24 @@
  */
 package com.example;
 
+import com.example.data.Tuple;
 import com.example.entity.Customer;
 import com.example.entity.WorkHistories;
+import com.example.function.Functions;
 import com.example.repository.CustomerRepository;
 import com.example.repository.WorkHistoriesRepository;
 import com.example.work.Run;
 import com.example.work.Start;
 import com.google.inject.Injector;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith({JpaInitializer.class})
 public class UpdateOnceInTransaction {
@@ -44,28 +49,36 @@ public class UpdateOnceInTransaction {
         id = customer.getId();
         tx.commit();
         System.out.println("Before : " + customer);
+        assertEquals(1, customer.getVersion());
     }
 
     @Test
     void updateOnlyOnce(Injector injector) throws Throwable {
         final Start start = injector.getInstance(Start.class);
         try (final Run run = start.start()) {
-            run.transaction(em -> {
+            run.transaction((em, nothing) -> {
                 final CustomerRepository repository = injector.getInstance(CustomerRepository.class);
                 final Customer customer = repository.findCustomerForUpdate(id).orElseThrow(RuntimeException::new);
+
                 customer.setName("test-update");
                 final Customer c = repository.update(customer);
+
                 System.out.println("Update : " + c);
-            });
-            run.transaction(em -> {
-                final CustomerRepository cr = injector.getInstance(CustomerRepository.class);
-                final WorkHistoriesRepository whr = injector.getInstance(WorkHistoriesRepository.class);
-                final Customer customer = cr.findCustomer(id).orElseThrow(RuntimeException::new);
+                assertEquals(2, c.getVersion());
+
+                return new Tuple<>(repository, id);
+            }).transaction((em, t) -> {
+                final Customer customer = t.getLeft().findCustomer(t.getRight()).orElseThrow(RuntimeException::new);
                 System.out.println("Update Confirm : " + customer);
+                assertEquals(2, customer.getVersion());
+
                 final WorkHistories wh = new WorkHistories("test", "test-update");
-                whr.create(wh);
-                final Customer c = cr.findCustomer(id).orElseThrow(RuntimeException::new);
+                injector.getInstance(WorkHistoriesRepository.class).create(wh);
+
+                return t.getLeft().findCustomer(t.getRight()).orElseThrow(RuntimeException::new);
+            }).andFinally(c -> {
                 System.out.println("After commit of another entity : " + c);
+                assertEquals(2, c.getVersion());
             });
         }
         final CustomerRepository cr = injector.getInstance(CustomerRepository.class);
