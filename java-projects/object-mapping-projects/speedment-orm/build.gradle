@@ -1,0 +1,30 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath junit5PluginJar
+    }
+}
+
+apply plugin: 'java'
+apply plugin: junit5Plugin
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile         'com.speedment:runtime:3.0.3'
+    compile         'com.speedment:generator:3.0.3'
+    compile         'com.speedment:speedment-maven-plugin:3.0.3'
+
+    compile         flyway
+    compile         mysql
+
+    compileOnly     jetbrainsAnnotations
+    compileOnly     lombok
+
+    testCompile     junit5
+}

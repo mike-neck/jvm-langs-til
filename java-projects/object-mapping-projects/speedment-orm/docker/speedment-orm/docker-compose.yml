@@ -1,0 +1,13 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=speedment-orm
+      - MYSQL_USER=speedment-orm
+      - MYSQL_PASSWORD=speedment-orm
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    volumes:
+      - ./db/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
