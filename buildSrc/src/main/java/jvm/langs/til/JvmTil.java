@@ -15,6 +15,7 @@
  */
 package jvm.langs.til;
 
+import jvm.langs.til.model.Lang;
 import jvm.langs.til.model.Model;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -27,18 +28,11 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static java.util.Collections.unmodifiableMap;
 
 public final class JvmTil {
 
@@ -66,68 +60,15 @@ public final class JvmTil {
         }
     }
 
+    public static void createFromTemplate(Task task, Lang lang, Model model, File file) {
+        createFromTemplate(task, lang.getTemplate(), model, file);
+    }
+
     public static void createFromTemplate(Task task, String view, Model model, File file) {
         INSTANCE.write(task, view, model, file);
     }
 
-    public enum Lang {
-        JAVA     ("java-projects"  , "java"  )
-        , GROOVY ("groovy-projects", "groovy")
-        , KOTLIN ("kotlin-projects", "kotlin")
-        , SCALA  ("scala-projects" , "scala" )
-        , FREGE  ("frege-projects" , "frege" )
-        ;
-
-        private final String dir;
-        private final String lang;
-
-        public String getDir() {
-            return dir;
-        }
-
-        public String getLang() {
-            return lang;
-        }
-
-        Lang(String dir, String lang) {
-            this.dir = dir;
-            this.lang = lang;
-        }
-
-        private void addTo(Map<String, String> map) {
-            map.put(dir, lang);
-        }
-
-        static Map<String, String> getLangMap() {
-            final Map<String, String> map = new HashMap<>();
-            for (Lang lang : values()) {
-                lang.addTo(map);
-            }
-            return unmodifiableMap(map);
-        }
-
-        public static List<String> getDirectories() {
-            final List<String> list = new ArrayList<>();
-            for (Lang lang : values()) {
-                list.add(lang.dir);
-            }
-            return Collections.unmodifiableList(list);
-        }
-
-        public static List<String> getDirectoriesWith(String... dirs) {
-            if (dirs == null) {
-                return getDirectories();
-            }
-            final List<String> list = new ArrayList<>();
-            Collections.addAll(list, dirs);
-            for (Lang lang : values()) {
-                list.add(lang.dir);
-            }
-            return Collections.unmodifiableList(list);
-        }
-    }
-
-    public static final Function<Project, String> PROJECT_LANGUAGE =
+    public static final Function<Project, Lang> PROJECT_LANGUAGE =
             ((Function<Project, String>)(Project::getName)).andThen(k -> Lang.getLangMap().get(k));
 
     public static Predicate<Project> hasNoDirectory(Project sub) {

@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath junit5PluginJar
+        classpath kotlinGradlePlugin
+    }
+}
+
+apply plugin: 'kotlin'
+apply plugin: junit5Plugin
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile         kotlinStdLib
+    testCompile     junit5
+}

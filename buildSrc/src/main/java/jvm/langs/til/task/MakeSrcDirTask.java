@@ -16,6 +16,7 @@
 package jvm.langs.til.task;
 
 import jvm.langs.til.JvmTil;
+import jvm.langs.til.model.Lang;
 import jvm.langs.til.model.Model;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
@@ -32,15 +33,15 @@ public class MakeSrcDirTask extends DefaultTask {
 
     public static final String DESCRIPTION = "Prepares src directory.";
 
-    public static final List<String> EXCLUDE = JvmTil.Lang.getDirectoriesWith("jvm-langs-til");
+    public static final List<String> EXCLUDE = Lang.getDirectoriesWith("jvm-langs-til");
 
     public static boolean notLangRootProject(String name) {
         return !EXCLUDE.contains(name);
     }
 
-    private String lang;
+    private Lang lang;
 
-    public void setLang(String lang) {
+    public void setLang(Lang lang) {
         this.lang = lang;
     }
 
@@ -80,8 +81,8 @@ public class MakeSrcDirTask extends DefaultTask {
         final File buildFile = p.file("build.gradle");
         if (!buildFile.exists()) {
             final Model model = new Model();
-            model.put("lang", lang);
-            JvmTil.createFromTemplate(this, "build.gradle", model, buildFile);
+            model.put("lang", lang.getLang());
+            JvmTil.createFromTemplate(this, lang, model, buildFile);
         }
     }
 }
