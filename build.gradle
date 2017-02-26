@@ -66,6 +66,10 @@ ext {
     scalaLib = "$scalaLangGroup:$scalaLibAf:$scalaVersion"
     scalaTest = "$scalaTestGroup:$scalaTestAf212:$scalaTestVersion"
     scalaJava8 = "$scalaLangModuleGroup:$scalaJava8CompatAf:$scalaJava8CompatVersion"
+
+    // Kotlin
+    kotlinGradlePlugin = "$kotlinGroup:$kotlinGradlePluginAf:$kotlinVersion"
+    kotlinStdLib = "$kotlinGroup:$kotlinStdLibAf:$kotlinVersion"
 }
 
 subprojects {

@@ -1,0 +1,20 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath kotlinGradlePlugin
+    }
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile     kotlinStdLib
+}
