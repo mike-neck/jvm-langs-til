@@ -1,0 +1,19 @@
+version: '2'
+services:
+  crate:
+    image: crate:1.0.3
+    volumes:
+      - ./crate/data:/data
+    ports:
+      - 4200:4200
+      - 4300:4300
+    command:
+      crate -Des.cluster.name=cluster
+  crate2:
+    image: crate:1.0.3
+    volumes:
+      - ./crate/data:/data
+  crate3:
+    image: crate:1.0.3
+    volumes:
+      - ./crate/data:/data

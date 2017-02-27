@@ -16,6 +16,8 @@ repositories {
 }
 
 dependencies {
+    compile         'io.crate:crate-jdbc:2.1.5'
+
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
 
