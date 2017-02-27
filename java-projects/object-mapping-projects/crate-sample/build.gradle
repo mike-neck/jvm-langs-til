@@ -7,7 +7,7 @@ buildscript {
     }
 }
 
-apply plugin: '[(${lang})]'
+apply plugin: 'java'
 apply plugin: junit5Plugin
 
 repositories {
