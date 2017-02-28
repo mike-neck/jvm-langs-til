@@ -33,3 +33,4 @@ settings.gradle
 application-secret.properties
 
 **/db/data
+**/crate/data
