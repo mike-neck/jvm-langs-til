@@ -23,8 +23,14 @@ VALUES (3, 2, 1, { since = '2017-02-22T04:00:00Z', to_be_returnes = '2017-03-01T
 SELECT
   s.last_name,
   s.first_name,
-  b.title
+  b.title,
+  date_format('%Y-%m-%dT%H:%i:%s.%fZ', r.period ['since']),
+  r.period ['returned']
 FROM
   student s
   JOIN rental r ON s.id = r.student_id
   JOIN books b ON r.book_id = b.id;
+
+UPDATE rental
+SET period ['returned'] = '2017-02-28T08:30:00Z'
+WHERE id = 3;
