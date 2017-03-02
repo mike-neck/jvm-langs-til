@@ -46,7 +46,7 @@ public class MakeSrcDirTask extends DefaultTask {
     }
 
     String mainSrcDir() {
-        return "src/main/" + lang;
+        return "src/main/" + lang.getLang();
     }
 
     String mainResDir() {
@@ -54,7 +54,7 @@ public class MakeSrcDirTask extends DefaultTask {
     }
 
     String testSrcDir() {
-        return "src/test/" + lang;
+        return "src/test/" + lang.getLang();
     }
 
     String testResDir() {
