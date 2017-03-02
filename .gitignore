@@ -34,3 +34,6 @@ application-secret.properties
 
 **/db/data
 **/crate/data
+
+# javascript modules
+**/node_modules/
