@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+         classpath kotlinGradlePlugin
+    }
+}
+
+apply plugin: 'kotlin2js'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile     "$kotlinGroup:kotlin-stdlib-js:$kotlinVersion"
+}
+
+task mkdirDefDir {
+    def typeDefDir = file("$buildDir/ts")
+    outputs.upToDateWhen {
+        typeDefDir.exists()
+    }
+    doLast {
+        if (!typeDefDir.exists()) {
+            typeDefDir.mkdirs()
+        }
+    }
+}
+
+task ts2kt(type: Exec, dependsOn: 'mkdirDefDir') {
+    def typeDefDir = "$buildDir/ts"
+    def ts = fileTree('node_modules') {
+        include '**/*.d.ts'
+    }
+    commandLine 'ts2kt'
+    args '-d', typeDefDir
+    args ts.asList()
+}
