@@ -9,6 +9,7 @@ find . -type d -maxdepth 5 | \
   grep -v "/src/\?" | \
   grep -v "/build/\?" | \
   grep -v "/docker/\?" | \
+  grep -v "/node_modules/\?" | \
   sed \
     -e "s/^.\{2\}/include \'\:/g" \
     -e "s/\//\:/g" \
