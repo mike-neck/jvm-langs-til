@@ -9,6 +9,7 @@ buildscript {
 }
 
 apply plugin: 'kotlin2js'
+apply plugin: 'ts2kt-support'
 
 repositories {
     mavenCentral()
@@ -31,7 +32,7 @@ task mkdirDefDir {
     }
 }
 
-task ts2kt(type: Exec, dependsOn: 'mkdirDefDir') {
+task runTs2kt(type: Exec, dependsOn: 'mkdirDefDir') {
     def typeDefDir = "$buildDir/ts"
     def ts = fileTree('node_modules') {
         include '**/*.d.ts'
