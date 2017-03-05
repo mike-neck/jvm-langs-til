@@ -32,8 +32,6 @@ public class LocalDateApiTest {
 
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mm:ss.SSS");
 
-    private final DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("uuuu年MM月dd日 hh:mm:ss.SSS");
-
     @DisplayName("String ⇔ LocalDate")
     @Nested
     class StringToLocalDate {
