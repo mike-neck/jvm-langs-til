@@ -1,4 +1,4 @@
-/*
+package com.example;/*
  * Copyright 2017 Shinya Mochida
  * 
  * Licensed under the Apache License,Version2.0(the"License");

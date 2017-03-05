@@ -46,7 +46,17 @@ public class MakeSrcDirTask extends DefaultTask {
     }
 
     String mainSrcDir() {
-        return "src/main/" + lang.getLang();
+        final StringBuilder sb = new StringBuilder();
+        sb.append("src/main/");
+        sourceDirectory(sb);
+        return sb.toString();
+    }
+
+    private void sourceDirectory(StringBuilder sb) {
+        sb.append(lang.getLang());
+        if (lang.isPackageRequiring()) {
+            sb.append("/com/example");
+        }
     }
 
     String mainResDir() {
@@ -54,7 +64,10 @@ public class MakeSrcDirTask extends DefaultTask {
     }
 
     String testSrcDir() {
-        return "src/test/" + lang.getLang();
+        final StringBuilder sb = new StringBuilder();
+        sb.append("src/test/");
+        sourceDirectory(sb);
+        return sb.toString();
     }
 
     String testResDir() {

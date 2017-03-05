@@ -20,15 +20,16 @@ import java.util.*;
 import static java.util.Collections.unmodifiableMap;
 
 public enum Lang {
-    JAVA("java-projects", "java", "build.gradle"),
-    GROOVY("groovy-projects", "groovy", "build.gradle"),
-    KOTLIN("kotlin-projects", "kotlin", "kotlin.gradle"),
-    SCALA("scala-projects", "scala", "build.gradle"),
-    FREGE("frege-projects", "frege", "build.gradle");
+    JAVA   ("java-projects",    "java",     "build.gradle", true),
+    GROOVY ("groovy-projects",  "groovy",   "build.gradle", true),
+    KOTLIN ("kotlin-projects",  "kotlin",   "kotlin.gradle", true),
+    SCALA  ("scala-projects",   "scala",    "build.gradle", false),
+    FREGE  ("frege-projects",   "frege",    "build.gradle", false);
 
     private final String dir;
     private final String lang;
     private final String template;
+    private final boolean packageRequiring;
 
     public String getDir() {
         return dir;
@@ -42,10 +43,15 @@ public enum Lang {
         return template;
     }
 
-    Lang(String dir, String lang, String template) {
+    public boolean isPackageRequiring() {
+        return packageRequiring;
+    }
+
+    Lang(String dir, String lang, String template, boolean packageRequiring) {
         this.dir = dir;
         this.lang = lang;
         this.template = template;
+        this.packageRequiring = packageRequiring;
     }
 
     private void addTo(Map<String, Lang> map) {
