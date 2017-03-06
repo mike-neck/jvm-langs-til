@@ -13,6 +13,9 @@ INSERT INTO books (id, title, author) VALUES (4, '失われた時を求めて', 
 INSERT INTO books (id, title, author) VALUES (5, '惡の華', 'ボードレール');
 
 INSERT INTO rental (id, student_id, book_id, period)
+VALUES (1, 1, 1, { since = '2017-02-21T04:00:00Z', to_be_returnes = '2017-02-28T04:00:00Z',
+        returned = '2017-02-24T13:13:20Z' });
+INSERT INTO rental (id, student_id, book_id, period)
 VALUES (1, 1, 3, { since = '2017-02-21T04:00:00Z', to_be_returnes = '2017-02-28T04:00:00Z' });
 INSERT INTO rental (id, student_id, book_id, period) VALUES
   (2, 1, 5, { since = '2017-02-21T04:00:00Z', to_be_returnes = '2017-02-28T04:00:00Z',
