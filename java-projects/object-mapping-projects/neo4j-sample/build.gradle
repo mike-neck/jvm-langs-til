@@ -1,0 +1,25 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath junit5PluginJar
+    }
+}
+
+apply plugin: 'java'
+apply plugin: junit5Plugin
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile         'org.neo4j.driver:neo4j-java-driver:1.1.2'
+    compileOnly     jetbrainsAnnotations
+    compileOnly     lombok
+
+    testCompile     junit5
+    testCompileOnly jetbrainsAnnotations
+}

@@ -34,6 +34,7 @@ application-secret.properties
 
 **/db/data
 **/crate/data
+**/neo4j/data
 
 # javascript modules
 **/node_modules/
