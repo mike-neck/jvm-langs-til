@@ -1,0 +1,31 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath springBootGradlePlugin
+    }
+}
+
+apply plugin: 'java'
+apply plugin: springBoot
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile         springBootStarter.dataJpa
+    compile         springBootStarter.web
+    compile         slf4j
+    compile         h2
+    compileOnly     jetbrainsAnnotations
+    compileOnly     lombok
+
+    testCompile     mysql
+    testCompile     springBootStarter.test
+    testCompile     testContainers.core
+    testCompile     testContainers.mysql
+    testCompileOnly jetbrainsAnnotations
+}
