@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -46,7 +47,7 @@ public class TodoController {
     }
 
     @RequestMapping(method = { RequestMethod.POST }, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE })
-    public ResponseEntity<?> create(@RequestBody final CreateTodoParameter parameter, final BindingResult result) {
+    public ResponseEntity<?> create(@RequestBody @Validated final CreateTodoParameter parameter, final BindingResult result) {
         if (result.hasErrors()) {
             final TodoNotFoundException.ErrorMessages messages = result.getFieldErrors()
                     .stream()
