@@ -49,12 +49,12 @@ public class TodoController {
     @RequestMapping(method = { RequestMethod.POST }, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE })
     public ResponseEntity<?> create(@RequestBody @Validated final CreateTodoParameter parameter, final BindingResult result) {
         if (result.hasErrors()) {
-            final TodoNotFoundException.ErrorMessages messages = result.getFieldErrors()
+            final TodoNotFoundException.Errors messages = result.getFieldErrors()
                     .stream()
-                    .map(TodoNotFoundException.BadHttpRequest.TRANSFORM_ERROR)
-                    .collect(TodoNotFoundException.ErrorMessages::new,
-                            TodoNotFoundException.ErrorMessages::add,
-                            TodoNotFoundException.ErrorMessages::addAll);
+                    .map(TodoNotFoundException.TRANSFORM_ERROR)
+                    .collect(TodoNotFoundException.Errors::new,
+                            TodoNotFoundException.Errors::add,
+                            TodoNotFoundException.Errors::addAll);
             return ResponseEntity.badRequest()
                     .body(messages);
         }
@@ -65,7 +65,7 @@ public class TodoController {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateTodoParameter {
+    static class CreateTodoParameter {
         @NotNull
         @Size(min = 1, max = 127)
         private String title;

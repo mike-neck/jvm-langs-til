@@ -17,7 +17,6 @@ package com.example;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +31,7 @@ import java.util.function.Function;
 
 public class TodoNotFoundException extends RuntimeException {
 
-    public TodoNotFoundException(final Long id) {
+    TodoNotFoundException(final Long id) {
         super(String.format("Todo item is not found. id = %d", id));
     }
 
@@ -54,18 +53,18 @@ public class TodoNotFoundException extends RuntimeException {
         }
     }
 
-    public static class BadHttpRequest extends RuntimeException {
-        public BadHttpRequest(final String paramName, final Object value) {
+    static class BadHttpRequest extends RuntimeException {
+        BadHttpRequest(final String paramName, final Object value) {
             super(badRequestMessage(paramName, value));
         }
 
         private static String badRequestMessage(String paramName, Object value) {
             return String.format("Bad parameter [%s]. value = %s", paramName, value);
         }
-
-        public static Function<FieldError, ErrorMessage> TRANSFORM_ERROR =
-                f -> new ErrorMessage(400, badRequestMessage(f.getField(), f.getRejectedValue()));
     }
+
+    static final Function<FieldError, Errors.Message> TRANSFORM_ERROR =
+            f -> new Errors.Message(f.getField(), f.getRejectedValue());
 
     @Data
     @RequiredArgsConstructor
@@ -76,15 +75,28 @@ public class TodoNotFoundException extends RuntimeException {
 
     @Data
     @NoArgsConstructor
-    static class ErrorMessages {
-        private final List<ErrorMessage> errors = new ArrayList<>();
-        public ErrorMessages add(ErrorMessage error) {
+    static class Errors {
+        private final List<Message> errors = new ArrayList<>();
+        Errors add(Message error) {
             this.errors.add(error);
             return this;
         }
-        public ErrorMessages addAll(ErrorMessages other) {
+        Errors addAll(Errors other) {
             this.errors.addAll(other.errors);
             return this;
+        }
+        static class Message {
+            private final String parameter;
+            private final String value;
+            Message(final String parameter, final Object value) {
+                this.parameter = parameter;
+                if (value == null) {
+                    this.value = "<<null>>";
+                } else {
+                    final String s = value.toString();
+                    this.value = s.isEmpty()? "<<empty>>" : s;
+                }
+            }
         }
     }
 }
