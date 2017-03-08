@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,14 +41,16 @@ public class TodoNotFoundException extends RuntimeException {
 
         @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
         @ExceptionHandler({ TodoNotFoundException.class })
-        public ErrorMessage error(final TodoNotFoundException e) {
-            return new ErrorMessage(404, e.getMessage());
+        public ResponseEntity<ErrorMessage> error(final TodoNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT)
+                    .body(new ErrorMessage(404, e.getMessage()));
         }
 
         @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
         @ExceptionHandler({ BadHttpRequest.class })
-        public ErrorMessage errorMessage(final BadHttpRequest e) {
-            return new ErrorMessage(400, e.getMessage());
+        public ResponseEntity<ErrorMessage> errorMessage(final BadHttpRequest e) {
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT)
+                    .body(new ErrorMessage(400, e.getMessage()));
         }
     }
 
