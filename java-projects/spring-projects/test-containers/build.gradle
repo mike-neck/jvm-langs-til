@@ -19,7 +19,7 @@ dependencies {
     compile         springBootStarter.dataJpa
     compile         springBootStarter.web
     compile         slf4j
-    compile         h2
+//    compile         h2
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
 

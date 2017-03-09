@@ -16,22 +16,11 @@
 package com.example;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import java.util.stream.Stream;
 
 @SpringBootApplication
 public class App {
-
-    @Bean
-    public CommandLineRunner init(final TodoRepository repository) {
-        return args -> Stream.of(defaultTodoItems())
-                .map(p -> new Todo(p.getTitle(), p.getDescription()))
-                .forEach(repository::persist);
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);

@@ -15,19 +15,11 @@
  */
 package com.example;
 
-import org.jetbrains.annotations.NotNull;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.hibernate.dialect.MySQL5InnoDBDialect;
 
-import java.util.Optional;
-
-@Repository
-public interface TodoRepository extends JpaRepository<Todo, Long> {
-
-    @NotNull
-    Optional<Todo> findById(Long id);
-
-    default Todo persist(Todo todo) {
-        return save(todo);
+public class InnoDBDialect extends MySQL5InnoDBDialect {
+    @Override
+    public String getTableTypeString() {
+        return super.getTableTypeString() + " DEFAULT CHARSET=utf8mb4 ";
     }
 }

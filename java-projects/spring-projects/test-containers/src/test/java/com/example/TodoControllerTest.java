@@ -16,6 +16,7 @@
 package com.example;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -25,10 +26,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+import org.testcontainers.containers.MySQLContainer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -38,15 +41,14 @@ import static com.example.App.defaultTodoItems;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assume.assumeNotNull;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { App.class })
 @WebAppConfiguration
+@ContextConfiguration(initializers = { Initializer.class })
 public class TodoControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(TodoControllerTest.class);
@@ -74,6 +76,9 @@ public class TodoControllerTest {
                 .orElse(null);
         assumeNotNull(jackson2HttpMessageConverter);
     }
+
+    @ClassRule
+    public static MySQLContainer MY_SQL_CONTAINER = Initializer.database();
 
     @Before
     public void setup() {
