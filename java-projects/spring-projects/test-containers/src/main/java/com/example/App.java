@@ -15,6 +15,7 @@
  */
 package com.example;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,17 +28,18 @@ public class App {
 
     @Bean
     public CommandLineRunner init(final TodoRepository repository) {
-        return args -> {
-            Stream.of(
-                    new TodoController.CreateTodoParameter("Testcontainersのことを調べる", "* SpringBootでの利用例\n* プロジェクトで利用できないか\n* JUnit5で使えないか"),
-                    new TodoController.CreateTodoParameter("エンベデッドMySQLのことを調べる", "いろいろ使えないか")
-            )
-                    .map(p -> new Todo(p.getTitle(), p.getDescription()))
-                    .forEach(repository::persist);
-        };
+        return args -> Stream.of(defaultTodoItems())
+                .map(p -> new Todo(p.getTitle(), p.getDescription()))
+                .forEach(repository::persist);
     }
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
+    }
+
+    @NotNull
+    static TodoController.CreateTodoParameter[] defaultTodoItems() {
+        return new TodoController.CreateTodoParameter[]{new TodoController.CreateTodoParameter("Testcontainersのことを調べる", "* SpringBootでの利用例\n* プロジェクトで利用できないか\n* JUnit5で使えないか"),
+                new TodoController.CreateTodoParameter("エンベデッドMySQLのことを調べる", "いろいろ使えないか")};
     }
 }
