@@ -15,6 +15,8 @@
  */
 package com.example;
 
+import com.example.entity.Todo;
+import com.example.repository.TodoRepository;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;

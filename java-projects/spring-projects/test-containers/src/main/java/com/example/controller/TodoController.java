@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.entity.Todo;
+import com.example.error.BadHttpRequest;
+import com.example.error.Errors;
+import com.example.parameter.CreateTodoParameter;
+import com.example.service.TodoService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @RequestMapping("todo")
 @RestController
@@ -37,40 +36,31 @@ public class TodoController {
         this.service = service;
     }
 
-    @RequestMapping(value = "{todoId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @RequestMapping(value = "{todoId}", method = RequestMethod.GET,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseBody
     public Todo getTodo(@PathVariable("todoId") final Long todoId) {
         if (todoId == null) {
-            throw new TodoNotFoundException.BadHttpRequest("todo_id", "<null>");
+            throw new BadHttpRequest("todo_id", "<null>");
         }
         return service.findTodo(todoId);
     }
 
-    @RequestMapping(method = { RequestMethod.POST }, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE })
+    @RequestMapping(method = {RequestMethod.POST},
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<?> create(@RequestBody @Validated final CreateTodoParameter parameter, final BindingResult result) {
         if (result.hasErrors()) {
-            final TodoNotFoundException.Errors messages = result.getFieldErrors()
+            final Errors messages = result.getFieldErrors()
                     .stream()
-                    .map(TodoNotFoundException.TRANSFORM_ERROR)
-                    .collect(TodoNotFoundException.Errors::new,
-                            TodoNotFoundException.Errors::add,
-                            TodoNotFoundException.Errors::addAll);
+                    .map(Errors.TRANSFORM_ERROR)
+                    .collect(Errors::new,
+                            Errors::add,
+                            Errors::addAll);
             return ResponseEntity.badRequest()
                     .body(messages);
         }
         final Todo todo = service.createTodo(parameter.getTitle(), parameter.getDescription());
         return ResponseEntity.ok(todo);
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class CreateTodoParameter {
-        @NotNull
-        @Size(min = 1, max = 127)
-        private String title;
-        @NotNull
-        @Size(max = 512)
-        private String description;
     }
 }

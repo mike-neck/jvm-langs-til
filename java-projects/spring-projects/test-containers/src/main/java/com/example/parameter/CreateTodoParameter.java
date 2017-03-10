@@ -13,41 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.parameter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Todo {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, length = 127)
+public class CreateTodoParameter {
+    @NotNull
+    @Size(min = 1, max = 127)
     private String title;
-
-    @Column(nullable = false, length = 512)
+    @NotNull
+    @Size(max = 512)
     private String description;
-
-    public Todo(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creation;
-
-    @PrePersist
-    public void creationTime() {
-        this.creation = new Date();
-    }
 }

@@ -13,21 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.error;
 
-import org.jetbrains.annotations.NotNull;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+public class TodoNotFoundException extends RuntimeException {
 
-import java.util.Optional;
-
-@Repository
-public interface TodoRepository extends JpaRepository<Todo, Long> {
-
-    @NotNull
-    Optional<Todo> findById(Long id);
-
-    default Todo persist(Todo todo) {
-        return save(todo);
+    public TodoNotFoundException(final Long id) {
+        super(String.format("Todo item is not found. id = %d", id));
     }
 }
