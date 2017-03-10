@@ -15,6 +15,8 @@
  */
 package com.example;
 
+import com.example.entity.Todo;
+import com.example.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

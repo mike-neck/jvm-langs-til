@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.error;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,19 +25,19 @@ import java.util.function.Function;
 
 @Data
 @NoArgsConstructor
-class Errors {
+public class Errors {
 
-    static final Function<FieldError, Message> TRANSFORM_ERROR =
+    public static final Function<FieldError, Message> TRANSFORM_ERROR =
             f -> new Message(f.getField(), f.getRejectedValue());
 
     private final List<Message> errors = new ArrayList<>();
 
-    Errors add(Message error) {
+    public Errors add(Message error) {
         this.errors.add(error);
         return this;
     }
 
-    Errors addAll(Errors other) {
+    public Errors addAll(Errors other) {
         this.errors.addAll(other.errors);
         return this;
     }

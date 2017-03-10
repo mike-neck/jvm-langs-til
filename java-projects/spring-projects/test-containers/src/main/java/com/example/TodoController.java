@@ -15,6 +15,9 @@
  */
 package com.example;
 
+import com.example.entity.Todo;
+import com.example.error.BadHttpRequest;
+import com.example.error.Errors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

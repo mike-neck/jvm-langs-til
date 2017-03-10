@@ -15,7 +15,7 @@
  */
 package com.example;
 
-class TodoNotFoundException extends RuntimeException {
+public class TodoNotFoundException extends RuntimeException {
 
     TodoNotFoundException(final Long id) {
         super(String.format("Todo item is not found. id = %d", id));
