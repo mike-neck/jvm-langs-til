@@ -33,7 +33,11 @@ public class Initializer implements ApplicationContextInitializer<ConfigurableAp
         EnvironmentTestUtils.addEnvironment(
                 "test-containers",
                 context.getEnvironment(),
-                "spring.datasource.url=" + MYSQL.getJdbcUrl() + "?useUnicode=true&connectionCollation=utf8_general_ci&characterSetResults=utf8&characterEncoding=utf-8",
+                "spring.datasource.url=" + MYSQL.getJdbcUrl() +
+                        "?useUnicode=true&" +
+                        "connectionCollation=utf8_general_ci&" +
+                        "characterSetResults=utf8&" +
+                        "characterEncoding=utf-8",
                 "spring.datasource.username=" + MYSQL.getUsername(),
                 "spring.datasource.password=" + MYSQL.getPassword(),
                 "spring.datasource.driver-class-name=" + MYSQL.getDriverClassName()
