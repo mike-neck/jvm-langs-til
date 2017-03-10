@@ -15,9 +15,12 @@
  */
 package com.example;
 
-class TodoNotFoundException extends RuntimeException {
+class BadHttpRequest extends RuntimeException {
+    BadHttpRequest(final String paramName, final Object value) {
+        super(badRequestMessage(paramName, value));
+    }
 
-    TodoNotFoundException(final Long id) {
-        super(String.format("Todo item is not found. id = %d", id));
+    private static String badRequestMessage(String paramName, Object value) {
+        return String.format("Bad parameter [%s]. value = %s", paramName, value);
     }
 }

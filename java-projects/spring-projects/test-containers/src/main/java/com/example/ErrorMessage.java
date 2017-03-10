@@ -15,9 +15,12 @@
  */
 package com.example;
 
-class TodoNotFoundException extends RuntimeException {
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-    TodoNotFoundException(final Long id) {
-        super(String.format("Todo item is not found. id = %d", id));
-    }
+@Data
+@RequiredArgsConstructor
+class ErrorMessage {
+    private final int httpStatus;
+    private final String message;
 }

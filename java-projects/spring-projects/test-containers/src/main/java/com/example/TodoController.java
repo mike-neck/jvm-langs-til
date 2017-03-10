@@ -41,7 +41,7 @@ public class TodoController {
     @ResponseBody
     public Todo getTodo(@PathVariable("todoId") final Long todoId) {
         if (todoId == null) {
-            throw new TodoNotFoundException.BadHttpRequest("todo_id", "<null>");
+            throw new BadHttpRequest("todo_id", "<null>");
         }
         return service.findTodo(todoId);
     }
@@ -49,12 +49,12 @@ public class TodoController {
     @RequestMapping(method = { RequestMethod.POST }, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE }, produces = { MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE })
     public ResponseEntity<?> create(@RequestBody @Validated final CreateTodoParameter parameter, final BindingResult result) {
         if (result.hasErrors()) {
-            final TodoNotFoundException.Errors messages = result.getFieldErrors()
+            final Errors messages = result.getFieldErrors()
                     .stream()
-                    .map(TodoNotFoundException.TRANSFORM_ERROR)
-                    .collect(TodoNotFoundException.Errors::new,
-                            TodoNotFoundException.Errors::add,
-                            TodoNotFoundException.Errors::addAll);
+                    .map(Errors.TRANSFORM_ERROR)
+                    .collect(Errors::new,
+                            Errors::add,
+                            Errors::addAll);
             return ResponseEntity.badRequest()
                     .body(messages);
         }
