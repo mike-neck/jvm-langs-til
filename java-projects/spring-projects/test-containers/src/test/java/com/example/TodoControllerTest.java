@@ -28,6 +28,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -51,6 +52,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringBootTest(classes = { App.class })
 @WebAppConfiguration
 @ContextConfiguration(initializers = { Initializer.class })
+@ActiveProfiles({"unit-test"})
 public class TodoControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(TodoControllerTest.class);
