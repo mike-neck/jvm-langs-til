@@ -13,11 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.parameter;
 
-public class TodoNotFoundException extends RuntimeException {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    TodoNotFoundException(final Long id) {
-        super(String.format("Todo item is not found. id = %d", id));
-    }
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CreateTodoParameter {
+    @NotNull
+    @Size(min = 1, max = 127)
+    private String title;
+    @NotNull
+    @Size(max = 512)
+    private String description;
 }

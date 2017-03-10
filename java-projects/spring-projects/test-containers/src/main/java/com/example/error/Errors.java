@@ -43,7 +43,7 @@ public class Errors {
     }
 
     @Data
-    static class Message {
+    public static class Message {
         private final String parameter;
         private final String value;
         Message(final String parameter, final Object value) {
