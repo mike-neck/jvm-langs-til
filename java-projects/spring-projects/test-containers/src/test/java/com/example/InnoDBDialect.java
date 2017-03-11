@@ -15,9 +15,9 @@
  */
 package com.example;
 
-import org.hibernate.dialect.MySQL5InnoDBDialect;
+import org.hibernate.dialect.MySQL57InnoDBDialect;
 
-public class InnoDBDialect extends MySQL5InnoDBDialect {
+public class InnoDBDialect extends MySQL57InnoDBDialect {
     @Override
     public String getTableTypeString() {
         return super.getTableTypeString() + " DEFAULT CHARSET=utf8mb4 ";
