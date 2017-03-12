@@ -15,6 +15,7 @@
  */
 package com.example.entity;
 
+import com.example.parameter.CreateTodoParameter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,9 +39,17 @@ public class Todo {
     @Column(nullable = false, length = 512)
     private String description;
 
-    public Todo(String title, String description) {
+    @Column(nullable = false, length = 48)
+    private String assignee;
+
+    public Todo(String title, String description, String assignee) {
         this.title = title;
         this.description = description;
+        this.assignee = assignee;
+    }
+
+    public Todo(CreateTodoParameter parameter) {
+        this(parameter.getTitle(), parameter.getDescription(), parameter.getAssignee());
     }
 
     @Temporal(TemporalType.TIMESTAMP)

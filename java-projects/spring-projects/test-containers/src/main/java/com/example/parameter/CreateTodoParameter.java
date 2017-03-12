@@ -32,4 +32,7 @@ public class CreateTodoParameter {
     @NotNull
     @Size(max = 512)
     private String description;
+    @NotNull
+    @Size(max = 48)
+    private String assignee;
 }

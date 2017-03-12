@@ -89,7 +89,7 @@ public class TodoControllerTest {
         mvc = webAppContextSetup(context).build();
         repository.deleteAllInBatch();
         final List<Todo> list = Arrays.stream(defaultTodoItems())
-                .map(p -> new Todo(p.getTitle(), p.getDescription()))
+                .map(p -> new Todo(p))
                 .collect(toList());
         todos = repository.save(list);
         todos.forEach(t -> logger.info(String.format("created todo item[id: %d, title: %s]", t.getId(), t.getTitle())));
