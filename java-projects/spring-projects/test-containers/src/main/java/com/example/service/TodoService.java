@@ -17,6 +17,7 @@ package com.example.service;
 
 import com.example.entity.Todo;
 import com.example.error.TodoNotFoundException;
+import com.example.parameter.CreateTodoParameter;
 import com.example.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +32,8 @@ public class TodoService {
     }
 
     @Transactional
-    public Todo createTodo(final String title, final String description) {
-        final Todo todo = new Todo(title, description);
+    public Todo createTodo(final CreateTodoParameter parameter) {
+        final Todo todo = new Todo(parameter);
         return repository.save(todo);
     }
 

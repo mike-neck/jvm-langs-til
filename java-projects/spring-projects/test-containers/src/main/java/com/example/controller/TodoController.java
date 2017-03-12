@@ -60,7 +60,7 @@ public class TodoController {
             return ResponseEntity.badRequest()
                     .body(messages);
         }
-        final Todo todo = service.createTodo(parameter.getTitle(), parameter.getDescription());
+        final Todo todo = service.createTodo(parameter);
         return ResponseEntity.ok(todo);
     }
 }

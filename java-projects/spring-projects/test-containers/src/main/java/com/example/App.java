@@ -29,7 +29,8 @@ public class App {
 
     @NotNull
     static CreateTodoParameter[] defaultTodoItems() {
-        return new CreateTodoParameter[]{new CreateTodoParameter("Testcontainersのことを調べる", "* SpringBootでの利用例\n* プロジェクトで利用できないか\n* JUnit5で使えないか"),
-                new CreateTodoParameter("エンベデッドMySQLのことを調べる", "いろいろ使えないか")};
+        return new CreateTodoParameter[]{new CreateTodoParameter("Testcontainersのことを調べる", "* SpringBootでの利用例\n* " +
+                "プロジェクトで利用できないか\n* JUnit5で使えないか", "mike-neck"),
+                new CreateTodoParameter("エンベデッドMySQLのことを調べる", "いろいろ使えないか", "mike-neck")};
     }
 }
