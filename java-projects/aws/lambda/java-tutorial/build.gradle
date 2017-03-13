@@ -1,0 +1,35 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath junit5PluginJar
+    }
+}
+
+apply plugin: 'java'
+apply plugin: junit5Plugin
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile         'com.amazonaws:aws-lambda-java-core:1.1.0'
+    compileOnly     jetbrainsAnnotations
+    compileOnly     lombok
+
+    testCompile     junit5
+    testCompileOnly jetbrainsAnnotations
+}
+
+task packageZip(type: Zip) {
+    from tasks.compileJava
+    from tasks.processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+tasks.build.dependsOn packageZip
