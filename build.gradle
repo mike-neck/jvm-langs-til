@@ -10,6 +10,8 @@ ext {
 
     assertj = "$assertjGroup:$assertjCoreAf:$assertjVersion"
 
+    mockito = "$mockitoGroup:$mockitoCoreAf:$mockitoVersion"
+
     supercsvDozer = "$supercsvGroup:$supercsvDozerAf:$supercsvVersion"
 
     flyway = "$flywayGroup:$flywayCore:$flywayVersion"
