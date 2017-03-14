@@ -15,16 +15,23 @@
  */
 package com.example;
 
+import com.amazonaws.services.lambda.runtime.CognitoIdentity;
+import com.amazonaws.services.lambda.runtime.Context;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith({MockResolver.class})
 public class TutorialTest {
 
     @Test
-    void test() {
+    void test(@Mock Context context, @Mock CognitoIdentity identity) {
+        prepareMock(context, identity);
         final Input input = new Input("Asia/Tokyo", 1L);
-        final Output output = new Tutorial().handleRequest(input, null);
+        final Output output = new Tutorial().handleRequest(input, context);
         assertAll(() -> assertTrue(output.getValue() < 20),
                 () -> assertTrue(output.getValue() >= 0),
                 () -> assertTrue(output.getTime().contains("T")),
@@ -33,16 +40,22 @@ public class TutorialTest {
     }
 
     @Test
-    void ifZoneIsUnknown() {
+    void ifZoneIsUnknown(@Mock Context context, @Mock CognitoIdentity identity) {
+        prepareMock(context, identity);
         final Input input = new Input("PPAP", 1L);
-        final Output output = new Tutorial().handleRequest(input, null);
+        final Output output = new Tutorial().handleRequest(input, context);
         assertNotNull(output);
     }
 
     @Test
-    void ifSeedIsNull() {
+    void ifSeedIsNull(@Mock Context context, @Mock CognitoIdentity identity) {
+        prepareMock(context, identity);
         final Input input = new Input("Asia/Tokyo", null);
-        final Output output = new Tutorial().handleRequest(input, null);
+        final Output output = new Tutorial().handleRequest(input, context);
         assertNotNull(output);
+    }
+
+    private void prepareMock(@Mock Context context, @Mock CognitoIdentity identity) {
+        Mockito.when(context.getIdentity()).thenReturn(identity);
     }
 }

@@ -30,6 +30,7 @@ dependencies {
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
 
+    testCompile     mockito
     testCompile     junit5
     testCompileOnly jetbrainsAnnotations
 }

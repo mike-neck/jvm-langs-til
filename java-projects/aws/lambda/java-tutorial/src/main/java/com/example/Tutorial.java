@@ -17,6 +17,7 @@ package com.example;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.ZoneId;
@@ -26,9 +27,11 @@ import java.util.Random;
 
 public class Tutorial implements RequestHandler<Input, Output> {
 
+    private static final Logger logger = Logger.getLogger(Tutorial.class);
 
     @Override
     public Output handleRequest(Input input, Context context) {
+        logger.info(LoggingInfo.of(context, input));
         final ZoneId zoneId = getZoneId(input);
         final ZonedDateTime now = ZonedDateTime.now(zoneId);
         final int value = new Random(getSeed(input)).nextInt(20);
