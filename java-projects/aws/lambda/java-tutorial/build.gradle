@@ -15,8 +15,18 @@ repositories {
     jcenter()
 }
 
+ext {
+    amazon = 'com.amazonaws'
+    lambda = 'aws-lambda-java-core'
+    awsLog4j = 'aws-lambda-java-log4j'
+    lambdaJavaCore = "$amazon:$lambda:1.1.0"
+    lambdaLog = "$amazon:$awsLog4j:1.0.0"
+}
+
 dependencies {
-    compile         'com.amazonaws:aws-lambda-java-core:1.1.0'
+    compile         lambdaJavaCore
+    compile         lambdaLog
+
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
 
