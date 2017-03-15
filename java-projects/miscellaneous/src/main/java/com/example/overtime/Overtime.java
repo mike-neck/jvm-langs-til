@@ -15,9 +15,7 @@
  */
 package com.example.overtime;
 
-import java.time.Month;
+public interface Overtime {
 
-public interface WorkOfMonth extends Overtime {
-
-    Month getMonth();
+    int getOvertime();
 }
