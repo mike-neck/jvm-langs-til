@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.overtime;
+package com.example.overtime.impl;
 
-public interface StateOfMonth extends Overtime {
+import com.example.Tuple;
+import com.example.overtime.Calculation;
+import com.example.overtime.StateOfMonth;
+import com.example.overtime.WorkOfMonth;
 
-    double get2MonthAverage();
+public class CalculationImpl implements Calculation {
 
-    double get6MonthAverage();
-
-    double getTotalOvertimeInThisYear();
-
-    int getCountOfMonthOver45Hours();
+    @Override
+    public Tuple<StateOfMonth, WorkOfMonth> nextMonth(StateOfMonth stateOfMonth) {
+        return null;
+    }
 }

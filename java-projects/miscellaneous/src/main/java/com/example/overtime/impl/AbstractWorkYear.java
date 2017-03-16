@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.overtime;
+package com.example.overtime.impl;
 
-public interface StateOfMonth extends Overtime {
+import com.example.overtime.Queue;
 
-    double get2MonthAverage();
+public abstract class AbstractWorkYear<E> implements Queue<E> {
 
-    double get6MonthAverage();
+    private static interface Element<E> {
+        boolean isHead();
 
-    double getTotalOvertimeInThisYear();
-
-    int getCountOfMonthOver45Hours();
+        boolean isTail();
+    }
 }
