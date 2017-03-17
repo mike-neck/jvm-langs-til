@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.overtime;
+package com.example.overtime.impl;
+
+import com.example.overtime.WorkOfMonth;
+import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.time.Month;
 
-public interface StateOfMonth extends Overtime {
+@Data
+@RequiredArgsConstructor
+public class WorkOfMonthImpl implements WorkOfMonth {
 
-    Month getMonth();
-
-    Queue<WorkOfMonth> getQueue();
-
-    double get2MonthAverage();
-
-    double get6MonthAverage();
-
-    double getTotalOvertimeInThisYear();
-
-    int getCountOfMonthOver45Hours();
+    @Getter(onMethod = @__({@Override}))
+    private final int overtime;
+    @Getter(onMethod = @__({@Override}))
+    private final Month month;
 }

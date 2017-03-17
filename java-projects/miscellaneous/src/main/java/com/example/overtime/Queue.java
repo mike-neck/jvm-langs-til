@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public interface Queue<E> extends Iterable<E> {
 
@@ -30,7 +32,75 @@ public interface Queue<E> extends Iterable<E> {
         return 12;
     }
 
+    E head();
+
+    E last();
+
+    default Stream<E> stream() {
+        return StreamSupport.stream(this.spliterator(), false);
+    }
+
     Tuple<Queue<E>, Optional<E>> enqueue(E elem);
+
+    static <E> Queue<E> empty() {
+        return new Empty<>();
+    }
+
+    @SafeVarargs
+    static <E> Queue<E> of(E... es) {
+        if (es == null || es.length == 0) {
+            return empty();
+        }
+        if (es.length <= 12) {
+            final Iterable<E> ite = new Iterable<E>() {
+                @Override
+                public Iterator<E> iterator() {
+                    return new Iterator<E>() {
+
+                        int current = es.length - 1;
+
+                        @Override
+                        public boolean hasNext() {
+                            return current >= 0;
+                        }
+
+                        @Override
+                        public E next() {
+                            final int i = this.current;
+                            current = current - 1;
+                            return es[i];
+                        }
+                    };
+                }
+            };
+            return StreamSupport.stream(ite.spliterator(), false)
+                    .<SideEffect<E>>collect(SideEffect::new, SideEffect::append, (l, r) -> {
+                    })
+                    .getQueue();
+        } else {
+            throw new IllegalArgumentException("queue.size > 12");
+        }
+    }
+}
+
+class SideEffect<E> {
+    private Queue<E> queue = new Empty<>();
+
+    void append(E elem) {
+        queue = queue.enqueue(elem).getLeft();
+    }
+
+    boolean isNotEmpty() {
+        return !isEmpty();
+    }
+
+    boolean isEmpty() {
+        return queue instanceof Empty;
+    }
+
+    Queue<E> getQueue() {
+        return queue;
+    }
 }
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -88,6 +158,16 @@ class Empty<E> implements Queue<E> {
     }
 
     @Override
+    public E head() {
+        throw new UnsupportedOperationException("empty::head");
+    }
+
+    @Override
+    public E last() {
+        throw new UnsupportedOperationException("empty::last");
+    }
+
+    @Override
     public Tuple<Queue<E>, Optional<E>> enqueue(E elem) {
         final Element<E> e = new Element<>(elem);
         final Mid<E> mid = new Mid<>(1, e, e);
@@ -127,6 +207,16 @@ class Mid<E> implements Queue<E> {
         return size;
     }
 
+    @Override
+    public E head() {
+        return head.get();
+    }
+
+    @Override
+    public E last() {
+        return last.get();
+    }
+
     public Element<E> getHead() {
         return head;
     }
@@ -163,6 +253,16 @@ class Full<E> implements Queue<E> {
     @Override
     public int size() {
         return maxSize();
+    }
+
+    @Override
+    public E head() {
+        return head.get();
+    }
+
+    @Override
+    public E last() {
+        return last.get();
     }
 
     @Override

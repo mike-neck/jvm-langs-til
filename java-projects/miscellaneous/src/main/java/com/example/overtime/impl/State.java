@@ -15,41 +15,58 @@
  */
 package com.example.overtime.impl;
 
+import com.example.overtime.Queue;
 import com.example.overtime.StateOfMonth;
 import com.example.overtime.WorkOfMonth;
 
-public class State implements StateOfMonth {
+import java.time.Month;
 
-    private final WorkOfMonth thisMonth;
+public final class State {
 
-
-    public State(final State lastMonth, final WorkOfMonth thisMonth) {
-        this.thisMonth = thisMonth;
-
+    private State() {
     }
 
-    @Override
-    public int getOvertime() {
-        return 0;
-    }
+    private static class Empty implements StateOfMonth {
 
-    @Override
-    public double get2MonthAverage() {
-        return 0;
-    }
+        private final Month month;
 
-    @Override
-    public double get6MonthAverage() {
-        return 0;
-    }
+        private Empty(Month month) {
+            this.month = month;
+        }
 
-    @Override
-    public double getTotalOvertimeInThisYear() {
-        return 0;
-    }
+        @Override
+        public int getOvertime() {
+            return 0;
+        }
 
-    @Override
-    public int getCountOfMonthOver45Hours() {
-        return 0;
+        @Override
+        public Month getMonth() {
+            return null;
+        }
+
+        @Override
+        public Queue<WorkOfMonth> getQueue() {
+            return null;
+        }
+
+        @Override
+        public double get2MonthAverage() {
+            return 0;
+        }
+
+        @Override
+        public double get6MonthAverage() {
+            return 0;
+        }
+
+        @Override
+        public double getTotalOvertimeInThisYear() {
+            return 0;
+        }
+
+        @Override
+        public int getCountOfMonthOver45Hours() {
+            return 0;
+        }
     }
 }
