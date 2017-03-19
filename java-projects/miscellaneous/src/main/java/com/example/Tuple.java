@@ -16,7 +16,13 @@
 package com.example;
 
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @Data(staticConstructor = "tuple")
 @RequiredArgsConstructor
@@ -24,4 +30,24 @@ public class Tuple<L, R> {
 
     private final L left;
     private final R right;
+
+    @NotNull
+    public static <K, V> Function<Map.Entry<K, V>, Tuple<K, V>> toTuple() {
+        return e -> new Tuple<K, V>(e.getKey(), e.getValue());
+    }
+
+    @NotNull
+    public static <L, R> Function<L, Tuple<L, R>> mkTuple(@NonNull final Function<? super L, ? extends R> f) {
+        return l -> new Tuple<L, R>(l, f.apply(l));
+    }
+
+    @NotNull
+    public static <L, R, N> Function<Tuple<L, R>, Tuple<L, N>> mapTuple(@NonNull final Function<? super R, ? extends N> f) {
+        return t -> new Tuple<L, N>(t.left, f.apply(t.right));
+    }
+
+    @NotNull
+    public static <L, R, N> Function<Tuple<L, R>, Tuple<L, N>> biMapTuple(@NonNull final BiFunction<? super L, ? super R, ? extends N> f) {
+        return t -> new Tuple<L, N>(t.left, f.apply(t.left, t.right));
+    }
 }

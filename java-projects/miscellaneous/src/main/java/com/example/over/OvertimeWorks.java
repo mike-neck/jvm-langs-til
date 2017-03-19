@@ -18,15 +18,17 @@ package com.example.over;
 import com.example.Tuple;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.jetbrains.annotations.Contract;
 
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.time.format.TextStyle;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 
+import static com.example.Tuple.*;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 public final class OvertimeWorks {
 
@@ -42,6 +44,37 @@ public final class OvertimeWorks {
         OvertimeWork nextMonth(int hour);
     }
 
+    public enum Term {
+        LATEST(1),
+        TWO_MONTH(2),
+        THREE_MONTH(3),
+        FOUR_MONTH(4),
+        FIVE_MONTH(5);
+
+        private final int length;
+
+        Term(int length) {
+            this.length = length;
+        }
+
+        @Contract(pure = true)
+        public int getSkip() {
+            return 12 - length;
+        }
+
+        public int getSkip(int maxLength) {
+            if (maxLength < this.length) {
+                return 0;
+            } else {
+                return maxLength - this.length;
+            }
+        }
+
+        public int getLength() {
+            return length;
+        }
+    }
+
     public interface WorkSummary {
         int getMonths();
 
@@ -55,15 +88,13 @@ public final class OvertimeWorks {
             return raw.stream().skip(skip).collect(toList());
         }
 
-        default int count45HoursOver() {
+        default int countOver45Hours() {
             return getRaw().stream().filter(OvertimeWork::is45HoursOver).mapToInt(x -> 1).sum();
         }
 
-        double get2MonthAverage();
+        int countOver45HoursIn11Month();
 
-        double get6MonthAverage();
-
-        double getYearlyAverage();
+        Map<Term, Integer> getSumByTerm();
 
         int getTotal();
 
@@ -72,6 +103,51 @@ public final class OvertimeWorks {
         static WorkSummary empty(Month month) {
             return new Empty(month);
         }
+    }
+
+    public static WorkSummary nextMonthPlan(WorkSummary previous) {
+        final int over45 = previous.countOver45HoursIn11Month();
+        if (over45 == 6) {
+            return previous.next(44).getLeft();
+        }
+        final int next = previous.getSumByTerm().entrySet().stream()
+                .map(toTuple())
+                .map(biMapTuple((l, r) -> l.getLength() * 80 + 80 - 1 - r))
+                .mapToInt(Tuple::getRight)
+                .map(i -> Integer.min(99, i))
+                .min()
+                .orElse(0);
+        return previous.next(next).getLeft();
+    }
+
+    public static void main(String[] args) {
+        final WorkSummary empty = WorkSummary.empty(Month.DECEMBER);
+        final WorkSummary jan = nextMonthPlan(empty);
+        System.out.println(jan.getLatest());
+        final WorkSummary feb = nextMonthPlan(jan);
+        System.out.println(feb.getLatest());
+        final WorkSummary mar = nextMonthPlan(feb);
+        System.out.println(mar.getLatest());
+
+        final BiFunction<WorkSummary, Month, WorkSummary> func = (WorkSummary w, Month m) -> nextMonthPlan(w);
+        final List<WorkSummary> result = foldl(Arrays.asList(Month.values()), WorkSummary.empty(Month.DECEMBER), func);
+        result.stream()
+                .map(WorkSummary::getLatest)
+                .forEach(System.out::println);
+        foldl(Arrays.asList(Month.values()), result.get(11), func)
+                .stream()
+                .map(WorkSummary::getLatest)
+                .forEach(System.out::println);
+    }
+
+    private static List<WorkSummary> foldl(List<Month> months, WorkSummary empty, BiFunction<? super WorkSummary, ? super Month, ? extends WorkSummary> f) {
+        final List<WorkSummary> result = new ArrayList<>(months.size());
+        WorkSummary pre = empty;
+        for (Month month : months) {
+            pre = f.apply(pre, month);
+            result.add(pre);
+        }
+        return result;
     }
 
     @Data
@@ -83,6 +159,15 @@ public final class OvertimeWorks {
         @Override
         public OvertimeWork nextMonth(int hour) {
             return new Work(month.plus(1), hour);
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("Work{");
+            sb.append("month=").append(month.getDisplayName(TextStyle.FULL, Locale.JAPAN));
+            sb.append(", hours=").append(hours);
+            sb.append('}');
+            return sb.toString();
         }
     }
 
@@ -110,18 +195,15 @@ public final class OvertimeWorks {
         }
 
         @Override
-        public double get2MonthAverage() {
+        public int countOver45HoursIn11Month() {
             return 0;
         }
 
         @Override
-        public double get6MonthAverage() {
-            return 0;
-        }
-
-        @Override
-        public double getYearlyAverage() {
-            return 0;
+        public Map<Term, Integer> getSumByTerm() {
+            return Arrays.stream(Term.values())
+                    .map(mkTuple(t -> 0))
+                    .collect(toMap(Tuple::getLeft, Tuple::getRight));
         }
 
         @Override
@@ -165,30 +247,18 @@ public final class OvertimeWorks {
         }
 
         @Override
-        public double get2MonthAverage() {
-            return monthAverage(2);
-        }
-
-        private double monthAverage(int m) {
-            if (m <= 0) {
-                throw new IllegalArgumentException("work-summary::average::month(<= 0)");
-            }
-            if (works.size() < m) {
-                final int sum = getTotal();
-                return sum / m;
-            } else {
-                return works.stream().skip(works.size() - m).mapToInt(OvertimeWork::getHours).average().orElse(0D);
-            }
+        public int countOver45HoursIn11Month() {
+            return countOver45Hours();
         }
 
         @Override
-        public double get6MonthAverage() {
-            return monthAverage(6);
-        }
-
-        @Override
-        public double getYearlyAverage() {
-            return monthAverage(12);
+        public Map<Term, Integer> getSumByTerm() {
+            return Arrays.stream(Term.values())
+                    .map(mkTuple(t -> t.getSkip(works.size())))
+                    .map(mapTuple(s -> works.stream().skip(s)))
+                    .map(mapTuple(s -> s.mapToInt(OvertimeWork::getHours)))
+                    .map(mapTuple(IntStream::sum))
+                    .collect(toMap(Tuple::getLeft, Tuple::getRight));
         }
 
         @Override
@@ -233,23 +303,23 @@ public final class OvertimeWorks {
         }
 
         @Override
-        public double get2MonthAverage() {
-            return getAverage(skippedStream(10));
+        public int countOver45HoursIn11Month() {
+            return works.stream().skip(1).filter(OvertimeWork::is45HoursOver).mapToInt(o -> 1).sum();
         }
 
         @Override
-        public double get6MonthAverage() {
-            return getAverage(skippedStream(6));
-        }
-
-        @Override
-        public double getYearlyAverage() {
-            return getAverage(skippedStream(0));
+        public Map<Term, Integer> getSumByTerm() {
+            return Arrays.stream(Term.values())
+                    .map(mkTuple(Term::getSkip))
+                    .map(mapTuple(s -> works.stream().skip(s)))
+                    .map(mapTuple(s -> s.mapToInt(OvertimeWork::getHours)))
+                    .map(mapTuple(IntStream::sum))
+                    .collect(toMap(Tuple::getLeft, Tuple::getRight));
         }
 
         @Override
         public int getTotal() {
-            return skippedStream(0).mapToInt(OvertimeWork::getHours).sum();
+            return works.stream().skip(0).mapToInt(OvertimeWork::getHours).sum();
         }
 
         @Override
@@ -258,14 +328,6 @@ public final class OvertimeWorks {
             final List<OvertimeWork> next = new ArrayList<>(works.subList(1, 12));
             next.add(work);
             return new Tuple<>(new Full(next), Optional.of(works.get(0)));
-        }
-
-        private Stream<OvertimeWork> skippedStream(int n) {
-            return works.stream().skip(n);
-        }
-
-        private double getAverage(final Stream<OvertimeWork> stream) {
-            return stream.mapToInt(OvertimeWork::getHours).average().orElse(0D);
         }
     }
 }
