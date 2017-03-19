@@ -68,6 +68,11 @@ class Full implements WorkSummary {
     }
 
     @Override
+    public int getTotalIn11Month() {
+        return works.stream().skip(1).mapToInt(OvertimeWork::getHours).sum();
+    }
+
+    @Override
     public Tuple<WorkSummary, Optional<OvertimeWork>> next(int hour) {
         final OvertimeWork work = works.get(11).nextMonth(hour);
         final List<OvertimeWork> next = new ArrayList<>(works.subList(1, 12));

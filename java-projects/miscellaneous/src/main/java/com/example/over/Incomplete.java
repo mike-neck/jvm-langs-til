@@ -73,6 +73,11 @@ class Incomplete implements WorkSummary {
     }
 
     @Override
+    public int getTotalIn11Month() {
+        return getTotal();
+    }
+
+    @Override
     public Tuple<WorkSummary, Optional<OvertimeWork>> next(int hour) {
         final OvertimeWork work = works.get(works.size() - 1).nextMonth(hour);
         final List<OvertimeWork> list = new ArrayList<>(works);

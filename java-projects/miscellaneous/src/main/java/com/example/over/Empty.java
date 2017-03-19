@@ -64,6 +64,11 @@ class Empty implements WorkSummary {
     }
 
     @Override
+    public int getTotalIn11Month() {
+        return 0;
+    }
+
+    @Override
     public Tuple<WorkSummary, Optional<OvertimeWork>> next(int hour) {
         final Incomplete sum = new Incomplete(new Work(month.plus(1), hour));
         return new Tuple<>(sum, Optional.empty());

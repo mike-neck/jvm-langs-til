@@ -26,9 +26,13 @@ import java.util.function.BiFunction;
 import static com.example.Tuple.biMapTuple;
 import static com.example.Tuple.toTuple;
 
-public final class OvertimeWorks {
+public final class OvertimeWorkApp {
 
     public static WorkSummary nextMonthPlan(WorkSummary previous) {
+        final int total = previous.getTotalIn11Month();
+        if (720 - total < 44) {
+            return previous.next(720 - total).getLeft();
+        }
         final int over45 = previous.countOver45HoursIn11Month();
         if (over45 == 6) {
             return previous.next(44).getLeft();
@@ -57,6 +61,7 @@ public final class OvertimeWorks {
         result.stream()
                 .map(WorkSummary::getLatest)
                 .forEach(System.out::println);
+        System.out.println(String.format("Total: [%d]", result.get(11).getTotal()));
         foldl(Arrays.asList(Month.values()), result.get(11), func)
                 .stream()
                 .map(WorkSummary::getLatest)

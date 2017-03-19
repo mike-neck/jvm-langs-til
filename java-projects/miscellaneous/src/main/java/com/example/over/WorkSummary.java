@@ -47,6 +47,8 @@ public interface WorkSummary {
 
     int getTotal();
 
+    int getTotalIn11Month();
+
     Tuple<WorkSummary, Optional<OvertimeWork>> next(int hour);
 
     static WorkSummary empty(Month month) {
