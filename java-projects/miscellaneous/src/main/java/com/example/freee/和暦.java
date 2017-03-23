@@ -15,13 +15,16 @@
  */
 package com.example.freee;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.chrono.JapaneseDate;
 import java.time.chrono.JapaneseEra;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.Date;
 import java.util.Locale;
 
 public class 和暦 {
@@ -83,11 +86,20 @@ public class 和暦 {
         System.out.println(JapaneseDate.from(ldm).format(formatter));
 
         try {
-            LocalDate.of(1872, 12, 31);
+            final LocalDate ldk = LocalDate.of(1872, 12, 31);
+            System.out.println(JapaneseDate.from(ldk).format(formatter));
         } catch (Exception e) {
             System.out.println(e.getClass().getCanonicalName());
             System.out.println(e.getMessage());
             System.out.println("明治5年12月31日");
         }
+
+        System.out.println("---");
+
+        final Date date = new Date();
+        final Instant instant = date.toInstant();
+        final ZonedDateTime zonedDateTime = instant.atZone(tokyo);
+        final JapaneseDate japaneseDate = JapaneseDate.from(zonedDateTime);
+        System.out.println(japaneseDate.format(formatter));
     }
 }
