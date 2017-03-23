@@ -15,6 +15,7 @@
  */
 package com.example.freee;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.chrono.JapaneseDate;
 import java.time.chrono.JapaneseEra;
@@ -48,12 +49,17 @@ public class 和暦 {
         final JapaneseDate heisei = JapaneseDate.of(1989, 1, 8);
         System.out.println(heisei.format(formatter));
 
+        System.out.println("---");
+
         try {
             JapaneseDate.of(1872, 12, 31);
         } catch (Exception e) {
+            System.out.println(e.getClass().getCanonicalName());
             System.out.println(e.getMessage());
             System.out.println("1872/12/31");
         }
+
+        System.out.println("---");
 
         final JapaneseDate h = JapaneseDate.of(平成, 29, 1, 1);
         System.out.println(h.format(iso));
@@ -61,9 +67,25 @@ public class 和暦 {
         final JapaneseDate m = JapaneseDate.of(明治, 6, 1, 1);
         System.out.println(m.format(iso));
 
+        System.out.println("---");
+
         try {
             JapaneseDate.of(明治, 5, 12, 31);
         } catch (Exception e) {
+            System.out.println(e.getClass().getCanonicalName());
+            System.out.println(e.getMessage());
+            System.out.println("明治5年12月31日");
+        }
+
+        System.out.println("---");
+
+        final LocalDate ldm = LocalDate.of(1873, 1, 1);
+        System.out.println(JapaneseDate.from(ldm).format(formatter));
+
+        try {
+            LocalDate.of(1872, 12, 31);
+        } catch (Exception e) {
+            System.out.println(e.getClass().getCanonicalName());
             System.out.println(e.getMessage());
             System.out.println("明治5年12月31日");
         }
