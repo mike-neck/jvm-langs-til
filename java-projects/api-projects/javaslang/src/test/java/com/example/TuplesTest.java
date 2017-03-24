@@ -15,6 +15,7 @@
  */
 package com.example;
 
+import javaslang.Function2;
 import javaslang.Tuple;
 import javaslang.Tuple2;
 import javaslang.Tuple8;
@@ -25,6 +26,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("WeakerAccess")
@@ -47,7 +49,7 @@ public class TuplesTest {
     void mapTuple() {
         final Tuple2<String, LocalDate> memo = Tuple.of("uuuu/MM/dd", LocalDate.of(2017, 3, 21));
         final Tuple2<String, LocalDate> result = memo
-                .map((f, d) -> new Tuple2<>(DateTimeFormatter.ofPattern(f), d))
+                .map((f, d) -> new Tuple2<>(ofPattern(f), d))
                 .map((f, d) -> Tuple.of(d.format(f), d));
         assertEquals("2017/03/21", result._1);
     }
@@ -59,5 +61,17 @@ public class TuplesTest {
         // (p1,p2,p3,p4,p5,p6,p7,p8) -> (t1,t2,t3,t4,t5,t6,t7,t8)
         // or
         // p1->t1, p2->t2,...p8->t8
+    }
+
+    // map(BiFunction)はtransform(BiFunction)の特殊なケースなので冗長に思われる
+    @Test
+    void mapIsASpecialFormOfTransform() {
+        final Function2<String, LocalDate, Tuple2<String, LocalDate>> f = (p, d) -> Tuple.of(ofPattern(p).format(d), d);
+
+        final Tuple2<String, LocalDate> memo = Tuple.of("uuuu/MM/dd", LocalDate.of(2017, 3, 21));
+        final Tuple2<String, LocalDate> resultOfMap = memo.map(f);
+        final Tuple2<String, LocalDate> resultOfTransform = memo.transform(f);
+
+        assertEquals(resultOfTransform, resultOfMap);
     }
 }
