@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath junit5PluginJar
+    }
+}
+
+apply plugin: 'java'
+apply plugin: junit5Plugin
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compileOnly     jetbrainsAnnotations
+    compileOnly     lombok
+
+    compile         'io.javaslang:javaslang:2.0.5'
+
+    testCompile     junit5
+    testCompileOnly jetbrainsAnnotations
+}
