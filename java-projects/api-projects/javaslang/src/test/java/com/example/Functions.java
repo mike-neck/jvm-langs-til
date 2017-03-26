@@ -16,12 +16,14 @@
 package com.example;
 
 import javaslang.Function1;
+import javaslang.control.Option;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Functions {
 
@@ -44,5 +46,18 @@ public class Functions {
 
         assertEquals("2017/03/26", res1);
         assertEquals(res1, res2);
+    }
+
+    @Test
+    void optionalLifting() {
+        final Function1<Integer, Integer> mod10 = i -> 10 / i;
+
+        final Function1<Integer, Option<Integer>> liftedMod10 = Function1.lift(mod10);
+
+        final Option<Integer> result0 = liftedMod10.apply(0);
+        final Option<Integer> result1 = liftedMod10.apply(1);
+
+        assertTrue(result0.isEmpty());
+        assertTrue(result1.isDefined());
     }
 }
