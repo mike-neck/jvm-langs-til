@@ -1,0 +1,31 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath junit5PluginJar
+        classpath springBootGradlePlugin
+    }
+}
+
+apply plugin: 'java'
+apply plugin: junit5Plugin
+apply plugin: springBootPlugin
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compileOnly     jetbrainsAnnotations
+    compileOnly     lombok
+
+    compile         springBootStarter.dataJpa
+    compile         springBootStarter.security
+    compile         springBootStarter.thymeleaf
+    compile         mysql
+
+    testCompile     junit5
+    testCompileOnly jetbrainsAnnotations
+}
