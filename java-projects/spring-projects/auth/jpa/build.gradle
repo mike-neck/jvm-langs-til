@@ -10,7 +10,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: junit5Plugin
-apply plugin: springBootPlugin
+apply plugin: springBoot
 
 repositories {
     mavenCentral()
