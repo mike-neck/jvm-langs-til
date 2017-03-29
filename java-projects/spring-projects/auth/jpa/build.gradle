@@ -26,6 +26,9 @@ dependencies {
     compile         springBootStarter.thymeleaf
     compile         mysql
 
+    compile         bootstrap
+    compile         jquery
+
     testCompile     junit5
     testCompileOnly jetbrainsAnnotations
 }
