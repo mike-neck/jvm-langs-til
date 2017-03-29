@@ -24,11 +24,14 @@ dependencies {
     compile         springBootStarter.dataJpa
     compile         springBootStarter.security
     compile         springBootStarter.thymeleaf
+
     compile         mysql
+    compile         querydsl
 
     compile         bootstrap
     compile         jquery
 
+    testCompile     h2
     testCompile     junit5
     testCompileOnly jetbrainsAnnotations
 }
