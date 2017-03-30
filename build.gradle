@@ -54,6 +54,7 @@ ext {
     eclipseLink = "$eclipseLinkGroup:$eclipseLinkJpaAf:$eclipseLinkVersion"
 
     querydsl = "$queryDslGroup:$queryDslJpaAf:$queryDslVersion"
+    querydslApt = "$queryDslGroup:$queryDslAptAf:$queryDslVersion"
 
     jacksonDataType = [
             jdk8: "$jacksonDataTypeGroup:$jacksonDataTypeJdk8Af:$jacksonVersion"
