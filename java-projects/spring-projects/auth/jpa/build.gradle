@@ -17,6 +17,10 @@ repositories {
     jcenter()
 }
 
+configurations {
+    mysql
+}
+
 dependencies {
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
@@ -25,7 +29,8 @@ dependencies {
     compile         springBootStarter.security
     compile         springBootStarter.thymeleaf
 
-    compile         mysql
+    compile         h2
+    mysql           mysql
 
     compile         querydsl
     compileOnly     querydslApt
@@ -33,7 +38,6 @@ dependencies {
     compile         bootstrap
     compile         jquery
 
-    testCompile     h2
     testCompile     junit5
     testCompileOnly jetbrainsAnnotations
 }
