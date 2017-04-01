@@ -23,6 +23,8 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 
@@ -33,6 +35,11 @@ public class AuthConfig extends GlobalAuthenticationConfigurerAdapter {
 
     public AuthConfig(AccountRepository repository) {
         this.repository = repository;
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(17);
     }
 
     @Bean
