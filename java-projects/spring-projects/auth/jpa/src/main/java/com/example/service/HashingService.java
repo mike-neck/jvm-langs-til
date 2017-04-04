@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.ApplicationScope;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -41,6 +42,8 @@ public class HashingService {
 
     @NotNull
     private static String encode(byte[] bytes) {
-        return Integer.toHexString(Base64.getUrlEncoder().encodeToString(bytes).hashCode());
+        final int hash = Base64.getUrlEncoder().encodeToString(bytes).hashCode();
+        final byte[] bs = ByteBuffer.allocate(Integer.BYTES).putInt(hash).array();
+        return Base64.getUrlEncoder().encodeToString(bs).replace("=", "");
     }
 }
