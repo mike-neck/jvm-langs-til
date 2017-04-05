@@ -40,6 +40,7 @@ public class Account {
     private String password;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime updated;
 
     @Temporal(TemporalType.TIMESTAMP)

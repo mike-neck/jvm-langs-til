@@ -17,13 +17,17 @@ package com.example.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"account"})
 @Entity
 public class Bookmark {
 
@@ -36,4 +40,16 @@ public class Bookmark {
 
     @Column(nullable = false, length = 32)
     private String hash;
+
+    @ManyToOne(optional = false)
+    private Account account;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    private LocalDateTime created;
+
+    @PrePersist
+    public void dataCreation() {
+        this.created = LocalDateTime.now();
+    }
 }
