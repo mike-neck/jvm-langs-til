@@ -13,29 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.view;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+@Data
+@RequiredArgsConstructor
+public class IndexView {
 
-@SpringBootApplication
-public class App {
+    private final boolean inSession;
+    private final String username;
+    private final String now;
 
-    public static void main(String[] args) {
-        SpringApplication.run(App.class);
-    }
-
-    @Bean
-    ZoneId zoneId() {
-        return ZoneId.of("Asia/Tokyo");
-    }
-
-    @Bean
-    DateTimeFormatter dateTimeFormatter() {
-        return DateTimeFormatter.ofPattern("uuuu/MM/dd");
+    public IndexView(String now) {
+        this.inSession = false;
+        this.username = null;
+        this.now = now;
     }
 }

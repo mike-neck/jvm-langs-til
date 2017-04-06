@@ -13,29 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.controller;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+@Controller
+@RequestMapping("login")
+public class LoginController {
 
-@SpringBootApplication
-public class App {
-
-    public static void main(String[] args) {
-        SpringApplication.run(App.class);
-    }
-
-    @Bean
-    ZoneId zoneId() {
-        return ZoneId.of("Asia/Tokyo");
-    }
-
-    @Bean
-    DateTimeFormatter dateTimeFormatter() {
-        return DateTimeFormatter.ofPattern("uuuu/MM/dd");
+    @RequestMapping(method = RequestMethod.GET)
+    public String loginPageAccess() {
+        return "index";
     }
 }
