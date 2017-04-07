@@ -44,7 +44,7 @@ public class Bookmark {
     @ManyToOne(optional = false)
     private Account account;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    //    @Temporal(TemporalType.TIMESTAMP)
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime created;
 
