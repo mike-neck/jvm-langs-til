@@ -19,6 +19,7 @@ import com.example.exception.ResourceNotFoundException;
 import com.example.repository.AccountRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -44,8 +45,14 @@ public class AuthConfig extends GlobalAuthenticationConfigurerAdapter {
 
     @Bean
     UserDetailsService userDetailsService() {
+        // パスワード失敗でログインを制限などしたいだろうから、この実装に @Transaction がついてない
         return username -> repository.findAccountByUsername(username)
                 .map(a -> new User(a.getUsername(), a.getPassword(), Collections.singleton((GrantedAuthority) () -> "USER")))
                 .orElseThrow(() -> new ResourceNotFoundException("user", username));
+    }
+
+    @Override
+    public void init(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
 }

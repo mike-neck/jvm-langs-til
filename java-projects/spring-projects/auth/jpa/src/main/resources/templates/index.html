@@ -11,6 +11,9 @@
     <h3 th:if="${!view.inSession}">こんにちは</h3>
     <hr/>
     <h4 th:text="${view.now}"></h4>
+    <p th:if="${!view.inSession}">
+        こちらから<a th:href="@{/welcome}">ログイン</a>
+    </p>
 </div>
 </body>
 </html>

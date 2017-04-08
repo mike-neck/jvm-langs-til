@@ -47,6 +47,11 @@ public class Account {
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime created;
 
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     @PrePersist
     public void dataCreation() {
         final LocalDateTime now = this.created = LocalDateTime.now();

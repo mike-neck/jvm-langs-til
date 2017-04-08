@@ -16,12 +16,13 @@
 package com.example.controller;
 
 import com.example.view.IndexView;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
@@ -44,9 +45,20 @@ public class IndexController {
 
     @RequestMapping(method = RequestMethod.GET)
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    ModelAndView index(@SessionAttribute Optional<User> user) {
-        final IndexView indexView = user.map(u -> new IndexView(true, u.getUsername(), LocalDate.now(zoneId).format(dateTimeFormatter)))
-                .orElseGet(() -> new IndexView(LocalDate.now(zoneId).format(dateTimeFormatter)));
-        return new ModelAndView("index", "view", indexView);
+    ModelAndView index(@AuthenticationPrincipal User user) {
+        final IndexView view = Optional.ofNullable(user)
+                .map(u -> new IndexView(true, u.getUsername(), today()))
+                .orElseGet(() -> new IndexView(today()));
+        return modelAndView(view);
+    }
+
+    @NotNull
+    private ModelAndView modelAndView(IndexView view) {
+        return new ModelAndView("index", "view", view);
+    }
+
+    @NotNull
+    private String today() {
+        return LocalDate.now(zoneId).format(dateTimeFormatter);
     }
 }

@@ -48,6 +48,12 @@ public class Bookmark {
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime created;
 
+    public Bookmark(String url, String hash, Account account) {
+        this.url = url;
+        this.hash = hash;
+        this.account = account;
+    }
+
     @PrePersist
     public void dataCreation() {
         this.created = LocalDateTime.now();

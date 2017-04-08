@@ -5,8 +5,18 @@
     <title>Login</title>
 </head>
 <body>
-<form method="post" th:action="@{/login-process}">
-
+<form method="post" th:action="@{/login}">
+    <div>
+        <label for="username">名前</label>
+        <input type="text" id="username" name="username"/>
+    </div>
+    <div>
+        <label for="password">パスワード</label>
+        <input type="password" id="password" name="password"/>
+    </div>
+    <div>
+        <button type="submit">ログイン</button>
+    </div>
 </form>
 </body>
 </html>
