@@ -52,6 +52,7 @@ ext {
     guicePersist = "$guiceExtGroup:$guicePersistAf:$guiceVersion"
 
     eclipseLink = "$eclipseLinkGroup:$eclipseLinkJpaAf:$eclipseLinkVersion"
+    jpaJsr310 = 'com.github.marschall:threeten-jpa:1.5.1'
 
     querydsl = "$queryDslGroup:$queryDslJpaAf:$queryDslVersion"
     querydslApt = "$queryDslGroup:$queryDslAptAf:$queryDslVersion"

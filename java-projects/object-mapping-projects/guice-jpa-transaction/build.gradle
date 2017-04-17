@@ -22,6 +22,7 @@ dependencies {
     compile         guice
     compile         guicePersist
     compile         eclipseLink
+    compile         jpaJsr310
     compile         testContainers.mysql
 
     testCompile     junit5
