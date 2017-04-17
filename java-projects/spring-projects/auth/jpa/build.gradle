@@ -18,7 +18,7 @@ repositories {
 }
 
 configurations {
-    mysql
+    useMysql
 }
 
 dependencies {
@@ -30,7 +30,7 @@ dependencies {
     compile         springBootStarter.thymeleaf
 
     compile         h2
-    mysql           mysql
+    useMysql        mysql
 
     compile         querydsl
     compileOnly     querydslApt
