@@ -19,6 +19,11 @@ dependencies {
     compileOnly     jetbrainsAnnotations
     compileOnly     lombok
 
+    compile         guice
+    compile         guicePersist
+    compile         eclipseLink
+    compile         testContainers.mysql
+
     testCompile     junit5
     testCompileOnly jetbrainsAnnotations
 }
