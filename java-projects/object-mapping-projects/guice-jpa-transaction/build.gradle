@@ -49,3 +49,7 @@ generateSchema {
     outputDirectory = file(outputDir)
     databaseProductName = 'MySQL'
 }
+
+task ddl(group: 'Schema-generation', dependsOn: 'clean') {
+    finalizedBy 'generateSchema'
+}
