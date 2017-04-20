@@ -15,8 +15,14 @@
  */
 package com.example;
 
+import com.example.entity.Account;
+import com.example.vo.UserId;
+import com.example.vo.Username;
+import lombok.NonNull;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 public class UserRepository {
 
@@ -25,5 +31,15 @@ public class UserRepository {
     @Inject
     public UserRepository(EntityManager em) {
         this.em = em;
+    }
+
+    public Account createUser(@NonNull final Username username) {
+        final Account account = new Account(username.getValue());
+        em.persist(account);
+        return account;
+    }
+
+    public Optional<Account> findUser(final UserId userId) {
+        return Optional.ofNullable(em.find(Account.class, userId.getValue()));
     }
 }

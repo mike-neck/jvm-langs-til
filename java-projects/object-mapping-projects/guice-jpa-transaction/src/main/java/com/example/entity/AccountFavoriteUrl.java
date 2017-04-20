@@ -34,22 +34,16 @@ public class AccountFavoriteUrl implements Serializable {
     public static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    @AttributeOverrides({
-            @AttributeOverride(name = "accountId",
-                    column = @Column(name = "account_id", nullable = false, updatable = false, insertable = false))
-            ,
-            @AttributeOverride(name = "siteUrlId",
-                    column = @Column(name = "siteurl_id", nullable = false, updatable = false, insertable = false))
-            // name = "siteurl_id" 以外はすべてエラーになる
-    })
     private AccountFavoriteUrlKey id;
 
     @ManyToOne(optional = false)
     @MapsId("accountId")
+    @JoinColumn(name = "account_id")
     private Account account;
 
     @ManyToOne(optional = false)
     @MapsId("siteUrlId")
+    @JoinColumn(name = "site_url_id")
     private SiteUrl siteUrl;
 
     public AccountFavoriteUrl(final Account account, final SiteUrl siteUrl) {
