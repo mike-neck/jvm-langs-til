@@ -20,18 +20,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @SuppressWarnings("WeakerAccess")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class UserFavoriteUrlKey {
+public class AccountFavoriteUrlKey implements Serializable {
 
-    @ManyToOne(optional = false)
-    private User user;
+    public static final long serialVersionUID = 1L;
 
-    @ManyToOne(optional = false)
-    private SiteUrl siteUrl;
+    private Long accountId;
+
+    private Long siteUrlId;
 }

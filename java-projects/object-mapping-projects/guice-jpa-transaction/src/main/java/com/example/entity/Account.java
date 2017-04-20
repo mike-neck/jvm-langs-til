@@ -21,6 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
@@ -28,7 +29,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "account")
-public class User {
+public class Account implements Serializable {
+
+    public static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +40,7 @@ public class User {
     @Column(nullable = false, length = 32)
     private String username;
 
-    public User(final String username) {
+    public Account(final String username) {
         this.username = username;
     }
 

@@ -25,27 +25,40 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "site_url")
-public class SiteUrl implements Serializable {
+@Table(name = "account_favorite_url")
+public class AccountFavoriteUrl implements Serializable {
 
     public static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    @AttributeOverrides({
+            @AttributeOverride(name = "accountId",
+                    column = @Column(name = "account_id", nullable = false, updatable = false, insertable = false))
+            ,
+            @AttributeOverride(name = "siteUrlId",
+                    column = @Column(name = "siteurl_id", nullable = false, updatable = false, insertable = false))
+            // name = "siteurl_id" 以外はすべてエラーになる
+    })
+    private AccountFavoriteUrlKey id;
 
-    @Column(nullable = false, unique = true, length = 320)
-    private String url;
+    @ManyToOne(optional = false)
+    @MapsId("accountId")
+    private Account account;
 
-    public SiteUrl(final String url) {
-        this.url = url;
+    @ManyToOne(optional = false)
+    @MapsId("siteUrlId")
+    private SiteUrl siteUrl;
+
+    public AccountFavoriteUrl(final Account account, final SiteUrl siteUrl) {
+        this.id = new AccountFavoriteUrlKey(account.getId(), siteUrl.getId());
+        this.account = account;
+        this.siteUrl = siteUrl;
     }
 
     @Convert(converter = LocalDateTimeConverter.class)
-    @Column(nullable = false)
     private LocalDateTime created;
 
     @PrePersist
