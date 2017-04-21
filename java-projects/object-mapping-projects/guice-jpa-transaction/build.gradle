@@ -29,6 +29,7 @@ dependencies {
     compile         eclipseLink
     compile         jpaJsr310
     compile         testContainers.mysql
+    compile         mysql
 
     testCompile     junit5
     testCompileOnly jetbrainsAnnotations
