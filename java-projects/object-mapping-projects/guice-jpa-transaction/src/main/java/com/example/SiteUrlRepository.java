@@ -19,6 +19,7 @@ import com.example.entity.SiteUrl;
 import com.example.vo.SiteUrlId;
 import com.example.vo.Url;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ public class SiteUrlRepository {
 
     private final EntityManager em;
 
+    @Inject
     public SiteUrlRepository(final EntityManager em) {
         this.em = em;
     }
