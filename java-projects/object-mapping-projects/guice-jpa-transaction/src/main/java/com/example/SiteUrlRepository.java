@@ -39,6 +39,7 @@ public class SiteUrlRepository {
     public SiteUrl create(final Url url) {
         final SiteUrl siteUrl = new SiteUrl(url.getValue());
         em.persist(siteUrl);
+        em.flush();
         return siteUrl;
     }
 }

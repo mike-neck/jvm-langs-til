@@ -37,6 +37,7 @@ public class UserRepository {
     public Account createUser(@NonNull final Username username) {
         final Account account = new Account(username.getValue());
         em.persist(account);
+        em.flush();
         return account;
     }
 
