@@ -22,6 +22,7 @@ import lombok.NonNull;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import java.util.Optional;
 
 public class UserRepository {
@@ -41,5 +42,14 @@ public class UserRepository {
 
     public Optional<Account> findUser(final UserId userId) {
         return Optional.ofNullable(em.find(Account.class, userId.getValue()));
+    }
+
+    public Optional<Account> findUserForUpdate(final UserId userId) {
+        return Optional.ofNullable(em.find(Account.class, userId.getValue(), LockModeType.OPTIMISTIC_FORCE_INCREMENT));
+    }
+
+    public Account updateUser(final Account account) {
+        em.persist(account);
+        return account;
     }
 }
