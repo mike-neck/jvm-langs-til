@@ -1,0 +1,13 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=guice-jpa-transaction
+      - MYSQL_USER=jpa
+      - MYSQL_PASSWORD=jpa
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    volumes:
+      - ./db/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
