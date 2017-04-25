@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example;
+package com.example.repo;
 
 import com.example.entity.Account;
 import com.example.vo.UserId;
@@ -49,6 +49,7 @@ public class UserRepository {
         return Optional.ofNullable(em.find(Account.class, userId.getValue(), LockModeType.OPTIMISTIC_FORCE_INCREMENT));
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public Account updateUser(final Account account) {
         em.persist(account);
         return account;

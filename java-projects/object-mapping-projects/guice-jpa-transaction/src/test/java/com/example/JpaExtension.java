@@ -18,15 +18,14 @@ package com.example;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.persist.PersistService;
-import com.google.inject.persist.UnitOfWork;
 import org.junit.jupiter.api.extension.*;
 
 import java.lang.reflect.Parameter;
 
-public class JpaExtension implements BeforeAllCallback, ParameterResolver, AfterEachCallback {
+public class JpaExtension implements BeforeAllCallback, ParameterResolver {
 
-    private static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(
-            "guice-jpa-transaction");
+    private static final ExtensionContext.Namespace NAMESPACE =
+            ExtensionContext.Namespace.create("guice-jpa-transaction");
 
     @Override
     public void beforeAll(ContainerExtensionContext context) throws Exception {
@@ -50,15 +49,6 @@ public class JpaExtension implements BeforeAllCallback, ParameterResolver, After
         final Class<?> type = parameter.getType();
         final ExtensionContext.Store store = ecx.getStore(NAMESPACE);
         final Injector injector = store.get(Injector.class, Injector.class);
-        final Object instance = injector.getInstance(type);
-        final UnitOfWork unitOfWork = store.getOrComputeIfAbsent(ecx.getUniqueId(),
-                i -> injector.getInstance(UnitOfWork.class), UnitOfWork.class);
-        unitOfWork.begin();
-        return instance;
-    }
-
-    @Override
-    public void afterEach(TestExtensionContext context) throws Exception {
-        context.getStore(NAMESPACE).remove(context.getUniqueId(), UnitOfWork.class).end();
+        return injector.getInstance(type);
     }
 }
